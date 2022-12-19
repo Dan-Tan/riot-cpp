@@ -28,8 +28,7 @@ RiotApiClient::RiotApiClient(std::string path_to_config) {
         throw std::domain_error(err_msg);
     }
     else {
-        std::string api_key = root["api-key"].toStyledString();
-        std::cout << "Retrieved Key: " + api_key << std::endl;
+        std::string api_key = root["api-key"].asString();
         this->header = curl_slist_append(header, (std::string("X-RIOT-TOKEN: ") + api_key).c_str());
     }
 
@@ -52,10 +51,9 @@ std::string RiotApiClient::get(std::string end_url, std::string region) {
     std::cout << address << std::endl;
 
     curl_easy_setopt(this->easy_handle, CURLOPT_URL, address.c_str());
-    curl_easy_setopt(this->easy_handle, CURLOPT_HTTPGET, 0);
+    curl_easy_setopt(this->easy_handle, CURLOPT_HTTPGET, 1);
     curl_easy_setopt(this->easy_handle, CURLOPT_HTTPHEADER, this->header);
     curl_easy_setopt(this->easy_handle, CURLOPT_VERBOSE, 1);
-
     std::cout << "Sending request" << std::endl;
     res_ = curl_easy_perform(easy_handle);
 
@@ -66,8 +64,8 @@ int main() {
 
     std::string config_path = "../../.api_keys/riot_config.json";
     RiotApiClient test_client(config_path); 
-    std::string region = "oc1";
-    std::string query = "/lol/summoner/v4/summoners/by-name/Monkeys%20R%20Us";
+    std::string region = "na1";
+    std::string query ="/lol/summoner/v4/summoners/by-name/imaqtpie";
     std::string output = test_client.get(query, region);
     std::cout << output << std::endl;
 }
