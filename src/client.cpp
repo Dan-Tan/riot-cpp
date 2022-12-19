@@ -1,13 +1,39 @@
-#include <string.h>
+#include <string>
 #include <jsoncpp/json/json.h>
+#include <curl/curl.h>
 #include "client.h"
 
-using namespace client 
+#include <fstream>
+#include <iostream>
 
-RiotApiClient::RiotApiClient(std::string api_key) {
+using namespace client;
+
+RiotApiClient::RiotApiClient(std::string path_to_config) {
     curl_global_init(CURL_GLOBAL_ALL);
-    header = curl_slist_append(header, "X-RIOT-TOKEN: " + api_key);
-    easy_handle = curl_easy_init();
+
+    std::ifstream config(path_to_config);
+    Json::Reader reader;
+
+    if (!config) {
+        std::string err_msg("Cannot open config file: ");
+        err_msg = err_msg + path_to_config;
+        throw std::domain_error(err_msg);
+    }
+    
+    Json::Value root;
+    bool retrieving_key = reader.parse(config, root);
+
+    if (!retrieving_key) {
+        std::string err_msg("Unable to read api json");
+        throw std::domain_error(err_msg);
+    }
+    else {
+        std::string api_key = root["api-key"].toStyledString();
+        std::cout << "Retrieved Key: " + api_key << std::endl;
+        this->header = curl_slist_append(header, (std::string("X-RIOT-TOKEN: ") + api_key).c_str());
+    }
+
+    this->easy_handle = curl_easy_init();
 }
 
 RiotApiClient::~RiotApiClient() {
@@ -20,15 +46,28 @@ std::string RiotApiClient::get_BASE_URL(std::string region) {
 
 std::string RiotApiClient::get(std::string end_url, std::string region) {
 
-    std::string = this.get_BASE_URL(region)
+    std::string address = this->get_BASE_URL(region) + end_url; 
+    std::string res_;
 
-    curl_easy_setopt(easy_handle, CURLOPT_URL, address.c_str());
-    curl_easy_setopt(easy_handle, CURLOPT_HTTPGET, 1);
-    curl_easy_setopt(easy_handle, CURLOPT_HTTPHEADER, header);
+    std::cout << address << std::endl;
 
-    res_ = curl_easy_perform();
+    curl_easy_setopt(this->easy_handle, CURLOPT_URL, address.c_str());
+    curl_easy_setopt(this->easy_handle, CURLOPT_HTTPGET, 0);
+    curl_easy_setopt(this->easy_handle, CURLOPT_HTTPHEADER, this->header);
+    curl_easy_setopt(this->easy_handle, CURLOPT_VERBOSE, 1);
 
-    return res_
+    std::cout << "Sending request" << std::endl;
+    res_ = curl_easy_perform(easy_handle);
+
+    return res_;
 }
 
+int main() {
 
+    std::string config_path = "../../.api_keys/riot_config.json";
+    RiotApiClient test_client(config_path); 
+    std::string region = "oc1";
+    std::string query = "/lol/summoner/v4/summoners/by-name/Monkeys%20R%20Us";
+    std::string output = test_client.get(query, region);
+    std::cout << output << std::endl;
+}
