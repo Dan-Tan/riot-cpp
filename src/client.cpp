@@ -60,12 +60,48 @@ std::string RiotApiClient::get(std::string end_url, std::string region) {
     return res_;
 }
 
+// LEAGUE V4 Get requests
+
+
+std::string RiotApiClient::league_LEAGUE_V4(std::string queue, std::string league, std::string region) {
+    std::string end_url = "/lol/league/v4/" + league + "/by-queue/" + queue;
+    return this->get(end_url, region);
+}
+std::string RiotApiClient::player_LEAGUE_V4(std::string summoner_id, std::string region) {
+    std::string end_url = "/lol/league/v4/entries/by-summoner/" + summoner_id;
+    return this->get(end_url, region);
+}
+
+
+std::string RiotApiClient::MATCH_V5(std::string match_id, int type, std::string region) {
+    if ((type > 2) || (type < 0)) {
+        std::domain_error(std::string("invalid MATCH_V5 query type"));
+    }
+    std::string ending;
+    if (type == 0) {
+        ending = "by-puuid/" + match_id + "/ids";
+    }
+    else if (type == 1) {
+        ending = match_id;
+    }
+    else {
+        ending = match_id + "/timeline";
+    }
+    std::string end_url = "/lol/match/v5/matches/" + ending;
+    return this->get(end_url, region);
+}
+
+
+std::string RiotApiClient::SUMMONER_V4(std::string ending, std::string region) {
+    std::string end_url =  "/lol/summoner/v4/summoners/" + ending;
+    return this->get(end_url, region);
+}
 int main() {
 
     std::string config_path = "../../.api_keys/riot_config.json";
     RiotApiClient test_client(config_path); 
-    std::string region = "na1";
-    std::string query ="/lol/summoner/v4/summoners/by-name/imaqtpie";
-    std::string output = test_client.get(query, region);
+    std::string region = "oc1";
+    std::string query = "by-name/Leapo";
+    std::string output = test_client.SUMMONER_V4(query, region);
     std::cout << output << std::endl;
 }
