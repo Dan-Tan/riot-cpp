@@ -10,7 +10,7 @@ namespace nn {
     class FCLayer {
 
         public:
-            FCLayer(int in_shape, int out_shape, double learning_rate, double momentum);
+            FCLayer(int in_shape, int out_shape, double learning_rate, double momentum, std::string activation_func);
             ~FCLayer();
 
             Eigen::MatrixXd forward_propagation(Eigen::MatrixXd input);
@@ -19,10 +19,19 @@ namespace nn {
         private:
             double learning_rate;
             double momentum;
+
             int in_size;
             int out_size;
+
             Eigen::MatrixXd weights;
             Eigen::MatrixXd bias;
+
+            double (*activation_function)(double);
+            double (*activation_prime)(double);
+
+            Eigen::MatrixXd pre_activation;
+            Eigen::MatrixXd activation;
+
     };
 
     class AutoEncoder {
@@ -43,6 +52,8 @@ namespace nn {
         private:
             std::vector<FCLayer> encoder;
             std::vector<FCLayer> decoder;
+
+            int n_layers;
 
     };
 }
