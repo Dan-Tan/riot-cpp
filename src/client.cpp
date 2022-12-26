@@ -87,47 +87,9 @@ Json::Value RiotApiClient::get(std::string end_url, std::string region, int atte
            attempt++;
            return this->get(end_url, region, attempt);
     }
-
     return result;
 }
 
-// LEAGUE V4 Get requests
-
-
-Json::Value RiotApiClient::league_LEAGUE_V4(std::string queue, std::string league, std::string region) {
-    std::string end_url = "/lol/league/v4/" + league + "/by-queue/" + queue;
-    return this->get(end_url, region);
-}
-
-Json::Value RiotApiClient::player_LEAGUE_V4(std::string summoner_id, std::string region) {
-    std::string end_url = "/lol/league/v4/entries/by-summoner/" + summoner_id;
-    return this->get(end_url, region);
-}
-
-
-Json::Value RiotApiClient::MATCH_V5(std::string match_id, int type, std::string region) {
-    if ((type > 2) || (type < 0)) {
-        std::domain_error(std::string("invalid MATCH_V5 query type"));
-    }
-    std::string ending;
-    if (type == 0) {
-        ending = "by-puuid/" + match_id + "/ids";
-    }
-    else if (type == 1) {
-        ending = match_id;
-    }
-    else {
-        ending = match_id + "/timeline";
-    }
-    std::string end_url = "/lol/match/v5/matches/" + ending;
-    return this->get(end_url, region);
-}
-
-
-Json::Value RiotApiClient::SUMMONER_V4(std::string ending, std::string region) {
-    std::string end_url =  "/lol/summoner/v4/summoners/" + ending;
-    return this->get(end_url, region);
-}
 
 void RiotApiClient::handle_rate(bool short) {
     if (!short) {

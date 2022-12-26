@@ -2,6 +2,7 @@
 
 #include <curl/curl.h>
 #include <string>
+#include <jsoncpp/json/json.h>
 
 namespace client {
     class RiotApiClient {
@@ -9,12 +10,39 @@ namespace client {
             RiotApiClient(std::string key, std::string path_to_log);
             ~RiotApiClient();
             
-            Json::Value league_LEAGUE_V4(std::string queue, std::string league, std::string region);
-            Json::Value player_LEAGUE_V4(std::string summoner_id, std::string region);
-            Json::Value MATCH_V5(std::string match_id, int type, std::string region);
-            Json::Value SUMMONER_V4(std::string ending, std::string region);
-
             std::string get_BASE_URL(std::string region);
+
+            // ACCOUNT_V1
+            Json::Value ACCOUNT_V1_puuid(std::string puuid, std::string region);
+            Json::Value ACCOUNT_V1_riotid(std::string gamename, std::string tagline, std::string region);
+            Json::Value ACCOUNT_V1_game(std::string game, std::string puuid, std::string region);
+
+            // LEAGUE_V4
+            Json::Value LEAGUE_V4_challenger(std::string queue, std::string region);
+            Json::Value LEAGUE_V4_grandmaster(std::string queue, std::string region);
+            Json::Value LEAGUE_V4_master(std::string queue, std::string region);
+            Json::Value LEAGUE_V4_queue(std::string queue, std::string tier, std::string division, std::string region);
+            Json::Value LEAGUE_V4_summonerid(std::string summoner_id, std::string region);
+            Json::Value LEAGUE_V4_leagueid(std::string league_id, std::string region);
+
+            // SUMMONER_V4
+            Json::Value SUMMONER_V4_rso_puuid(std::string rso_puuid, std::string region);
+            Json::Value SUMMONER_V4_acoountid(std::string accound_id, std::string region);
+            Json::Value SUMMONER_V4_summoner_name(std::string summoner_name, std::string region);
+            Json::Value SUMMONER_V4_puuid(std::string puuid, std::string region);
+            Json::Value SUMMONER_V4_summonerid(std::string summoner_id, std::string region);
+
+            // MATCH_V5
+            Json::Value MATCH_V5_puuid(std::string puuid, std::string region);
+            Json::Value MATCH_V5_matchid(std::string match_id, std::string region);
+            Json::Value MATCH_V5_timeline(std::string match_id, std::string region);
+            
+            // CLASH_V1
+            Json::Value CLASH_V1_summonerid(std::string summoner_id, std::string region);
+            Json::Value CLASH_V1_teamid(std::string team_id, std::region);
+            Json::Value CLASH_V1_tournament_byteam(std::string team_id, std::string region);
+            Json::Value CLASH_V1_tournamentid(std::string tournament_id, std::string region);
+
         private:
             struct curl_slist *header = NULL;
             std::string BASE_URL_START = "https://";
