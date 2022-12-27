@@ -15,5 +15,5 @@ Json::Value RiotApiClient::ACCOUNT_V1_riotid(std::string gamename, std::string t
 
 Json::Value RiotApiClient::ACCOUNT_V1_game(std::string game, std::string puuid, std::string region) {
     std::string end_url = "/riot/account/v1/active-shards/by-game/" + game + "/by-puuid/" + puuid;
-    return this->get(end_url, region, 0)
+    return this->get(end_url, region, 0);
 }

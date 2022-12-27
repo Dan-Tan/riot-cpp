@@ -1,6 +1,7 @@
 #include <string>
 #include "../client.h"
 
+using namespace client;
 
 Json::Value RiotApiClient::LEAGUE_V4_challenger(std::string queue, std::string region) {
     std::string end_url = "/lol/league/v4/challenger/by-queue/" + queue;
@@ -12,7 +13,7 @@ Json::Value RiotApiClient::LEAGUE_V4_grandmaster(std::string queue, std::string 
     return this->get(end_url, region, 0);
 }
 
-Json::Value RiotApiClient::LEAGUE_V4_master(std::string queue, std::sting region) {
+Json::Value RiotApiClient::LEAGUE_V4_master(std::string queue, std::string region) {
     std::string end_url = "/lol/league/v4/master/by-queue/" + queue;
     return this->get(end_url, region, 0);
 }

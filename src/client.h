@@ -27,7 +27,7 @@ namespace client {
 
             // SUMMONER_V4
             Json::Value SUMMONER_V4_rso_puuid(std::string rso_puuid, std::string region);
-            Json::Value SUMMONER_V4_acoountid(std::string accound_id, std::string region);
+            Json::Value SUMMONER_V4_accountid(std::string accound_id, std::string region);
             Json::Value SUMMONER_V4_summoner_name(std::string summoner_name, std::string region);
             Json::Value SUMMONER_V4_puuid(std::string puuid, std::string region);
             Json::Value SUMMONER_V4_summonerid(std::string summoner_id, std::string region);
@@ -39,7 +39,7 @@ namespace client {
             
             // CLASH_V1
             Json::Value CLASH_V1_summonerid(std::string summoner_id, std::string region);
-            Json::Value CLASH_V1_teamid(std::string team_id, std::region);
+            Json::Value CLASH_V1_teamid(std::string team_id, std::string region);
             Json::Value CLASH_V1_tournament_byteam(std::string team_id, std::string region);
             Json::Value CLASH_V1_tournamentid(std::string tournament_id, std::string region);
 
@@ -51,7 +51,8 @@ namespace client {
             std::string path_to_log;
             int n_attempts;
 
-            Json::Value get(std::string end_url, std::string region, int attempy);
-            void handle_rate();
+            Json::Value get(std::string end_url, std::string region, int attempt);
+            void handle_rate(bool wait_type);
+            bool handle_response(long response_code, bool log);
     };
 }

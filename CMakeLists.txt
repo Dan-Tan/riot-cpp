@@ -3,9 +3,12 @@ find_package(Catch2 3 REQUIRED)
 
 project(RIOTAPICLIENT)
 
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
-target_link_libraries(custom-main-tests PRIVATE Catch2::Catch2)
+add_executable(tests test/client_tests.cpp)
+add_subdirectory(src)
+target_link_libraries(tests PRIVATE client)
 
-add_executable(tests test.cpp)
-add_executable(custom-main-tests test.cpp test-main.cpp)
+target_link_libraries(tests PRIVATE curl)
+target_link_libraries(tests PRIVATE jsoncpp)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+
 
