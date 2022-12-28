@@ -7,7 +7,7 @@
 
 using namespace client;
 
-TEST_CASE( "TESTING ACCOUNT QUERIES") {
+TEST_CASE( "TESTING ACCOUNT_V1 QUERIES") {
     RiotApiClient test_client(KEY_PATH, "Not used yet");
 
     std::vector<std::string> region = {"americas", "asia", "europe"};
@@ -30,31 +30,67 @@ TEST_CASE( "TESTING ACCOUNT QUERIES") {
 
 // League of Legend Queries
 
-//TEST_CASE( "TESTING LEAGUE QUERIES") {
-//    RiotApiClient test_client(KEY_PATH, "Not used yet");
-//    
-//    std::string region;
-//    std::string queue;
-//    std::string tier, division;
-//    std::string summoner_id;
-//    std::string league_id;
-//    
-//}
-//
-//TEST_CASE(" TESTING SUMMONER QUERIES", "[RiotApiClient::SUMMONER_V4]") {
-//
-//}
-//
-//TEST_CASE( "TESTING MATCH QUERIES", "[RiotApiClient::MATCH_V5]" ) {
-//
-//}
-//
-//TEST_CASE( "TESTING CLASH QUERIES") {
-//
-//}
-//
-//// TODO: 
-//
-//// Legends of Runeterra Queries
-//
-//// Valorant Queries
+TEST_CASE( "TESTING LEAGUE_V4 QUERIES") {
+    RiotApiClient test_client(KEY_PATH, "Not used yet");
+    
+    std::string region = "na1";
+    std::vector<std::string> queue = {"RANKED_SOLO_5x5", "RANKED_FLEX_SR"};
+    std::vector<std::string> division = {"I", "II", "III", "IV"};
+    std::vector<std::string> tier = {"DIAMOND", "PLATINUM", "GOLD", "SILVER", "BRONZE", "IRON"};
+    std::string summoner_id = "Ob0sRhCSzqtSRNHfAk_kS6Ac9TNOzKVhqj_kYr74HOhf2II";
+    std::string league_id = "16dfc561-5064-4a5d-b4c4-9d4bfa03773f";
+
+    Json::Value result;
+
+    SECTION("Testing Challenger, Grandmaster and Master queue queries") {
+        for (int i = 0; i < queue.size(); i++) {
+            result = test_client.LEAGUE_V4_challenger(queue[i], region);
+            REQUIRE(result["tier"] == "CHALLENGER");
+            REQUIRE(result["queue"] == queue[i]);
+            result = test_client.LEAGUE_V4_grandmaster(queue[i], region);
+            REQUIRE(result["tier"] == "GRANDMASTER");
+            REQUIRE(result["queue"] == queue[i]);
+            result = test_client.LEAGUE_V4_master(queue[i], region);
+            REQUIRE(result["tier"] == "MASTER");
+            REQUIRE(result["queue"] == queue[i]);
+        }
+    }
+
+    SECTION("Testing specific queue queries") {
+        for (int qu = 0; qu < queue.size(); qu++) {
+            for (int ti = 0; ti < tier.size(); ti++) {
+                for (int div = 0; div < division.size(); div++) {
+                    result = test_client.LEAGUE_V4_queue(queue[qu], tier[ti], division[div], region);
+                    REQUIRE(result[0]["queueType"] == queue[qu]);
+                    REQUIRE(result[0]["tier"] == tier[ti]);
+                    REQUIRE(result[0]["rank"] == division[div]);
+                }
+            }
+        }
+    }
+
+    SECTION("Testing Summoner ID and League ID") {
+        result = test_client.LEAGUE_V4_summonerid(summoner_id, region);
+        REQUIRE(result[0]["summonerId"] == summoner_id);
+        result = test_client.LEAGUE_V4_leagueid(league_id, region);
+        REQUIRE(result["leagueId"] == league_id);
+    }
+}
+
+TEST_CASE(" TESTING SUMMONER QUERIES", "[RiotApiClient::SUMMONER_V4]") {
+
+}
+
+TEST_CASE( "TESTING MATCH QUERIES", "[RiotApiClient::MATCH_V5]" ) {
+
+}
+
+TEST_CASE( "TESTING CLASH QUERIES") {
+
+}
+
+// TODO: 
+
+// Legends of Runeterra Queries
+
+// Valorant Queries

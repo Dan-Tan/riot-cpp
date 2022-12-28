@@ -119,6 +119,7 @@ Json::Value RiotApiClient::get(std::string end_url, std::string region, int atte
     if (res_ != CURLE_OK) {
         std::cout << curl_easy_strerror(res_) << std::endl;
         std::cout << "Query failed" << std::endl;
+        std::cout << address << std::endl;
         return result;
     }
 
@@ -137,6 +138,9 @@ Json::Value RiotApiClient::get(std::string end_url, std::string region, int atte
            attempt++;
            return this->get(end_url, region, attempt);
         }
+    } else if (response_code != 200) {
+        std::cout << response_code << std::endl;
+        std::cout << address << std::endl;
     }
 
     return result;
