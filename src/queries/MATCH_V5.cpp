@@ -18,6 +18,6 @@ Json::Value RiotApiClient::MATCH_V5_matchid(std::string match_id, std::string re
 
 Json::Value RiotApiClient::MATCH_V5_timeline(std::string match_id, std::string region) {
     match_id = ENCODE(match_id);
-    std::string end_url = "/lol/match/v5/matches" + match_id + "/timeline";
+    std::string end_url = "/lol/match/v5/matches/" + match_id + "/timeline";
     return this->get(end_url, region, 0);
 }
