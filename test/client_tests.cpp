@@ -78,16 +78,60 @@ TEST_CASE( "TESTING LEAGUE_V4 QUERIES") {
 }
 
 TEST_CASE(" TESTING SUMMONER QUERIES", "[RiotApiClient::SUMMONER_V4]") {
+    RiotApiClient test_client(KEY_PATH, "not implemented");
+    
+    std::string region = "kr";
+    std::string account_id = "3Y8PsnoE72WOCKHi3AJ8VydiBZLPmY2LHoQYYZmz_G20";
+    std::string summoner_name = "Hide on bush";
+    std::string puuid = "6dgDp5y88RxqOmVMv1GRoGaCmPP-uAbmlsVRhKQj4g0KdIH_GxqCEE6w0JRmHRxSTzbtxMFGypJZIg";
+    std::string summoner_id = "migc0LCQpHU_dwE38S5HIA5VTDoNgR-rDEE8_iC5CJ0GHA";
+
+    Json::Value result;
+
+    result = test_client.SUMMONER_V4_accountid(account_id, region);
+    REQUIRE(result["accountId"] == account_id);
+    result = test_client.SUMMONER_V4_summoner_name(summoner_name, region);
+    REQUIRE(result["name"] == summoner_name);
+    result = test_client.SUMMONER_V4_puuid(puuid, region);
+    REQUIRE(result["puuid"] == puuid);
+    result = test_client.SUMMONER_V4_summonerid(summoner_id, region);
+    REQUIRE(result["id"] == summoner_id);
 
 }
 
 TEST_CASE( "TESTING MATCH QUERIES", "[RiotApiClient::MATCH_V5]" ) {
+    RiotApiClient test_client(KEY_PATH, "not implemented");
+
+    std::string region = "asia";
+    std::string puuid = "6dgDp5y88RxqOmVMv1GRoGaCmPP-uAbmlsVRhKQj4g0KdIH_GxqCEE6w0JRmHRxSTzbtxMFGypJZIg";
+    std::string match_id = "KR_6279823690";
+
+    Json::Value result;
+
+    result = test_client.MATCH_V5_puuid(puuid, region);
+    result = test_client.MATCH_V5_matchid(match_id, region);
+    REQUIRE(result["metadata"]["matchId"] == match_id);
+    result = test_client.MATCH_V5_timeline(match_id, region);
+    REQUIRE(result["metadata"]["matchId"] == match_id);
 
 }
 
-TEST_CASE( "TESTING CLASH QUERIES") {
-
-}
+//TEST_CASE( "TESTING CLASH QUERIES") {
+//    RiotApiClient test_client(KEY_PATH, "not_required");
+//
+//    std::string region = "";
+//    std::string summoner_id = "";
+//    std::string team_id = "";
+//    std::string tournaments = "";
+//
+//    Json::Value result;
+//
+//    result = test_client.CLASH_V1_summonerid(summoner_id, region);
+//    result = test_client.CLASH_V1_teamid(team_id, region);
+//    result = test_client.CLASH_V1_tournament_byteam(team_id, region);
+//    result = test_client.CLASH_V1_tournamentid(tournament_id, region);
+//
+//}
 
 // TODO: 
 
