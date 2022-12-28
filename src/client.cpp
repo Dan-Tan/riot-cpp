@@ -53,6 +53,41 @@ std::string RiotApiClient::get_BASE_URL(std::string region) {
     return BASE_URL_START + region + BASE_URL_END;
 }
 
+typedef struct res_buffer {
+    char* mem;
+    size_t size;
+} res_buffer;
+
+res_buffer* init_empty_res_buffer() {
+    res_buffer *buffer = (res_buffer *)malloc(sizeof(res_buffer));
+    buffer->mem = (char *)malloc(1);
+    buffer->size = 0;
+    return buffer;
+}
+
+void free_res_buffer(res_buffer* buffer) {
+    free(buffer->mem);
+    free(buffer);
+}
+
+static size_t parse_mem(void* contents, size_t size, size_t nmemb, void* user_data) {
+    size_t added_size = size * nmemb;
+    res_buffer *resp = (res_buffer *)user_data;
+
+
+    char* ptr = (char *) realloc(resp->mem, resp->size + added_size + 1);
+    if (!ptr) {
+        std::cout << "Memory reassignment failed: Not enough memory." << std::endl;
+        return 0;
+    }
+
+    resp->mem = ptr;
+    memcpy(&(resp->mem[resp->size]), contents, added_size);
+    resp->size += added_size;
+    resp->mem[resp->size] = 0;
+    return added_size;
+}
+
 Json::Value RiotApiClient::get(std::string end_url, std::string region, int attempt) {
 
     Json::Reader reader;
@@ -60,23 +95,31 @@ Json::Value RiotApiClient::get(std::string end_url, std::string region, int atte
 
     // construct query url
     std::string address = this->get_BASE_URL(region) + end_url; 
-    std::cout << address << std::endl;
-    int len = address.length();
-    std::string res_;
 
-    const char* encoded_address = curl_easy_escape(this->easy_handle, address.c_str(), len);
+    // initialise response buffer
+    res_buffer *response = init_empty_res_buffer();
 
-    curl_easy_setopt(this->easy_handle, CURLOPT_URL, encoded_address);
+    CURLcode res_;
+
+    curl_easy_setopt(this->easy_handle, CURLOPT_URL, address.c_str());
     curl_easy_setopt(this->easy_handle, CURLOPT_HTTPGET, 1);
     curl_easy_setopt(this->easy_handle, CURLOPT_HTTPHEADER, this->header);
-    curl_easy_setopt(this->easy_handle, CURLOPT_VERBOSE, DEBUG);
+    curl_easy_setopt(this->easy_handle, CURLOPT_VERBOSE, 0);
+
+    curl_easy_setopt(this->easy_handle, CURLOPT_WRITEFUNCTION, parse_mem);
+    curl_easy_setopt(this->easy_handle, CURLOPT_WRITEDATA, response);
 
     res_ = curl_easy_perform(this->easy_handle);
-    std::cout << res_ << std::endl;
-    bool json_conversion = reader.parse(res_, result);
-
+    std::string result_(response->mem);
+    bool json_conversion = reader.parse(result_, result);
     if (!json_conversion) {
         std::domain_error("Unable to cast output string to Json");
+    }
+
+    if (res_ != CURLE_OK) {
+        std::cout << curl_easy_strerror(res_) << std::endl;
+        std::cout << "Query failed" << std::endl;
+        return result;
     }
 
     long response_code = 0;
@@ -96,11 +139,8 @@ Json::Value RiotApiClient::get(std::string end_url, std::string region, int atte
         }
     }
 
-    std::cout << std::to_string(response_code) << std::endl;
     return result;
 }
-
-
 
 void RiotApiClient::handle_rate(bool wait_type) {
     if (!wait_type) {
@@ -121,3 +161,4 @@ bool RiotApiClient::handle_response(long response_code, bool log) {
         return (response_code == 0);
     }
 }
+

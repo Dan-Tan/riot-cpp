@@ -22,7 +22,7 @@ TEST_CASE( "TESTING ACCOUNT QUERIES") {
         REQUIRE(result["puuid"] == puuid);
         result = test_client.ACCOUNT_V1_riotid(gamename, tagline, region[i]);
         REQUIRE(result["gameName"] == gamename);
-        REQUIRE(result["tagline"] == tagline);
+        REQUIRE(result["tagLine"] == tagline);
         result = test_client.ACCOUNT_V1_game(game, puuid, region[i]);
         REQUIRE(result["puuid"] == puuid);
     }
