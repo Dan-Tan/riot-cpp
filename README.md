@@ -8,12 +8,11 @@ Uses libcurl to send requests.
 
 Short Term
 * Add all possible queries
-* Cmake file
 * Create tests for all queries
-* Handle Exceptions
+* Handle 5XX error codes (retry)
+* Log requests
 * Move neural network class
 
 Long Term
-* Add logging capabilities
 * Add higher level queries (All, csv conversion?)
 * Python wrapper?
