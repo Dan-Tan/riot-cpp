@@ -14,11 +14,18 @@
 
 using namespace client;
 
-RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log) {
+RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log, bool log_all, bool overwrite) {
     curl_global_init(CURL_GLOBAL_ALL);
-    
+
+    this->log_all = log_all;
 
     FILE* log;
+    const char* write_type;
+    if (overwrite) {
+        write_type = "w";
+    } else {
+        write_type = "a";
+    }
     log = fopen(path_to_log.c_str(), "w");
 
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
@@ -29,7 +36,8 @@ RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log
 
     fprintf(log, "--- Client Initialised Started ---\n");
     fprintf(log, "Time initialised: %s\n", curr_time);
-    fprintf(log, "%s", path_to_log.c_str());
+    fprintf(log, "Path to log file: %s\n", path_to_log.c_str());
+    fprintf(log, "overwite: %s, log_all queries: %s\n", overwrite ? "true" : "false", log_all ? "true" : "false");
 
     // initialised libcurl handle and header
     std::ifstream config(path_to_config);
@@ -67,7 +75,7 @@ RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log
     fprintf(log, "MAX SERVICE DENIALS (503): %d \n", this->service_attempts);
     fprintf(log, "MAX INTERNAL SERVICE ERRORS (500): %d \n", this->internal_attempts);
     
-    fprintf(log, "### Client Successfully Initialised ###\n \n");
+    fprintf(log, "--- Client Successfully Initialised ---\n \n");
     fclose(log);
 }
 

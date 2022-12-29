@@ -17,7 +17,7 @@ namespace client {
 
     class RiotApiClient {
         public:
-            RiotApiClient(std::string key, std::string path_to_log);
+            RiotApiClient(std::string key, std::string path_to_log, bool log_all, bool overwrite);
             ~RiotApiClient();
             
             std::string get_BASE_URL(std::string region);
@@ -58,7 +58,10 @@ namespace client {
             std::string BASE_URL_START = "https://";
             std::string BASE_URL_END = ".api.riotgames.com";
             CURL* easy_handle;
+
             std::string path_to_log;
+            bool log_all;
+
             int n_attempts;
             int internal_attempts;
             int service_attempts;

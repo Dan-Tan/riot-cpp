@@ -24,6 +24,7 @@ void free_query_counter(query_attempts *counter) {
 bool RiotApiClient::handle_response(std::string address, long response_code, query_attempts *attempt) {
 
     bool repeat;
+    bool _log = false;
 
     if (response_code == 200) {
         repeat = false;
@@ -55,9 +56,10 @@ bool RiotApiClient::handle_response(std::string address, long response_code, que
         }
     } else {
         repeat = false;
+        _log = true;
     }
     if (!repeat) {
-        if (attempt->service_denials != 0 || attempt->internal_errors != 0 || attempt->rate_denials != 0) {
+        if (attempt->service_denials != 0 || attempt->internal_errors != 0 || attempt->rate_denials != 0 || this->log_all || _log) {
             this->log_request(address, response_code, attempt);
         }
     }

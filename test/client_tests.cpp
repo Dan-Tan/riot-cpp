@@ -3,13 +3,12 @@
 #include "../src/client.h"
 #include <jsoncpp/json/json.h>
 
-#define KEY_PATH "../../.api_keys/riot_config.json"
-#define LOG_PATH "../test/test_log.txt"
+#define CONFIG "../../.api_keys/riot_config.json", "../test/test_log.txt", false, true
 
 using namespace client;
 
 TEST_CASE( "TESTING ACCOUNT_V1 QUERIES") {
-    RiotApiClient test_client(KEY_PATH, LOG_PATH);
+    RiotApiClient test_client(CONFIG);
 
     std::vector<std::string> region = {"americas", "asia", "europe"};
     std::string puuid = "nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A";
@@ -32,7 +31,7 @@ TEST_CASE( "TESTING ACCOUNT_V1 QUERIES") {
 // League of Legend Queries
 
 TEST_CASE( "TESTING LEAGUE_V4 QUERIES") {
-    RiotApiClient test_client(KEY_PATH, LOG_PATH);
+    RiotApiClient test_client(CONFIG);
     
     std::string region = "na1";
     std::vector<std::string> queue = {"RANKED_SOLO_5x5", "RANKED_FLEX_SR"};
@@ -79,7 +78,7 @@ TEST_CASE( "TESTING LEAGUE_V4 QUERIES") {
 }
 
 TEST_CASE(" TESTING SUMMONER QUERIES", "[RiotApiClient::SUMMONER_V4]") {
-    RiotApiClient test_client(KEY_PATH, LOG_PATH);
+    RiotApiClient test_client(CONFIG);
     
     std::string region = "kr";
     std::string account_id = "3Y8PsnoE72WOCKHi3AJ8VydiBZLPmY2LHoQYYZmz_G20";
@@ -101,7 +100,7 @@ TEST_CASE(" TESTING SUMMONER QUERIES", "[RiotApiClient::SUMMONER_V4]") {
 }
 
 TEST_CASE( "TESTING MATCH QUERIES", "[RiotApiClient::MATCH_V5]" ) {
-    RiotApiClient test_client(KEY_PATH, LOG_PATH);
+    RiotApiClient test_client(CONFIG);
 
     std::string region = "asia";
     std::string puuid = "6dgDp5y88RxqOmVMv1GRoGaCmPP-uAbmlsVRhKQj4g0KdIH_GxqCEE6w0JRmHRxSTzbtxMFGypJZIg";
