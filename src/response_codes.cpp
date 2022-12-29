@@ -57,12 +57,14 @@ bool RiotApiClient::handle_response(std::string address, long response_code, que
         repeat = false;
     }
     if (!repeat) {
-        this->log_request(address, response_code, attempt, false);
+        if (attempt->service_denials != 0 || attempt->internal_errors != 0 || attempt->rate_denials != 0) {
+            this->log_request(address, response_code, attempt);
+        }
     }
     return repeat;
 }
 
-void RiotApiClient::log_request(std::string address_sent, long response_code, query_attempts *attempts, bool start) {
+void RiotApiClient::log_request(std::string address_sent, long response_code, query_attempts *attempts) {
 
     FILE* log;
     log = fopen(this->path_to_log.c_str(), "a");
@@ -73,17 +75,11 @@ void RiotApiClient::log_request(std::string address_sent, long response_code, qu
     char curr_time[70];
     strftime(curr_time, sizeof(curr_time), "%A %c", &now_tm);
 
-    if (start) {
-        fprintf(log, "--- NEW QUERY --- \n");
-        fprintf(log, "Time sent: %s\n", curr_time);
-        fprintf(log, "Address_sent: %s\n", address_sent.c_str());
-        fprintf(log, "Initial Attempts: rate_denials: %d, internal_errors: %d, service_denials: %d \n \n", attempts->rate_denials, attempts->internal_errors, attempts->service_denials);
-    } else {
-        fprintf(log, "LOGGING RESPONSE\n");
-        fprintf(log, "Time finished: %s\n", curr_time);
-        fprintf(log, "Final Response Code: %ld\n", response_code);
-        fprintf(log, "Attempts: rate_denials: %d, internal_errors: %d, service_denials: %d \n \n", attempts->rate_denials, attempts->internal_errors, attempts->service_denials);
-    }
+    fprintf(log, "--- NEW QUERY --- \n");
+    fprintf(log, "Address_sent: %s\n", address_sent.c_str());
+    fprintf(log, "Time finished: %s\n", curr_time);
+    fprintf(log, "Final Response Code: %ld\n", response_code);
+    fprintf(log, "Attempts: rate_denials: %d, internal_errors: %d, service_denials: %d \n \n", attempts->rate_denials, attempts->internal_errors, attempts->service_denials);
 
     fclose(log);
 }

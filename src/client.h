@@ -69,6 +69,6 @@ namespace client {
             void handle_rate(bool wait_type);
             bool handle_response(std::string address, long response_code, query_attempts *attempt);
             void log_request(std::string address_sent, long response_code, 
-                    query_attempts *attempts, bool start);
+                    query_attempts *attempts);
     };
 }

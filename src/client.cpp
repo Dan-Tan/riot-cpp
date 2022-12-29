@@ -4,17 +4,33 @@
 #include "client.h"
 #include <chrono>
 #include <thread>
+#include <ctime>
 
 #define DEBUG 1
 
 #include <fstream>
 #include <iostream>
+#include <stdio.h>
 
 using namespace client;
 
 RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log) {
     curl_global_init(CURL_GLOBAL_ALL);
     
+
+    FILE* log;
+    log = fopen(path_to_log.c_str(), "w");
+
+    std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+    std::time_t now_c = std::chrono::system_clock::to_time_t(now);
+    std::tm now_tm = *std::localtime(&now_c);
+    char curr_time[70];
+    strftime(curr_time, sizeof(curr_time), "%A %c", &now_tm);
+
+    fprintf(log, "--- Client Initialised Started ---\n");
+    fprintf(log, "Time initialised: %s\n", curr_time);
+    fprintf(log, "%s", path_to_log.c_str());
+
     // initialised libcurl handle and header
     std::ifstream config(path_to_config);
     Json::Reader reader;
@@ -39,14 +55,20 @@ RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log
     }
     else {
         std::string api_key = root["api-key"].asString();
-        std::cout << "Retrieved API key" << std::endl;
         this->header = curl_slist_append(header, (std::string("X-RIOT-TOKEN: ") + api_key).c_str());
+        fprintf(log, "Retrieved API key\n");
     }
     
     this->path_to_log = path_to_log;
     this->easy_handle = curl_easy_init();
 
-    std::cout << "Client initialised" << std::endl;
+    fprintf(log, "Curl initialised\n");
+    
+    fprintf(log, "MAX SERVICE DENIALS (503): %d \n", this->service_attempts);
+    fprintf(log, "MAX INTERNAL SERVICE ERRORS (500): %d \n", this->internal_attempts);
+    
+    fprintf(log, "### Client Successfully Initialised ###\n \n");
+    fclose(log);
 }
 
 RiotApiClient::~RiotApiClient() {
@@ -102,7 +124,6 @@ Json::Value RiotApiClient::get(std::string end_url, std::string region, query_at
 
     if (!attempt) {
         attempt = init_attempt_count();
-        this->log_request(address, -1, attempt, true);
     }
 
     // initialise response buffer
