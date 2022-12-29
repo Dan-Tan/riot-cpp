@@ -29,7 +29,7 @@ RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log
 
     fprintf(log, "--- Client Initialised Started ---\n");
     fprintf(log, "Time initialised: %s\n", curr_time);
-    fprintf(log, "%s", path_to_log.c_str());
+    fprintf(log, "Path to log file: %s\n", path_to_log.c_str());
 
     // initialised libcurl handle and header
     std::ifstream config(path_to_config);
