@@ -14,11 +14,15 @@ using namespace client;
 
 RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log) {
     curl_global_init(CURL_GLOBAL_ALL);
-
-    this->n_attempts = 5;
-
+    
+    // initialised libcurl handle and header
     std::ifstream config(path_to_config);
     Json::Reader reader;
+
+    this->internal_attempts = 2;
+    this->internal_wait_type = true;
+    this->service_attempts = 2;
+    this->service_wait_type = true;
 
     if (!config) {
         std::string err_msg("Cannot open config file: ");
@@ -88,13 +92,18 @@ static size_t parse_mem(void* contents, size_t size, size_t nmemb, void* user_da
     return added_size;
 }
 
-Json::Value RiotApiClient::get(std::string end_url, std::string region, int attempt) {
+Json::Value RiotApiClient::get(std::string end_url, std::string region, query_attempts* attempt) {
 
     Json::Reader reader;
     Json::Value result;
 
     // construct query url
     std::string address = this->get_BASE_URL(region) + end_url; 
+
+    if (!attempt) {
+        attempt = init_attempt_count();
+        this->log_request(address, -1, attempt, true);
+    }
 
     // initialise response buffer
     res_buffer *response = init_empty_res_buffer();
@@ -125,44 +134,14 @@ Json::Value RiotApiClient::get(std::string end_url, std::string region, int atte
 
     long response_code = 0;
     curl_easy_getinfo(this->easy_handle, CURLINFO_RESPONSE_CODE, &response_code);
-    if (response_code == 429) {
-        if (attempt == 0) {
-           this->handle_rate(true);
-           attempt++;
-           return this->get(end_url, region, attempt);
-        } else if (attempt > this->n_attempts) {
-           std::cout << "Aborting query, too many rate denials" << std::endl;
-           return result;
-        } else {
-           this->handle_rate(false);
-           attempt++;
-           return this->get(end_url, region, attempt);
-        }
-    } else if (response_code != 200) {
-        std::cout << response_code << std::endl;
-        std::cout << address << std::endl;
+
+    bool repeat = this->handle_response(address, response_code, attempt);
+    if (repeat) {
+        return this->get(end_url, region, attempt);
+    } else {
+        free_query_counter(attempt);
     }
 
     return result;
-}
-
-void RiotApiClient::handle_rate(bool wait_type) {
-    if (!wait_type) {
-        std::cout << "Long timeout: waiting..." << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(120));
-    } else {
-        std::cout << "waiting..." << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
-    std::cout << "trying again..." << std::endl;
-    return;
-}
-
-bool RiotApiClient::handle_response(long response_code, bool log) {
-    if (log) {
-        return true;
-    } else {
-        return (response_code == 0);
-    }
 }
 

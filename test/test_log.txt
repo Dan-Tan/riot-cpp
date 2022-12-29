@@ -1,0 +1,720 @@
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:20:49 2022
+Address_sent: https://americas.api.riotgames.com/riot/account/v1/accounts/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:20:51 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:20:51 2022
+Address_sent: https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/DanTan1/fresn
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:20:51 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:20:51 2022
+Address_sent: https://americas.api.riotgames.com/riot/account/v1/active-shards/by-game/val/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:20:51 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:20:51 2022
+Address_sent: https://asia.api.riotgames.com/riot/account/v1/accounts/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:20:52 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:20:52 2022
+Address_sent: https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/DanTan1/fresn
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:20:53 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:20:53 2022
+Address_sent: https://asia.api.riotgames.com/riot/account/v1/active-shards/by-game/val/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:20:53 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:20:53 2022
+Address_sent: https://europe.api.riotgames.com/riot/account/v1/accounts/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:20:55 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:20:55 2022
+Address_sent: https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/DanTan1/fresn
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:20:55 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:20:55 2022
+Address_sent: https://europe.api.riotgames.com/riot/account/v1/active-shards/by-game/val/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:20:56 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:20:56 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:20:58 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:20:58 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/RANKED_SOLO_5x5
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:20:59 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:20:59 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:07 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:07 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_FLEX_SR
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:07 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:07 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/RANKED_FLEX_SR
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:08 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:08 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_FLEX_SR
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:10 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:10 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/DIAMOND/I
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:11 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:11 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/DIAMOND/II
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:12 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:12 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/DIAMOND/III
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:13 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:13 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/DIAMOND/IV
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:13 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:13 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/PLATINUM/I
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:14 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:14 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/PLATINUM/II
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:14 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:14 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/PLATINUM/III
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:15 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:15 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/PLATINUM/IV
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:15 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:15 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/GOLD/I
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:16 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:16 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/GOLD/II
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:16 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:16 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/GOLD/III
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:17 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:17 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/GOLD/IV
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:17 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:17 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/SILVER/I
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:18 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:18 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/SILVER/II
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:18 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:18 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/SILVER/III
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:19 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:19 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/SILVER/IV
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:19 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:19 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/BRONZE/I
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:20 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:20 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/BRONZE/II
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:20 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:20 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/BRONZE/III
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:21 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:21 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/BRONZE/IV
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:21 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:21 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/IRON/I
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:22 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:22 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/IRON/II
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:22 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:22 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/IRON/III
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:23 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:23 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/IRON/IV
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:23 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:23 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/DIAMOND/I
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:24 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:24 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/DIAMOND/II
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:25 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:25 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/DIAMOND/III
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:25 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:25 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/DIAMOND/IV
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:26 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:26 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/PLATINUM/I
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:26 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:26 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/PLATINUM/II
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:27 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:27 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/PLATINUM/III
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:27 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:27 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/PLATINUM/IV
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:28 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:28 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/GOLD/I
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:29 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:29 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/GOLD/II
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:29 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:29 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/GOLD/III
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:30 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:30 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/GOLD/IV
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:30 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:30 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/SILVER/I
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:31 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:31 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/SILVER/II
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:21:31 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:21:31 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/SILVER/III
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:35 2022
+Final Response Code: 200
+Attempts: rate_denials: 2, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:35 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/SILVER/IV
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:37 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:37 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/BRONZE/I
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:38 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:38 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/BRONZE/II
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:39 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:39 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/BRONZE/III
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:40 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:40 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/BRONZE/IV
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:41 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:41 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/IRON/I
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:42 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:42 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/IRON/II
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:42 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:42 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/IRON/III
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:43 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:43 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/IRON/IV
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:44 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:44 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/Ob0sRhCSzqtSRNHfAk_kS6Ac9TNOzKVhqj_kYr74HOhf2II
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:45 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:45 2022
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/leagues/16dfc561-5064-4a5d-b4c4-9d4bfa03773f
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:46 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:46 2022
+Address_sent: https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-account/3Y8PsnoE72WOCKHi3AJ8VydiBZLPmY2LHoQYYZmz_G20
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:47 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:47 2022
+Address_sent: https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/Hide%20on%20bush
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:47 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:47 2022
+Address_sent: https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/6dgDp5y88RxqOmVMv1GRoGaCmPP-uAbmlsVRhKQj4g0KdIH_GxqCEE6w0JRmHRxSTzbtxMFGypJZIg
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:47 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:47 2022
+Address_sent: https://kr.api.riotgames.com/lol/summoner/v4/summoners/migc0LCQpHU_dwE38S5HIA5VTDoNgR-rDEE8_iC5CJ0GHA
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:47 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:47 2022
+Address_sent: https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/6dgDp5y88RxqOmVMv1GRoGaCmPP-uAbmlsVRhKQj4g0KdIH_GxqCEE6w0JRmHRxSTzbtxMFGypJZIg/ids
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:48 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:48 2022
+Address_sent: https://asia.api.riotgames.com/lol/match/v5/matches/KR_6279823690
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:49 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+--- NEW QUERY --- 
+Time sent: Thursday Thu Dec 29 17:23:49 2022
+Address_sent: https://asia.api.riotgames.com/lol/match/v5/matches/KR_6279823690/timeline
+Initial Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 
+LOGGING RESPONSE
+Time finished: Thursday Thu Dec 29 17:23:49 2022
+Final Response Code: 200
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+ 

@@ -4,7 +4,17 @@
 #include <string>
 #include <jsoncpp/json/json.h>
 
+typedef struct query_attempts {
+    int rate_denials;
+    int internal_errors;
+    int service_denials;
+} query_attempts;
+
+query_attempts* init_attempt_count();
+void free_query_counter(query_attempts *counter);
+
 namespace client {
+
     class RiotApiClient {
         public:
             RiotApiClient(std::string key, std::string path_to_log);
@@ -50,9 +60,15 @@ namespace client {
             CURL* easy_handle;
             std::string path_to_log;
             int n_attempts;
+            int internal_attempts;
+            int service_attempts;
+            bool internal_wait_type;
+            bool service_wait_type;
 
-            Json::Value get(std::string end_url, std::string region, int attempt);
+            Json::Value get(std::string end_url, std::string region, query_attempts *attempt);
             void handle_rate(bool wait_type);
-            bool handle_response(long response_code, bool log);
+            bool handle_response(std::string address, long response_code, query_attempts *attempt);
+            void log_request(std::string address_sent, long response_code, 
+                    query_attempts *attempts, bool start);
     };
 }
