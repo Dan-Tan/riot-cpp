@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.22.1)
+
 find_package(Catch2 3 REQUIRED)
+find_package(CURL REQUIRED)
 
 project(RIOTAPICLIENT)
 
