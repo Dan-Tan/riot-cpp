@@ -53,6 +53,59 @@ namespace client {
             Json::Value CLASH_V1_tournament_byteam(std::string team_id, std::string region);
             Json::Value CLASH_V1_tournamentid(std::string tournament_id, std::string region);
 
+            Json::Value CHALLENGES_V1_config(std::string region);
+            Json::Value CHALLENGES_V1_percentiles(std::string region);
+            Json::Value CHALLENGES_V1_challenge_config(std::string challenge_id, std::string region);
+            Json::Value CHALLENGES_V1_level(std::string challenge_id, std::string level, std::string region);
+
+            Json::Value CHAMPION_MASTERY_V3_summonerid(std::string summoner_id, std::string region);
+            Json::Value CHAMPION_MASTERY_V3_summoner_champion(std::string summoner_id, std::string champion_id, std::string region);
+            Json::Value CHAMPION_MASTERY_V3_top_summoner(std::string summoner_id, std::string region);
+            Json::Value CHAMPION_MASTERY_V3_score(std::string summoner_id, std::string region);
+
+            Json::Value CHAMPION_V3_rotation(std::string region);
+
+            Json::Value LEAGUE_EXP_V4(std::string queue, std::string tier, std::string division, std::string region);
+
+            Json::Value SPECTATOR_V4_summoner_id(std::string summoner_id, std::string region);
+            Json::Value SPECTATOR_V4_featured(std::string region);
+
+            Json::Value STATUS_V3(std::string region);
+            Json::Value STATUS_V4(std::string region);
+
+            Json::Value LOR_MATCH_V1_puuid(std::string puuid, std::string region);
+            Json::Value LOR_MATCH_V1_matchid(std::string match_id, std::string region);
+
+            Json::Value LOR_RANKED_V1(std::string region);
+            Json::Value LOR_STATUS_V1(std::string region);
+
+            Json::Value TFT_LEAGUE_V1_challenger(std::string region);
+            Json::Value TFT_LEAGUE_V1_summonerid(std::string summoner_id, std::string region);
+            Json::Value TFT_LEAGUE_V1_tier_div(std::string tier, std::string division, std::string region);
+            Json::Value TFT_LEAGUE_V1_grandmaster(std::string region);
+            Json::Value TFT_LEAGUE_V1_master(std::string region);
+            Json::Value TFT_LEAGUE_V1_leagueid(std::string league_id, std::string region);
+            Json::Value TFT_LEAGUE_V1_rated_ladder(std::string queue, std::string region);
+
+            Json::Value TFT_MATCH_V1_puuid(std::string puuid, std::string region);
+            Json::Value TFT_MATCH_V1_matchid(std::string match_id, std::string region);
+            Json::Value TFT_STATUS_V1(std::string region);
+
+            Json::Value TFT_SUMMONER_V1_account(std::string acoount_id, std::string region);
+            Json::Value TFT_SUMMONER_V1_name(std::string name, std::string region);
+            Json::Value TFT_SUMMONER_V1_puuid(std::string puuid, std::string region);
+            Json::Value TFT_SUMMONER_V1_summonerid(std::string summoner_id, std::string region);
+
+            Json::Value VAL_CONTENT_V1(std::string summoner_id, std::string region);
+            Json::Value VAL_RANKED_V1_(std::string act_id, std::string region);
+            Json::Value VAL_STATUS_V1_(std::string region);
+
+            Json::Value VAL_MATCH_V1_match_id(std::string match_id, std::string region);
+            Json::Value VAL_MATCH_V1_puuid(std::string puuid, std::string region);
+            Json::Value VAL_MATCH_V1_queue(std::string queue, std::string region);
+            
+
+
         private:
             struct curl_slist *header = NULL;
             std::string BASE_URL_START = "https://";
