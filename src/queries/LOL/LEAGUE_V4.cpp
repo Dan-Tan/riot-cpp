@@ -1,5 +1,5 @@
 #include <string>
-#include "../client.h"
+#include "../../client.h"
 #define ENCODE(x) (std::string(curl_easy_escape(this->easy_handle, x.c_str(), x.length())))
 
 using namespace client;

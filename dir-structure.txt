@@ -1,0 +1,34 @@
+src
+├── CMakeLists.txt
+├── auto_encoder.cpp
+├── auto_encoder.h
+├── client.cpp
+├── client.h
+├── ^^^ queries ^^^ 
+│   ├── ACCOUNT_V1.cpp
+│   ├── ^^^ LOL ^^^ 
+│   │   ├── CHALLENGES_V1.cpp
+│   │   ├── CHAMPION_MASTERY_V3.cpp
+│   │   ├── CLASH_V1.cpp
+│   │   ├── LEAGUE_EXP_V4.cpp
+│   │   ├── LEAGUE_V4.cpp
+│   │   ├── MATCH_V5.cpp
+│   │   ├── SPECTATOR_V4.cpp
+│   │   ├── STATUS_V3.cpp
+│   │   ├── STATUS_V4.cpp
+│   │   └── SUMMONER_V4.cpp
+│   ├── ^^^ LOR ^^^ 
+│   │   ├── DECK_V1.cpp
+│   │   ├── INVENTORY_V1.cpp
+│   │   ├── MATCH_V1.cpp
+│   │   ├── RANKED_V1.cpp
+│   │   └── STATUS_V1.cpp
+│   └── ^^^ VAL ^^^ 
+│       ├── CONTENT_V1.cpp
+│       ├── MATCH_V1.cpp
+│       ├── RANKED_V1.cpp
+│       └── STATUS_V1.cpp
+├── response_codes.cpp
+└── version
+
+4 directories, 27 files
