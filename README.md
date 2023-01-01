@@ -6,7 +6,7 @@ Currently in development.
 
 Uses libcurl to send requests and jsoncpp to store return values. Shared object files and lib can be found in the build/src directory. In the process of documenting usage and making the library more accessible. If you find any error or want to suggest some changes, feel free to make a pull request.
 
-##Usage
+## Usage
 
 ```Cpp
 #include <jsoncpp>
