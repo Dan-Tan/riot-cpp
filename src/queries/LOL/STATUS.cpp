@@ -1,7 +1,8 @@
 #include "../../client.h"
 #include <string>
-#define encode(x) (std::string(curl_easy_escape(this->easy_handle, x.c_str(), x.length())))
+#define ENCODE(x) (std::string(curl_easy_escape(this->easy_handle, x.c_str(), x.length())))
 
+using namespace client;
 
 Json::Value RiotApiClient::STATUS_V3(std::string region) {
     std::string end_url = "/lol/status/v3/shard-data";

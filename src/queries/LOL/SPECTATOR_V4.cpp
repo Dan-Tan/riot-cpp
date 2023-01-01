@@ -1,7 +1,8 @@
 #include "../../client.h"
 #include <string>
-#define encode(x) (std::string(curl_easy_escape(this->easy_handle, x.c_str(), x.length())))
+#define ENCODE(x) (std::string(curl_easy_escape(this->easy_handle, x.c_str(), x.length())))
 
+using namespace client;
 
 Json::Value RiotApiClient::SPECTATOR_V4_summoner_id(std::string summoner_id, std::string region) {
     summoner_id = ENCODE(summoner_id);

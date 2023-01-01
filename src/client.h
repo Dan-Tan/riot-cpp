@@ -3,6 +3,7 @@
 #include <curl/curl.h>
 #include <string>
 #include <jsoncpp/json/json.h>
+#include <map>
 
 typedef struct query_attempts {
     int rate_denials;
@@ -97,13 +98,26 @@ namespace client {
             Json::Value TFT_SUMMONER_V1_summonerid(std::string summoner_id, std::string region);
 
             Json::Value VAL_CONTENT_V1(std::string summoner_id, std::string region);
-            Json::Value VAL_RANKED_V1_(std::string act_id, std::string region);
-            Json::Value VAL_STATUS_V1_(std::string region);
+            Json::Value VAL_RANKED_V1(std::string act_id, std::string region);
+            Json::Value VAL_STATUS_V1(std::string region);
 
-            Json::Value VAL_MATCH_V1_match_id(std::string match_id, std::string region);
+            Json::Value VAL_MATCH_V1_matchid(std::string match_id, std::string region);
             Json::Value VAL_MATCH_V1_puuid(std::string puuid, std::string region);
             Json::Value VAL_MATCH_V1_queue(std::string queue, std::string region);
             
+            std::map<int, std::string> Err_Codes = {{200, "Successful"},
+                                                          {400, "Bad request"},
+                                                          {401, "Unauthorized"},
+                                                          {403, "Forbidden"},
+                                                          {404, "Data not found"},
+                                                          {405, "Method not allowed"},
+                                                          {415, "Unsupported media type"},
+                                                          {429, "Rate limit exceeded"},
+                                                          {500, "Internal server error"},
+                                                          {502, "Bad gateway"},
+                                                          {503, "Service unavailable"},
+                                                          {504, "Gateway timeout"}};
+
 
 
         private:

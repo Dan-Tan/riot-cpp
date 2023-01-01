@@ -1,7 +1,8 @@
 #include "../../client.h"
 #include <string>
-#define encode(x) (std::string(curl_easy_escape(this->easy_handle, x.c_str(), x.length())))
+#define ENCODE(x) (std::string(curl_easy_escape(this->easy_handle, x.c_str(), x.length())))
 
+using namespace client;
 
 Json::Value RiotApiClient::VAL_MATCH_V1_matchid(std::string match_id, std::string region) {
     match_id = ENCODE(match_id);

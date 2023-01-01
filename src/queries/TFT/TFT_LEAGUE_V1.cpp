@@ -1,6 +1,8 @@
 #include "../../client.h"
 #include <string>
-#define ENCODE(x) (std::string(curl_easy_escapne(this->easy_handle, x.c_str(), x.length())))
+#define ENCODE(x) (std::string(curl_easy_escape(this->easy_handle, x.c_str(), x.length())))
+
+using namespace client;
 
 Json::Value RiotApiClient::TFT_LEAGUE_V1_challenger(std::string region) {
     std::string end_url = "/tft/league/v1/challenger";

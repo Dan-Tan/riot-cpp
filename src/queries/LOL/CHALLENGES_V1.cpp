@@ -2,6 +2,8 @@
 #include <string>
 #define ENCODE(x) (std::string(curl_easy_escape(this->easy_handle, x.c_str(), x.length())))
 
+using namespace client;
+
 Json::Value RiotApiClient::CHALLENGES_V1_config(std::string region) {
     std::string end_url = "/lol/challenges/v1/challenges/config";
     return this->get(end_url, region, NULL);

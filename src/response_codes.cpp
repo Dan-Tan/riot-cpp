@@ -81,6 +81,7 @@ void RiotApiClient::log_request(std::string address_sent, long response_code, qu
     fprintf(log, "Address_sent: %s\n", address_sent.c_str());
     fprintf(log, "Time finished: %s\n", curr_time);
     fprintf(log, "Final Response Code: %ld\n", response_code);
+    fprintf(log, "Final Response Message: %s\n", this->Err_Codes[(int) response_code].c_str());
     fprintf(log, "Attempts: rate_denials: %d, internal_errors: %d, service_denials: %d \n \n", attempts->rate_denials, attempts->internal_errors, attempts->service_denials);
 
     fclose(log);

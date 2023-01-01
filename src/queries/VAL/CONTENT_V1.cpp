@@ -1,7 +1,8 @@
 #include "../../client.h"
 #include <string>
-#define encode(x) (std::string(curl_easy_escape(this->easy_handle, x.c_str(), x.length())))
+#define ENCODE(x) (std::string(curl_easy_escape(this->easy_handle, x.c_str(), x.length())))
 
+using namespace client;
 
 Json::Value RiotApiClient::VAL_CONTENT_V1(std::string summoner_id, std::string region) {
     std::string end_url = "/val/content/v1/contents";

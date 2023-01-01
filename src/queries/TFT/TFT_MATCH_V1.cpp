@@ -2,6 +2,8 @@
 #include <string>
 #define ENCODE(x) (std::string(curl_easy_escape(this->easy_handle, x.c_str(), x.length())))
 
+using namespace client;
+
 Json::Value RiotApiClient::TFT_MATCH_V1_puuid(std::string puuid, std::string region) {
     puuid = ENCODE(puuid);
     std::string end_url = "/tft/match/v1/matches/by-puuid/" + puuid + "/ids";

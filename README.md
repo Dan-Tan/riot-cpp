@@ -9,9 +9,7 @@ Uses libcurl to send requests and jsoncpp to store return values. Shared object 
 ## To do:
 
 Short Term
-* Add all possible queries
 * Create tests for all queries
-* Move neural network class
 
 Long Term
 * Add higher level queries (All, csv conversion?)
