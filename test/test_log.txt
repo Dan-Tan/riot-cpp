@@ -1,7 +1,27 @@
 --- Client Initialised Started ---
-Time initialised: Sunday Sun Jan  1 17:27:20 2023
+Time initialised: Monday Mon Jan  2 15:07:24 2023
 Path to log file: ../test/test_log.txt
-overwite: true, log_all queries: false
+overwite: false, log_all queries: false
+Retrieved API key
+Curl initialised
+MAX SERVICE DENIALS (503): 2 
+MAX INTERNAL SERVICE ERRORS (500): 2 
+--- Client Successfully Initialised ---
+ 
+--- Client Initialised Started ---
+Time initialised: Monday Mon Jan  2 15:07:30 2023
+Path to log file: ../test/test_log.txt
+overwite: false, log_all queries: false
+Retrieved API key
+Curl initialised
+MAX SERVICE DENIALS (503): 2 
+MAX INTERNAL SERVICE ERRORS (500): 2 
+--- Client Successfully Initialised ---
+ 
+--- Client Initialised Started ---
+Time initialised: Monday Mon Jan  2 15:07:37 2023
+Path to log file: ../test/test_log.txt
+overwite: false, log_all queries: false
 Retrieved API key
 Curl initialised
 MAX SERVICE DENIALS (503): 2 
@@ -9,16 +29,60 @@ MAX INTERNAL SERVICE ERRORS (500): 2
 --- Client Successfully Initialised ---
  
 --- NEW QUERY --- 
-Address_sent: https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/6dgDp5y88RxqOmVMv1GRoGaCmPP-uAbmlsVRhKQj4g0KdIH_GxqCEE6w0JRmHRxSTzbtxMFGypJZIg/ids
-Time finished: Sunday Sun Jan  1 17:27:21 2023
-Final Response Code: 403
-Final Response Message: Forbidden
-Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/SILVER/III
+Time finished: Monday Mon Jan  2 15:10:14 2023
+Final Response Code: 200
+Final Response Message: Successful
+Attempts: rate_denials: 2, internal_errors: 0, service_denials: 3 
  
 --- NEW QUERY --- 
-Address_sent: https://asia.api.riotgames.com/lol/match/v5/matches/KR_6279823690
-Time finished: Sunday Sun Jan  1 17:27:21 2023
-Final Response Code: 403
-Final Response Message: Forbidden
-Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/SILVER/IV
+Time finished: Monday Mon Jan  2 15:10:23 2023
+Final Response Code: 200
+Final Response Message: Successful
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 2 
+ 
+--- NEW QUERY --- 
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/BRONZE/II
+Time finished: Monday Mon Jan  2 15:10:30 2023
+Final Response Code: 200
+Final Response Message: Successful
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 1 
+ 
+--- NEW QUERY --- 
+Address_sent: https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/BRONZE/III
+Time finished: Monday Mon Jan  2 15:10:40 2023
+Final Response Code: 503
+Final Response Message: Service unavailable
+Attempts: rate_denials: 0, internal_errors: 0, service_denials: 3 
+ 
+--- Client Initialised Started ---
+Time initialised: Monday Mon Jan  2 15:10:40 2023
+Path to log file: ../test/test_log.txt
+overwite: false, log_all queries: false
+Retrieved API key
+Curl initialised
+MAX SERVICE DENIALS (503): 2 
+MAX INTERNAL SERVICE ERRORS (500): 2 
+--- Client Successfully Initialised ---
+ 
+--- Client Initialised Started ---
+Time initialised: Monday Mon Jan  2 15:10:43 2023
+Path to log file: ../test/test_log.txt
+overwite: false, log_all queries: false
+Retrieved API key
+Curl initialised
+MAX SERVICE DENIALS (503): 2 
+MAX INTERNAL SERVICE ERRORS (500): 2 
+--- Client Successfully Initialised ---
+ 
+--- Client Initialised Started ---
+Time initialised: Monday Mon Jan  2 15:10:44 2023
+Path to log file: ../test/test_log.txt
+overwite: false, log_all queries: false
+Retrieved API key
+Curl initialised
+MAX SERVICE DENIALS (503): 2 
+MAX INTERNAL SERVICE ERRORS (500): 2 
+--- Client Successfully Initialised ---
  

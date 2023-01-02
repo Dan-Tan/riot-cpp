@@ -27,7 +27,7 @@ RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log
     } else {
         write_type = "a";
     }
-    log = fopen(path_to_log.c_str(), "w");
+    log = fopen(path_to_log.c_str(), write_type);
 
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
     std::time_t now_c = std::chrono::system_clock::to_time_t(now);
