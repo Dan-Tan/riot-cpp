@@ -2,6 +2,7 @@
 
 #include <curl/curl.h>
 #include <string>
+#include <string_view>
 #include <jsoncpp/json/json.h>
 #include <map>
 
@@ -21,7 +22,6 @@ namespace client {
             RiotApiClient(std::string key, std::string path_to_log, bool log_all, bool overwrite);
             ~RiotApiClient();
             
-            std::string get_BASE_URL(std::string region);
 
             // ACCOUNT_V1
             Json::Value ACCOUNT_V1_puuid(std::string puuid, std::string region);
@@ -119,12 +119,9 @@ namespace client {
                                                           {504, "Gateway timeout"}};
 
 
-
         private:
-            struct curl_slist *header = NULL;
-            std::string BASE_URL_START = "https://";
-            std::string BASE_URL_END = ".api.riotgames.com";
-            CURL* easy_handle;
+            struct curl_slist *header = nullptr;
+            CURL* easy_handle = nullptr;
 
             std::string path_to_log;
             bool log_all;
@@ -135,10 +132,21 @@ namespace client {
             bool internal_wait_type;
             bool service_wait_type;
 
-            Json::Value get(std::string end_url, std::string region, query_attempts *attempt);
+            Json::Value get(std::string_view end_url, query_attempts *attempt);
+
             void handle_rate(bool wait_type);
-            bool handle_response(std::string address, long response_code, query_attempts *attempt);
-            void log_request(std::string address_sent, long response_code, 
-                    query_attempts *attempts);
-    };
+            bool handle_response(std::string_view address, long response_code, query_attempts *attempt);
+
+            void log_request(std::string_view address_sent, long response_code, 
+                    query_attempts *attempts); 
+
+            inline std::string get_BASE_URL(std::string region) {
+                std::string url_start = "https://" + region + ".api.riotgames.com";;
+                return url_start;
+            }
+            inline std::string encode_url(std::string query_arg) {
+                std::string encoding = curl_easy_escape(this->easy_handle, query_arg.data(), query_arg.length());
+                return encoding;
+            };
+    }; 
 }

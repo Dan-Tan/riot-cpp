@@ -3,7 +3,7 @@
 #include "../src/client.h"
 #include <jsoncpp/json/json.h>
 
-#define CONFIG "../../.api_keys/riot_config.json", "../test/test_log.txt", false, true
+#define CONFIG "../../.api_keys/riot_config.json", "../test/test_log.txt", false, false
 
 using namespace client;
 

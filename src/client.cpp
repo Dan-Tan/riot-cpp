@@ -1,4 +1,5 @@
 #include <string>
+#include <string_view>
 #include <jsoncpp/json/json.h>
 #include <curl/curl.h>
 #include "client.h"
@@ -83,10 +84,6 @@ RiotApiClient::~RiotApiClient() {
     curl_global_cleanup();
 }
 
-std::string RiotApiClient::get_BASE_URL(std::string region) {
-    return BASE_URL_START + region + BASE_URL_END;
-}
-
 typedef struct res_buffer {
     char* mem;
     size_t size;
@@ -122,13 +119,12 @@ static size_t parse_mem(void* contents, size_t size, size_t nmemb, void* user_da
     return added_size;
 }
 
-Json::Value RiotApiClient::get(std::string end_url, std::string region, query_attempts* attempt) {
+Json::Value RiotApiClient::get(std::string_view address, query_attempts* attempt) {
 
     Json::Reader reader;
     Json::Value result;
 
     // construct query url
-    std::string address = this->get_BASE_URL(region) + end_url; 
 
     if (!attempt) {
         attempt = init_attempt_count();
@@ -139,7 +135,7 @@ Json::Value RiotApiClient::get(std::string end_url, std::string region, query_at
 
     CURLcode res_;
 
-    curl_easy_setopt(this->easy_handle, CURLOPT_URL, address.c_str());
+    curl_easy_setopt(this->easy_handle, CURLOPT_URL, address.data());
     curl_easy_setopt(this->easy_handle, CURLOPT_HTTPGET, 1);
     curl_easy_setopt(this->easy_handle, CURLOPT_HTTPHEADER, this->header);
     curl_easy_setopt(this->easy_handle, CURLOPT_VERBOSE, 0);
@@ -166,11 +162,10 @@ Json::Value RiotApiClient::get(std::string end_url, std::string region, query_at
 
     bool repeat = this->handle_response(address, response_code, attempt);
     if (repeat) {
-        return this->get(end_url, region, attempt);
+        return this->get(address, attempt);
     } else {
         free_query_counter(attempt);
     }
 
     return result;
 }
-

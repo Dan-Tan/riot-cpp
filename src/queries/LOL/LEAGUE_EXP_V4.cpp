@@ -1,11 +1,11 @@
 #include "../../client.h"
 #include <string>
-#define ENCODE(x) (std::string(curl_easy_escape(this->easy_handle, x.c_str(), x.length())))
 
 using namespace client;
 
 Json::Value RiotApiClient::LEAGUE_EXP_V4(std::string queue, std::string tier, std::string division, std::string region) {
-    queue = ENCODE(queue); tier = ENCODE(tier); division = ENCODE(division);
+    queue = encode_url(queue); tier = encode_url(tier); division = encode_url(division);
     std::string end_url = "/lol/league-exp/v4/entries/" + queue + "/" + tier + "/" + division;
-    return this->get(end_url, region, NULL);
+    end_url = this->get_BASE_URL(region) + end_url;
+    return this->get(end_url, nullptr);
 }

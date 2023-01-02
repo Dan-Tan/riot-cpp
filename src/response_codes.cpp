@@ -21,7 +21,7 @@ void free_query_counter(query_attempts *counter) {
     free(counter);
 }
 
-bool RiotApiClient::handle_response(std::string address, long response_code, query_attempts *attempt) {
+bool RiotApiClient::handle_response(std::string_view address, long response_code, query_attempts *attempt) {
 
     bool repeat;
     bool _log = false;
@@ -66,7 +66,7 @@ bool RiotApiClient::handle_response(std::string address, long response_code, que
     return repeat;
 }
 
-void RiotApiClient::log_request(std::string address_sent, long response_code, query_attempts *attempts) {
+void RiotApiClient::log_request(std::string_view address_sent, long response_code, query_attempts *attempts) {
 
     FILE* log;
     log = fopen(this->path_to_log.c_str(), "a");
@@ -78,7 +78,7 @@ void RiotApiClient::log_request(std::string address_sent, long response_code, qu
     strftime(curr_time, sizeof(curr_time), "%A %c", &now_tm);
 
     fprintf(log, "--- NEW QUERY --- \n");
-    fprintf(log, "Address_sent: %s\n", address_sent.c_str());
+    fprintf(log, "Address_sent: %s\n", address_sent.data());
     fprintf(log, "Time finished: %s\n", curr_time);
     fprintf(log, "Final Response Code: %ld\n", response_code);
     fprintf(log, "Final Response Message: %s\n", this->Err_Codes[(int) response_code].c_str());
