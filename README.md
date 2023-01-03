@@ -66,9 +66,6 @@ Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0
 ## To do:
 
 Short Term
-* Handle 5XX better
-* Re-write buffer callback for queries
-* Add more flexible rate handling (developer, app, ...)
 * Create tests for all queries
 
 Long Term
