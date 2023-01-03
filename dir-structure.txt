@@ -1,9 +1,33 @@
 [01;34m.[0m
 ├── CMakeLists.txt
+├── auto_encoder.cpp
+├── auto_encoder.h
 ├── client.cpp
 ├── client.h
-├── query.cpp
-├── query.h
-└── response_codes.cpp
+├── [01;34mqueries[0m
+│   ├── ACCOUNT_V1.cpp
+│   ├── [01;34mLOL[0m
+│   │   ├── CHALLENGES_V1.cpp
+│   │   ├── CHAMPION_MASTERY_V4.cpp
+│   │   ├── CHAMPION_V3.cpp
+│   │   ├── CLASH_V1.cpp
+│   │   ├── LEAGUE_EXP_V4.cpp
+│   │   ├── LEAGUE_V4.cpp
+│   │   ├── MATCH_V5.cpp
+│   │   ├── SPECTATOR_V4.cpp
+│   │   ├── STATUS.cpp
+│   │   └── SUMMONER_V4.cpp
+│   ├── [01;34mLOR[0m
+│   │   ├── MATCH_V1.cpp
+│   │   └── RANKED_V1.cpp
+│   ├── [01;34mTFT[0m
+│   │   ├── TFT_LEAGUE_V1.cpp
+│   │   ├── TFT_MATCH_V1.cpp
+│   │   └── TFT_SUMMONER_V1.cpp
+│   └── [01;34mVAL[0m
+│       ├── CONTENT_V1.cpp
+│       └── MATCH_V1.cpp
+├── response_codes.cpp
+└── version
 
-0 directories, 6 files
+5 directories, 25 files
