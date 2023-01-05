@@ -16,7 +16,7 @@ U::U(std::string u1) {
 U::~U() {};
 
 std::string U::construct_url(std::vector<std::string> query_params) {
-    return this->base_url(query_params[0]) + this->base_url(query_params[1]) + this->u1;
+    return this->base_url(query_params[0]) + this->u1;
 }
 
 UP::UP(std::string u1) {
@@ -26,7 +26,7 @@ UP::UP(std::string u1) {
 UP::~UP() {};
 
 std::string UP::construct_url(std::vector<std::string> query_params) {
-    return this->base_url(query_params[0]) + this->base_url(query_params[1]) + this->u1 + query_params[2];
+    return this->base_url(query_params[0]) + this->u1 + query_params[1] ;
 }
 
 UPU::UPU(std::string u1, std::string u2) {

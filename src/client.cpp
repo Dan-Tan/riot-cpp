@@ -81,13 +81,13 @@ RiotApiClient::~RiotApiClient() {
     curl_global_cleanup();
 }
 
-size_t RiotApiClient::WriteCallBack(void* contents, size_t size, size_t nmemb, void* user_data) {
-
+static size_t WriteCallBack(void* contents, size_t size, size_t nmemb, void* buffer) {
+    
     size_t real_size = size * nmemb;
-    size_t current_size = this->buffer.size();
+    std::vector<char> *new_buffer = (std::vector<char> *) buffer;
+    size_t current_size = new_buffer->size();
     char *new_chars = (char *)contents;
-    this->buffer.insert(buffer.end(), new_chars, new_chars + real_size);
-
+    new_buffer->insert(new_buffer->end(), &new_chars[0], &new_chars[real_size]);
     return real_size;
 }
 
@@ -97,25 +97,18 @@ Json::Value RiotApiClient::get(std::string_view address, std::shared_ptr<query_a
     Json::Value result;
 
     CURLcode res_;
-
     curl_easy_setopt(this->easy_handle, CURLOPT_URL, address.data());
     curl_easy_setopt(this->easy_handle, CURLOPT_HTTPGET, 1);
     curl_easy_setopt(this->easy_handle, CURLOPT_HTTPHEADER, this->header);
     curl_easy_setopt(this->easy_handle, CURLOPT_VERBOSE, 0);
 
-    curl_easy_setopt(this->easy_handle, CURLOPT_WRITEFUNCTION, std::bind_front(&RiotApiClient::WriteCallBack, this));
+    curl_easy_setopt(this->easy_handle, CURLOPT_WRITEFUNCTION, WriteCallBack);
+    curl_easy_setopt(this->easy_handle, CURLOPT_WRITEDATA, &this->buffer);
 
     res_ = curl_easy_perform(this->easy_handle);
-    std::string result_(this->buffer.data());
-    bool json_conversion = reader.parse(result_, result);
-    if (!json_conversion) {
-        std::domain_error("Unable to cast output string to Json");
-    }
 
     if (res_ != CURLE_OK) {
-        std::cout << curl_easy_strerror(res_) << std::endl;
-        std::cout << "Query failed" << std::endl;
-        std::cout << address << std::endl;
+        this->log_request(address, -1, attempt, &res_);
         return result;
     }
 
@@ -126,6 +119,13 @@ Json::Value RiotApiClient::get(std::string_view address, std::shared_ptr<query_a
     if (repeat) {
         return this->get(address, attempt);
     } 
+    if (response_code = 200) {
+        std::string result_(this->buffer.data());
+        bool json_conversion = reader.parse(result_, result);
+        if (!json_conversion) {
+            std::domain_error("Unable to cast output string to Json");
+        }
+    }
 
     return result;
 }

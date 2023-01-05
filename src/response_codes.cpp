@@ -64,7 +64,7 @@ bool RiotApiClient::handle_response(std::string_view address, long response_code
     return repeat;
 }
 
-void RiotApiClient::log_request(std::string_view address_sent, long response_code, std::shared_ptr<query_attempts> attempts) {
+void RiotApiClient::log_request(std::string_view address_sent, long response_code, std::shared_ptr<query_attempts> attempts, CURLcode* res_) {
 
     FILE* log;
     log = fopen(this->path_to_log.c_str(), "a");
@@ -78,8 +78,13 @@ void RiotApiClient::log_request(std::string_view address_sent, long response_cod
     fprintf(log, "--- NEW QUERY --- \n");
     fprintf(log, "Address_sent: %s\n", address_sent.data());
     fprintf(log, "Time finished: %s\n", curr_time);
-    fprintf(log, "Final Response Code: %ld\n", response_code);
-    fprintf(log, "Final Response Message: %s\n", RiotApiClient::Err_Codes.at(response_code).c_str());
+    if (response_code != -1) {
+        fprintf(log, "Final Response Code: %ld\n", response_code);
+        fprintf(log, "Final Response Message: %s\n", RiotApiClient::Err_Codes.at(response_code).c_str());
+    } else {
+        fprintf(log, "Final Response Code: -1 (CURL ERROR) \n");
+        fprintf(log, "Final Response Message: %s\n", curl_easy_strerror(*res_));
+    }
     fprintf(log, "Attempts: rate_denials: %d, internal_errors: %d, service_denials: %d \n \n", attempts->rate_denials, attempts->internal_errors, attempts->service_denials);
 
     fclose(log);

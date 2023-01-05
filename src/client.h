@@ -22,11 +22,11 @@ namespace client {
             RiotApiClient(std::string key, std::string path_to_log, bool log_all, bool overwrite);
             ~RiotApiClient();
 
-            Json::Value query(std::string_view endpoint, std::string_view end_type, std::vector<std::string>);
+            Json::Value query(std::string endpoint, std::string end_type, std::vector<std::string>);
             
-            static const std::unordered_map<int, std::string> Err_Codes;
-            static const std::unordered_map<std::string_view, std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>>> query_types;
         private:
+            static const std::unordered_map<int, std::string> Err_Codes;
+            static const std::unordered_map<std::string, std::unordered_map<std::string, std::shared_ptr<query::QueryType>>> query_types;
             struct curl_slist *header = nullptr;
             CURL* easy_handle = nullptr;
             std::vector<char> buffer;
@@ -40,15 +40,13 @@ namespace client {
             bool service_wait_type;
             bool log_all;
 
-            size_t WriteCallBack(void* contents, size_t size, size_t nmemb, void* user_data);
-
             Json::Value get(std::string_view end_url, std::shared_ptr<query_attempts> attempt);
 
             void handle_rate(bool wait_type);
             bool handle_response(std::string_view address, long response_code, std::shared_ptr<query_attempts> attempt);
 
             void log_request(std::string_view address_sent, long response_code, 
-                    std::shared_ptr<query_attempts> attempts); 
+                    std::shared_ptr<query_attempts> attempts, CURLcode* res_ = nullptr); 
 
             inline std::string encode_url(std::string query_arg) {
                 std::string encoding = curl_easy_escape(this->easy_handle, query_arg.data(), query_arg.length());

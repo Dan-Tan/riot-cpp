@@ -3,7 +3,7 @@
 #include "../src/client.h"
 #include <jsoncpp/json/json.h>
 
-#define CONFIG "../../.api_keys/riot_config.json", "../test/test_log.txt", false, false
+#define CONFIG "../../.api_keys/riot_config.json", "../test/test_log.txt", true, true
 
 using namespace client;
 
@@ -20,12 +20,12 @@ TEST_CASE( "TESTING ACCOUNT_V1 QUERIES") {
     Json::Value result;
     
     for (int i = 0; i < 3; i++) {
-        result = test_client.query(endpoint, std::string("by-puuid"), std::vector<std::string>{puuid, region[i]});
+        result = test_client.query(endpoint, std::string("by-puuid"), std::vector<std::string>{region[i], puuid});
         REQUIRE(result["puuid"] == puuid);
-        result = test_client.query(endpoint, std::string("by-riot-id"), std::vector<std::string>{gamename, tagline, region[i]});
+        result = test_client.query(endpoint, std::string("by-riot-id"), std::vector<std::string>{region[i], gamename, tagline});
         REQUIRE(result["gameName"] == gamename);
         REQUIRE(result["tagLine"] == tagline);
-        result = test_client.query(endpoint, std::string("by-game"), std::vector<std::string>{game, puuid, region[i]});
+        result = test_client.query(endpoint, std::string("by-game"), std::vector<std::string>{region[i], game, puuid});
         REQUIRE(result["puuid"] == puuid);
     }
 }
