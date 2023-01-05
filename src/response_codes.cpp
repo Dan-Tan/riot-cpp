@@ -9,7 +9,7 @@
 
 using namespace client;
 
-const std::map<int, std::string> RiotApiClient::Err_Codes = {{200, "Successful"},
+const std::unordered_map<int, std::string> RiotApiClient::Err_Codes = {{200, "Successful"},
                                         {400, "Bad request"},
                                         {401, "Unauthorized"},
                                         {403, "Forbidden"},
@@ -22,19 +22,8 @@ const std::map<int, std::string> RiotApiClient::Err_Codes = {{200, "Successful"}
                                         {503, "Service unavailable"},
                                         {504, "Gateway timeout"}};
 
-query_attempts* init_attempt_count() {
-    query_attempts* counter = (query_attempts *)calloc(1, sizeof(query_attempts));
-    if (!counter) {
-        std::cout << "Memory allocation failed" << std::endl;
-    }
-    return counter;
-}
 
-void free_query_counter(query_attempts *counter) {
-    free(counter);
-}
-
-bool RiotApiClient::handle_response(std::string_view address, long response_code, query_attempts *attempt) {
+bool RiotApiClient::handle_response(std::string_view address, long response_code, std::shared_ptr<query_attempts> attempt) {
 
     bool repeat;
     bool _log = false;
@@ -75,7 +64,7 @@ bool RiotApiClient::handle_response(std::string_view address, long response_code
     return repeat;
 }
 
-void RiotApiClient::log_request(std::string_view address_sent, long response_code, query_attempts *attempts) {
+void RiotApiClient::log_request(std::string_view address_sent, long response_code, std::shared_ptr<query_attempts> attempts) {
 
     FILE* log;
     log = fopen(this->path_to_log.c_str(), "a");

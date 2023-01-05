@@ -1,11 +1,8 @@
-#include <string>
-#include <string_view>
-#include <jsoncpp/json/json.h>
-#include <curl/curl.h>
 #include "client.h"
 #include <chrono>
 #include <thread>
 #include <ctime>
+#include <functional>
 
 #define DEBUG 1
 
@@ -84,54 +81,20 @@ RiotApiClient::~RiotApiClient() {
     curl_global_cleanup();
 }
 
-typedef struct res_buffer {
-    char* mem;
-    size_t size;
-} res_buffer;
+size_t RiotApiClient::WriteCallBack(void* contents, size_t size, size_t nmemb, void* user_data) {
 
-res_buffer* init_empty_res_buffer() {
-    res_buffer *buffer = (res_buffer *)malloc(sizeof(res_buffer));
-    buffer->mem = (char *)malloc(1);
-    buffer->size = 0;
-    return buffer;
+    size_t real_size = size * nmemb;
+    size_t current_size = this->buffer.size();
+    char *new_chars = (char *)contents;
+    this->buffer.insert(buffer.end(), new_chars, new_chars + real_size);
+
+    return real_size;
 }
 
-void free_res_buffer(res_buffer* buffer) {
-    free(buffer->mem);
-    free(buffer);
-}
-
-static size_t parse_mem(void* contents, size_t size, size_t nmemb, void* user_data) {
-    size_t added_size = size * nmemb;
-    res_buffer *resp = (res_buffer *)user_data;
-
-
-    char* ptr = (char *) realloc(resp->mem, resp->size + added_size + 1);
-    if (!ptr) {
-        std::cout << "Memory reassignment failed: Not enough memory." << std::endl;
-        return 0;
-    }
-
-    resp->mem = ptr;
-    memcpy(&(resp->mem[resp->size]), contents, added_size);
-    resp->size += added_size;
-    resp->mem[resp->size] = 0;
-    return added_size;
-}
-
-Json::Value RiotApiClient::get(std::string_view address, query_attempts* attempt) {
+Json::Value RiotApiClient::get(std::string_view address, std::shared_ptr<query_attempts> attempt) {
 
     Json::Reader reader;
     Json::Value result;
-
-    // construct query url
-
-    if (!attempt) {
-        attempt = init_attempt_count();
-    }
-
-    // initialise response buffer
-    res_buffer *response = init_empty_res_buffer();
 
     CURLcode res_;
 
@@ -140,11 +103,10 @@ Json::Value RiotApiClient::get(std::string_view address, query_attempts* attempt
     curl_easy_setopt(this->easy_handle, CURLOPT_HTTPHEADER, this->header);
     curl_easy_setopt(this->easy_handle, CURLOPT_VERBOSE, 0);
 
-    curl_easy_setopt(this->easy_handle, CURLOPT_WRITEFUNCTION, parse_mem);
-    curl_easy_setopt(this->easy_handle, CURLOPT_WRITEDATA, response);
+    curl_easy_setopt(this->easy_handle, CURLOPT_WRITEFUNCTION, std::bind_front(&RiotApiClient::WriteCallBack, this));
 
     res_ = curl_easy_perform(this->easy_handle);
-    std::string result_(response->mem);
+    std::string result_(this->buffer.data());
     bool json_conversion = reader.parse(result_, result);
     if (!json_conversion) {
         std::domain_error("Unable to cast output string to Json");
@@ -163,9 +125,7 @@ Json::Value RiotApiClient::get(std::string_view address, query_attempts* attempt
     bool repeat = this->handle_response(address, response_code, attempt);
     if (repeat) {
         return this->get(address, attempt);
-    } else {
-        free_query_counter(attempt);
-    }
+    } 
 
     return result;
 }
