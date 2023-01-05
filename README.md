@@ -1,5 +1,7 @@
 # Riot Api Client in Cpp
 
+THIS README IS OUT OF DATE FOR THIS BRANCH WILL RE-WRITE IT SOON
+
 Basic api alient for RIOT GAMES API. Currently handles rate limiting, 5XX error codes and basic logging functionality. Only implements league of legends queries currently and in the process of adding and testing all other queries.
 
 Currently in development. 
@@ -66,10 +68,10 @@ Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0
 ## To do:
 
 Short Term
+* Re-write readme
 * Handle 5XX better
-* Re-write buffer callback for queries
 * Add more flexible rate handling (developer, app, ...)
-* Create tests for all queries
+* Create/Re-write tests for all queries
 
 Long Term
 * Add higher level queries (All, csv conversion?)
