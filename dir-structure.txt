@@ -3,7 +3,8 @@
 ├── client.cpp
 ├── client.h
 ├── query.cpp
-├── query.h
+├── query_type.cpp
+├── query_type.h
 └── response_codes.cpp
 
-0 directories, 6 files
+0 directories, 7 files
