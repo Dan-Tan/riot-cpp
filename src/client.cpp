@@ -1,16 +1,10 @@
-#include <string>
-#include <string_view>
-#include <jsoncpp/json/json.h>
-#include <curl/curl.h>
 #include "client.h"
 #include <chrono>
 #include <thread>
 #include <ctime>
-
-#define DEBUG 1
+#include <functional>
 
 #include <fstream>
-#include <iostream>
 #include <stdio.h>
 
 using namespace client;
@@ -21,13 +15,8 @@ RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log
     this->log_all = log_all;
 
     FILE* log;
-    const char* write_type;
-    if (overwrite) {
-        write_type = "w";
-    } else {
-        write_type = "a";
-    }
-    log = fopen(path_to_log.c_str(), "w");
+
+    log = fopen(path_to_log.c_str(), overwrite ? "w" : "a");
 
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
     std::time_t now_c = std::chrono::system_clock::to_time_t(now);
@@ -84,76 +73,34 @@ RiotApiClient::~RiotApiClient() {
     curl_global_cleanup();
 }
 
-typedef struct res_buffer {
-    char* mem;
-    size_t size;
-} res_buffer;
-
-res_buffer* init_empty_res_buffer() {
-    res_buffer *buffer = (res_buffer *)malloc(sizeof(res_buffer));
-    buffer->mem = (char *)malloc(1);
-    buffer->size = 0;
-    return buffer;
+static size_t WriteCallBack(void* contents, size_t size, size_t nmemb, void* buffer) {
+    
+    size_t real_size = size * nmemb;
+    std::vector<char> *new_buffer = (std::vector<char> *) buffer;
+    size_t current_size = new_buffer->size();
+    char *new_chars = (char *)contents;
+    new_buffer->insert(new_buffer->end(), &new_chars[0], &new_chars[real_size]);
+    return real_size;
 }
 
-void free_res_buffer(res_buffer* buffer) {
-    free(buffer->mem);
-    free(buffer);
-}
-
-static size_t parse_mem(void* contents, size_t size, size_t nmemb, void* user_data) {
-    size_t added_size = size * nmemb;
-    res_buffer *resp = (res_buffer *)user_data;
-
-
-    char* ptr = (char *) realloc(resp->mem, resp->size + added_size + 1);
-    if (!ptr) {
-        std::cout << "Memory reassignment failed: Not enough memory." << std::endl;
-        return 0;
-    }
-
-    resp->mem = ptr;
-    memcpy(&(resp->mem[resp->size]), contents, added_size);
-    resp->size += added_size;
-    resp->mem[resp->size] = 0;
-    return added_size;
-}
-
-Json::Value RiotApiClient::get(std::string_view address, query_attempts* attempt) {
+Json::Value RiotApiClient::get(std::string_view address, std::shared_ptr<query_attempts> attempt) {
 
     Json::Reader reader;
     Json::Value result;
 
-    // construct query url
-
-    if (!attempt) {
-        attempt = init_attempt_count();
-    }
-
-    // initialise response buffer
-    res_buffer *response = init_empty_res_buffer();
-
     CURLcode res_;
-
     curl_easy_setopt(this->easy_handle, CURLOPT_URL, address.data());
     curl_easy_setopt(this->easy_handle, CURLOPT_HTTPGET, 1);
     curl_easy_setopt(this->easy_handle, CURLOPT_HTTPHEADER, this->header);
     curl_easy_setopt(this->easy_handle, CURLOPT_VERBOSE, 0);
 
-    curl_easy_setopt(this->easy_handle, CURLOPT_WRITEFUNCTION, parse_mem);
-    curl_easy_setopt(this->easy_handle, CURLOPT_WRITEDATA, response);
+    curl_easy_setopt(this->easy_handle, CURLOPT_WRITEFUNCTION, WriteCallBack);
+    curl_easy_setopt(this->easy_handle, CURLOPT_WRITEDATA, &this->buffer);
 
     res_ = curl_easy_perform(this->easy_handle);
-    std::string result_(response->mem);
-    bool json_conversion = reader.parse(result_, result);
-    if (!json_conversion) {
-        std::domain_error("Unable to cast output string to Json");
-    }
 
     if (res_ != CURLE_OK) {
-        std::cout << curl_easy_strerror(res_) << std::endl;
-        std::cout << "Query failed" << std::endl;
-        std::cout << address << std::endl;
+        this->log_request(address, -1, attempt, &res_);
         return result;
     }
 
@@ -163,9 +110,16 @@ Json::Value RiotApiClient::get(std::string_view address, query_attempts* attempt
     bool repeat = this->handle_response(address, response_code, attempt);
     if (repeat) {
         return this->get(address, attempt);
-    } else {
-        free_query_counter(attempt);
+    } 
+    if (response_code = 200) {
+        std::string result_(this->buffer.data());
+        bool json_conversion = reader.parse(result_, result);
+        if (!json_conversion) {
+            std::domain_error("Unable to cast output string to Json");
+        }
     }
+
+    this->buffer.clear();
 
     return result;
 }

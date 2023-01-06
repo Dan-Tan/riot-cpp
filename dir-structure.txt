@@ -4,6 +4,7 @@
 ├── auto_encoder.h
 ├── client.cpp
 ├── client.h
+<<<<<<< HEAD
 ├── [01;34mqueries[0m
 │   ├── ACCOUNT_V1.cpp
 │   ├── [01;34mLOL[0m
@@ -31,3 +32,11 @@
 └── version
 
 5 directories, 25 files
+=======
+├── query.cpp
+├── query_type.cpp
+├── query_type.h
+└── response_codes.cpp
+
+0 directories, 7 files
+>>>>>>> restructuring

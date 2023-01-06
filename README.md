@@ -8,6 +8,8 @@ Uses libcurl to send requests and jsoncpp to store return values. Shared object 
 
 ## Usage
 
+Currently incorrect names of endpoints will cause an exception, I will write a more informative exception
+
 ```Cpp
 #include <jsoncpp>
 #include <string>
@@ -16,10 +18,15 @@ int main() {
     
     std::string PATH_TO_API_KEY, PATH_TO_LOG_FILE;
     bool log_all, overwrite_logs;
-    client::RiotApiClient examples(PATH_TO_API_KEY, PATH_TO_LOG_FILE, log_all, overwrite_logs);
+    client::RiotApiClient example_client(PATH_TO_API_KEY, PATH_TO_LOG_FILE, log_all, overwrite_logs);
     
     Json::Value response;
-    response = examples.SUMMONER_V4_summoner_name("Hide on bush", "KR");
+    std::string endpoint = "SUMMONER-V4";
+    std::string method = "by-name";
+
+    std::vector<std::string> params = {"Kr", "Hide on bush"}; // region, params...
+
+    response = example_client.query(endpoint, method,  params);
 }
 ```
 
@@ -66,7 +73,14 @@ Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0
 ## To do:
 
 Short Term
+<<<<<<< HEAD
 * Create tests for all queries
+=======
+* Handle 5XX better
+* Add more flexible rate handling (developer, app, ...)
+* Create/Re-write tests for all queries
+* Document all query methods
+>>>>>>> restructuring
 
 Long Term
 * Add higher level queries (All, csv conversion?)

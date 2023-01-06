@@ -1,1 +1,3 @@
 *.json
+Debug/
+Release/

@@ -8,20 +8,20 @@
 #include <ctime>
 
 using namespace client;
+const std::unordered_map<int, std::string> RiotApiClient::Err_Codes = {{200, "Successful"},
+                                        {400, "Bad request"},
+                                        {401, "Unauthorized"},
+                                        {403, "Forbidden"},
+                                        {404, "Data not found"},
+                                        {405, "Method not allowed"},
+                                        {415, "Unsupported media type"},
+                                        {429, "Rate limit exceeded"},
+                                        {500, "Internal server error"},
+                                        {502, "Bad gateway"},
+                                        {503, "Service unavailable"},
+                                        {504, "Gateway timeout"}};
 
-query_attempts* init_attempt_count() {
-    query_attempts* counter = (query_attempts *)calloc(1, sizeof(query_attempts));
-    if (!counter) {
-        std::cout << "Memory allocation failed" << std::endl;
-    }
-    return counter;
-}
-
-void free_query_counter(query_attempts *counter) {
-    free(counter);
-}
-
-bool RiotApiClient::handle_response(std::string_view address, long response_code, query_attempts *attempt) {
+bool RiotApiClient::handle_response(std::string_view address, long response_code, std::shared_ptr<query_attempts> attempt) {
 
     bool repeat;
     bool _log = false;
@@ -66,7 +66,7 @@ bool RiotApiClient::handle_response(std::string_view address, long response_code
     return repeat;
 }
 
-void RiotApiClient::log_request(std::string_view address_sent, long response_code, query_attempts *attempts) {
+void RiotApiClient::log_request(std::string_view address_sent, long response_code, std::shared_ptr<query_attempts> attempts, CURLcode* res_) {
 
     FILE* log;
     log = fopen(this->path_to_log.c_str(), "a");
@@ -80,8 +80,13 @@ void RiotApiClient::log_request(std::string_view address_sent, long response_cod
     fprintf(log, "--- NEW QUERY --- \n");
     fprintf(log, "Address_sent: %s\n", address_sent.data());
     fprintf(log, "Time finished: %s\n", curr_time);
-    fprintf(log, "Final Response Code: %ld\n", response_code);
-    fprintf(log, "Final Response Message: %s\n", this->Err_Codes[(int) response_code].c_str());
+    if (response_code != -1) {
+        fprintf(log, "Final Response Code: %ld\n", response_code);
+        fprintf(log, "Final Response Message: %s\n", RiotApiClient::Err_Codes.at(response_code).c_str());
+    } else {
+        fprintf(log, "Final Response Code: -1 (CURL ERROR) \n");
+        fprintf(log, "Final Response Message: %s\n", curl_easy_strerror(*res_));
+    }
     fprintf(log, "Attempts: rate_denials: %d, internal_errors: %d, service_denials: %d \n \n", attempts->rate_denials, attempts->internal_errors, attempts->service_denials);
 
     fclose(log);
