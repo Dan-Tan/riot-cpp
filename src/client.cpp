@@ -4,10 +4,7 @@
 #include <ctime>
 #include <functional>
 
-#define DEBUG 1
-
 #include <fstream>
-#include <iostream>
 #include <stdio.h>
 
 using namespace client;
@@ -18,13 +15,8 @@ RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log
     this->log_all = log_all;
 
     FILE* log;
-    const char* write_type;
-    if (overwrite) {
-        write_type = "w";
-    } else {
-        write_type = "a";
-    }
-    log = fopen(path_to_log.c_str(), write_type);
+
+    log = fopen(path_to_log.c_str(), overwrite ? "w" : "a");
 
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
     std::time_t now_c = std::chrono::system_clock::to_time_t(now);
@@ -126,6 +118,8 @@ Json::Value RiotApiClient::get(std::string_view address, std::shared_ptr<query_a
             std::domain_error("Unable to cast output string to Json");
         }
     }
+
+    this->buffer.clear();
 
     return result;
 }
