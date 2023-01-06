@@ -1,7 +1,5 @@
 # Riot Api Client in Cpp
 
-THIS README IS OUT OF DATE FOR THIS BRANCH WILL RE-WRITE IT SOON
-
 Basic api alient for RIOT GAMES API. Currently handles rate limiting, 5XX error codes and basic logging functionality. Only implements league of legends queries currently and in the process of adding and testing all other queries.
 
 Currently in development. 
@@ -9,6 +7,8 @@ Currently in development.
 Uses libcurl to send requests and jsoncpp to store return values. Shared object files and lib can be found in the build/src directory. In the process of documenting usage and making the library more accessible. If you find any error or want to suggest some changes, feel free to make a pull request.
 
 ## Usage
+
+Currently incorrect names of endpoints will cause an exception, I will write a more informative exception
 
 ```Cpp
 #include <jsoncpp>
@@ -18,10 +18,15 @@ int main() {
     
     std::string PATH_TO_API_KEY, PATH_TO_LOG_FILE;
     bool log_all, overwrite_logs;
-    client::RiotApiClient examples(PATH_TO_API_KEY, PATH_TO_LOG_FILE, log_all, overwrite_logs);
+    client::RiotApiClient example_client(PATH_TO_API_KEY, PATH_TO_LOG_FILE, log_all, overwrite_logs);
     
     Json::Value response;
-    response = examples.SUMMONER_V4_summoner_name("Hide on bush", "KR");
+    std::string endpoint = "SUMMONER-V4";
+    std::string method = "by-name";
+
+    std::vector<std::string> params = {"Kr", "Hide on bush"}; // region, params...
+
+    response = example_client.query(endpoint, method,  params);
 }
 ```
 
@@ -68,10 +73,10 @@ Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0
 ## To do:
 
 Short Term
-* Re-write readme
 * Handle 5XX better
 * Add more flexible rate handling (developer, app, ...)
 * Create/Re-write tests for all queries
+* Document all query methods
 
 Long Term
 * Add higher level queries (All, csv conversion?)
