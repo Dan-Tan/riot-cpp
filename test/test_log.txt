@@ -1,5 +1,5 @@
 --- Client Initialised Started ---
-Time initialised: Friday Fri Jan  6 00:23:30 2023
+Time initialised: Friday Fri Jan  6 17:16:47 2023
 Path to log file: ../test/test_log.txt
 overwite: true, log_all queries: true
 Retrieved API key
@@ -10,63 +10,63 @@ MAX INTERNAL SERVICE ERRORS (500): 2
  
 --- NEW QUERY --- 
 Address_sent: https://americas.api.riotgames.com/riot/account/v1/accounts/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
-Time finished: Friday Fri Jan  6 00:23:31 2023
+Time finished: Friday Fri Jan  6 17:16:49 2023
 Final Response Code: 200
 Final Response Message: Successful
 Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
  
 --- NEW QUERY --- 
 Address_sent: https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/DanTan1fresn
-Time finished: Friday Fri Jan  6 00:23:31 2023
+Time finished: Friday Fri Jan  6 17:16:50 2023
 Final Response Code: 403
 Final Response Message: Forbidden
 Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
  
 --- NEW QUERY --- 
 Address_sent: https://americas.api.riotgames.com/riot/account/v1/accounts/by-game/val/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
-Time finished: Friday Fri Jan  6 00:23:32 2023
+Time finished: Friday Fri Jan  6 17:16:50 2023
 Final Response Code: 403
 Final Response Message: Forbidden
 Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
  
 --- NEW QUERY --- 
 Address_sent: https://asia.api.riotgames.com/riot/account/v1/accounts/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
-Time finished: Friday Fri Jan  6 00:23:33 2023
+Time finished: Friday Fri Jan  6 17:16:51 2023
 Final Response Code: 200
 Final Response Message: Successful
 Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
  
 --- NEW QUERY --- 
 Address_sent: https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/DanTan1fresn
-Time finished: Friday Fri Jan  6 00:23:33 2023
+Time finished: Friday Fri Jan  6 17:16:51 2023
 Final Response Code: 403
 Final Response Message: Forbidden
 Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
  
 --- NEW QUERY --- 
 Address_sent: https://asia.api.riotgames.com/riot/account/v1/accounts/by-game/val/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
-Time finished: Friday Fri Jan  6 00:23:33 2023
+Time finished: Friday Fri Jan  6 17:16:51 2023
 Final Response Code: 403
 Final Response Message: Forbidden
 Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
  
 --- NEW QUERY --- 
 Address_sent: https://europe.api.riotgames.com/riot/account/v1/accounts/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
-Time finished: Friday Fri Jan  6 00:23:36 2023
+Time finished: Friday Fri Jan  6 17:16:53 2023
 Final Response Code: 200
 Final Response Message: Successful
 Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
  
 --- NEW QUERY --- 
 Address_sent: https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/DanTan1fresn
-Time finished: Friday Fri Jan  6 00:23:36 2023
+Time finished: Friday Fri Jan  6 17:16:54 2023
 Final Response Code: 403
 Final Response Message: Forbidden
 Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
  
 --- NEW QUERY --- 
 Address_sent: https://europe.api.riotgames.com/riot/account/v1/accounts/by-game/val/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
-Time finished: Friday Fri Jan  6 00:23:36 2023
+Time finished: Friday Fri Jan  6 17:16:54 2023
 Final Response Code: 403
 Final Response Message: Forbidden
 Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 

@@ -7,70 +7,86 @@
 namespace query {
     class QueryType {
         public:
-            QueryType();
+            constexpr QueryType() {};
             ~QueryType();
             virtual std::string construct_url(std::vector<std::string>) = 0;
-            std::string base_url(std::string);
+            inline std::string base_url(std::string region) {
+                return "https://" + region + ".api.riotgames.com";
+            };
     };
 
     class U : public QueryType {
         public:
-            U(std::string);
+            constexpr U(const char *u1) {
+                this->u1 = u1;
+            };
             ~U();
             std::string construct_url(std::vector<std::string>) override;
 
         private:
-            std::string u1;
+            const char *u1;
     };
 
     class UP : public QueryType {
         public:
-            UP(std::string);
+            constexpr UP(const char *u1) {
+                this->u1 = u1;
+            };
             ~UP();
             std::string construct_url(std::vector<std::string>) override;
 
         private:
-            std::string u1;
+            const char *u1;
     };
 
     class UPU : public QueryType {
         public:
-            UPU(std::string u1, std::string u2);
+            constexpr UPU(const char *u1, const char *u2) {
+                this->u1 = u1;
+                this->u2 = u2;
+            };
             ~UPU();
             std::string construct_url(std::vector<std::string>) override;
 
         private:
-            std::string u1;
-            std::string u2;
+            const char *u1;
+            const char *u2;
     };
 
     class UPP : public QueryType {
         public:
-            UPP(std::string);
+            constexpr UPP(const char *u1) {
+                this->u1 = u1;
+            };
             ~UPP();
             std::string construct_url(std::vector<std::string>) override;
 
         private:
-            std::string u1;
+            const char *u1;
     };
 
     class UPUP : public QueryType {
         public:
-            UPUP(std::string u1, std::string u2);
+            constexpr UPUP(const char *u1, const char *u2){
+                this->u1 = u1;
+                this->u2 = u2;
+            };
             ~UPUP();
             std::string construct_url(std::vector<std::string>) override;
 
         private:
-            std::string u1;
-            std::string u2;
+            const char *u1;
+            const char *u2;
     };
 
     class UPPP : public QueryType {
         public:
-            UPPP(std::string);
+            constexpr UPPP(const char *u1) {
+                this->u1 = u1;
+            };
             ~UPPP();
             std::string construct_url(std::vector<std::string>) override;
         private:
-            std::string u1;
+            const char *u1;
     };
 }

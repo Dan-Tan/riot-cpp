@@ -4,134 +4,134 @@
 #define STR (std::string)
 using namespace client;
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> ACCOUNT_V1 = {
-    {"by-puuid",   std::make_shared<query::UP>(std::string("/riot/account/v1/accounts/by-puuid/"))},
-    {"by-riot-id", std::make_shared<query::UPP>(std::string("/riot/account/v1/accounts/by-riot-id/"))},
-    {"by-game",    std::make_shared<query::UPUP>(std::string("/riot/account/v1/accounts/by-game/"), std::string("/by-puuid/"))},
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> ACCOUNT_V1 = {
+    {"by-puuid",  constexpr std::make_shared<query::UP>("/riot/account/v1/accounts/by-puuid/")},
+    {"by-riot-id", constexpr std::make_shared<query::UPP>("/riot/account/v1/accounts/by-riot-id/")},
+    {"by-game",    constexpr std::make_shared<query::UPUP>("/riot/account/v1/accounts/by-game/", "/by-puuid/")},
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> CHAMPION_MASTERY_V1 = {
-    {"by-summoner",     std::make_shared<query::UP>(std::string("/lol/champion-mastery/v4/champion-masteries/by-summoner/"))},
-    {"by-champion",     std::make_shared<query::UPUP>(std::string("/lol/champion-mastery/v4/champion-masteries/by-summoner/"), std::string("/by-champion/"))},
-    {"summoner-top",    std::make_shared<query::UPU>(std::string("/lol/champion-mastery/v4/champion-masteries/by-summoner/"), std::string("/top"))},
-    {"summoner-scores", std::make_shared<query::UP>(std::string("/lol/champion-mastery/v4/scores/by-summoner/"))},
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> CHAMPION_MASTERY_V1 = {
+    {"by-summoner",     constexpr std::make_shared<query::UP>("/lol/champion-mastery/v4/champion-masteries/by-summoner/")},
+    {"by-champion",     constexpr std::make_shared<query::UPUP>("/lol/champion-mastery/v4/champion-masteries/by-summoner/", "/by-champion/")},
+    {"summoner-top",    constexpr std::make_shared<query::UPU>("/lol/champion-mastery/v4/champion-masteries/by-summoner/", "/top")},
+    {"summoner-scores", constexpr std::make_shared<query::UP>("/lol/champion-mastery/v4/scores/by-summoner/")},
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> CHAMPION_V3 = {
-    {"rotations", std::make_shared<query::U>(std::string("/lol/platform/v3/champion-rotations"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> CHAMPION_V3 = {
+    {"rotations", constexpr std::make_shared<query::U>("/lol/platform/v3/champion-rotations")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> CLASH_V1 = {
-    {"by-summoner",         std::make_shared<query::UP>(std::string("/lol/clash/v1/by-summoner/"))},
-    {"by-team",            std::make_shared<query::UP>(std::string("/lol/clash/v1/teams/"))},
-    {"tournament-by-team", std::make_shared<query::UP>(std::string("/lol/clash/v1/tournaments/by-team/"))},
-    {"by-tournament",      std::make_shared<query::UP>(std::string("/lol/clash/v1/tournaments/"))},
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> CLASH_V1 = {
+    {"by-summoner",         constexpr std::make_shared<query::UP>("/lol/clash/v1/by-summoner/")},
+    {"by-team",            constexpr std::make_shared<query::UP>("/lol/clash/v1/teams/")},
+    {"tournament-by-team", constexpr std::make_shared<query::UP>("/lol/clash/v1/tournaments/by-team/")},
+    {"by-tournament",      constexpr std::make_shared<query::UP>("/lol/clash/v1/tournaments/")},
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> LEAGUE_EXP_V4 = {
-    {"entries", std::make_shared<query::UPPP>(std::string("/lol/league-exp/v4/entries/"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> LEAGUE_EXP_V4 = {
+    {"entries", constexpr std::make_shared<query::UPPP>("/lol/league-exp/v4/entries/")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> LEAGUE_V4 = {
-    {"challenger" ,     std::make_shared<query::UP>(std::string("/lol/league/v4/challengerleagues/by-queue/"))},
-    {"grandmaster" ,    std::make_shared<query::UP>(std::string("/lol/league/v4/grandmaster/by-queue/"))},
-    {"master" ,         std::make_shared<query::UP>(std::string("/lol/league/v4/master/by-queue/"))},
-    {"by-summoner",     std::make_shared<query::UP>(std::string("/lol/league/v4/entries/by-summoner/"))},
-    {"specific-league", std::make_shared<query::UPPP>(std::string("/lol/league/v4/entries/by-summoner/"))},
-    {"by-league",       std::make_shared<query::UP>(std::string("/lol/league/v4/leagues/"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> LEAGUE_V4 = {
+    {"challenger" ,     constexpr std::make_shared<query::UP>("/lol/league/v4/challengerleagues/by-queue/")},
+    {"grandmaster" ,    constexpr std::make_shared<query::UP>("/lol/league/v4/grandmaster/by-queue/")},
+    {"master" ,         constexpr std::make_shared<query::UP>("/lol/league/v4/master/by-queue/")},
+    {"by-summoner",     constexpr std::make_shared<query::UP>("/lol/league/v4/entries/by-summoner/")},
+    {"specific-league", constexpr std::make_shared<query::UPPP>("/lol/league/v4/entries/by-summoner/")},
+    {"by-league",       constexpr std::make_shared<query::UP>("/lol/league/v4/leagues/")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> LOL_CHALLENGES_V1 = {
-    {"config",               std::make_shared<query::U>(std::string("/lol/challenges/v1/challenges/config"))},
-    {"percentiles",          std::make_shared<query::U>(std::string("/lol/challenges/v1/challenges/percentiles"))},
-    {"chalenge-config",      std::make_shared<query::UPU>(std::string("/lol/challenges/v1/challenges/"), std::string("/config"))}, 
-    {"challenge-leaderboard", std::make_shared<query::UPUP>(std::string("/lol/challenges/v1/challenges/"), std::string("/leaderboards/by-level/"))},
-    {"chalenge-percentiles", std::make_shared<query::UPU>(std::string("/lol/challenges/v1/challenges/"), std::string("/percentiles"))}, 
-    {"by-puuid",             std::make_shared<query::UP>(std::string("/lol/challenges/v1/player-data/"))} 
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> LOL_CHALLENGES_V1 = {
+    {"config",               constexpr std::make_shared<query::U>("/lol/challenges/v1/challenges/config")},
+    {"percentiles",          constexpr std::make_shared<query::U>("/lol/challenges/v1/challenges/percentiles")},
+    {"chalenge-config",      constexpr std::make_shared<query::UPU>("/lol/challenges/v1/challenges/", "/config")}, 
+    {"challenge-leaderboard", constexpr std::make_shared<query::UPUP>("/lol/challenges/v1/challenges/", "/leaderboards/by-level/")},
+    {"chalenge-percentiles", constexpr std::make_shared<query::UPU>("/lol/challenges/v1/challenges/", "/percentiles")}, 
+    {"by-puuid",             constexpr std::make_shared<query::UP>("/lol/challenges/v1/player-data/")} 
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> LOL_STATUS = {
-    {"v3", std::make_shared<query::U>(std::string("/lol/status/v3/shard-data"))},
-    {"v4", std::make_shared<query::U>(std::string("/lol/status/v4/platform-data"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> LOL_STATUS = {
+    {"v3", constexpr std::make_shared<query::U>("/lol/status/v3/shard-data")},
+    {"v4", constexpr std::make_shared<query::U>("/lol/status/v4/platform-data")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> LOR_MATCH_V1 = {
-    {"by-puuid", std::make_shared<query::UPU>(std::string("/lor/match/v1/matches/by-puuid/"), std::string("/ids"))}, 
-    {"by-match", std::make_shared<query::UP>(std::string("/lor/match/v1/matches/"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> LOR_MATCH_V1 = {
+    {"by-puuid", constexpr std::make_shared<query::UPU>("/lor/match/v1/matches/by-puuid/", "/ids")}, 
+    {"by-match", constexpr std::make_shared<query::UP>("/lor/match/v1/matches/")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> LOR_RANKED_V1 = {
-    {"leaderboards", std::make_shared<query::U>(std::string("/lor/ranked/v1/leaderboards"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> LOR_RANKED_V1 = {
+    {"leaderboards", constexpr std::make_shared<query::U>("/lor/ranked/v1/leaderboards")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> LOR_STATUS_V1 = {
-    {"v1", std::make_shared<query::U>(std::string("/lor/status/v1/platform-data"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> LOR_STATUS_V1 = {
+    {"v1", constexpr std::make_shared<query::U>("/lor/status/v1/platform-data")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> MATCH_V5 = {
-    {"by-puuid", std::make_shared<query::UPU>(std::string("/lol/match/v5/matches/by-puuid/"), std::string("/ids"))},
-    {"by-match", std::make_shared<query::UP>(std::string("/lol/match/v5/matches/"))},
-    {"match-timeline", std::make_shared<query::UPU>(std::string("/lol/match/v5/matches/"), std::string("/timeline"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> MATCH_V5 = {
+    {"by-puuid", constexpr std::make_shared<query::UPU>("/lol/match/v5/matches/by-puuid/", "/ids")},
+    {"by-match", constexpr std::make_shared<query::UP>("/lol/match/v5/matches/")},
+    {"match-timeline", constexpr std::make_shared<query::UPU>("/lol/match/v5/matches/", "/timeline")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> SUMMONER_V4 = {
-    {"by-rso-puuid", std::make_shared<query::UP>(std::string("/fulfillment/v1/summoners/by-puuid/"))},
-    {"by-account", std::make_shared<query::UP>(std::string("/lol/summoner/v4/summoners/by-account/"))},
-    {"by-name", std::make_shared<query::UP>(std::string("/lol/summoner/v4/summoners/by-name/"))},
-    {"by-puuid", std::make_shared<query::UP>(std::string("/lol/summoner/v4/summoners/by-puuid/"))},
-    {"by-summoner-id", std::make_shared<query::UP>(std::string("/lol/summoner/v4/summoners/"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> SUMMONER_V4 = {
+    {"by-rso-puuid", constexpr std::make_shared<query::UP>("/fulfillment/v1/summoners/by-puuid/")},
+    {"by-account", constexpr std::make_shared<query::UP>("/lol/summoner/v4/summoners/by-account/")},
+    {"by-name", constexpr std::make_shared<query::UP>("/lol/summoner/v4/summoners/by-name/")},
+    {"by-puuid", constexpr std::make_shared<query::UP>("/lol/summoner/v4/summoners/by-puuid/")},
+    {"by-summoner-id", constexpr std::make_shared<query::UP>("/lol/summoner/v4/summoners/")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> SPECTATOR_V4 = {
-    {"by-summoner-id", std::make_shared<query::UP>(std::string("/lol/spectator/v4/active-games/by-summoner/"))},
-    {"featured-games", std::make_shared<query::U>(std::string("/lol/spectator/v4/featured-games"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> SPECTATOR_V4 = {
+    {"by-summoner-id", constexpr std::make_shared<query::UP>("/lol/spectator/v4/active-games/by-summoner/")},
+    {"featured-games", constexpr std::make_shared<query::U>("/lol/spectator/v4/featured-games")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> TFT_LEAGUE_V1 = {
-    {"challenger", std::make_shared<query::U>(std::string("/tft/league/v1/challenger"))},
-    {"grandmaster", std::make_shared<query::U>(std::string("/tft/league/v1/grandmaster"))},
-    {"master", std::make_shared<query::U>(std::string("/tft/league/v1/master"))},
-    {"by-summoner-id", std::make_shared<query::UP>(std::string("/tft/league/v1/entries/by-summoner/"))},
-    {"by-league-id", std::make_shared<query::UP>(std::string("/tft/league/v1/leagues/"))},
-    {"queue-top", std::make_shared<query::UPU>(std::string("/tft/league/v1/rated-ladders/"), std::string("/top"))},
-    {"by-tier-division", std::make_shared<query::UPP>(std::string("/tft/league/v1/entries/"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> TFT_LEAGUE_V1 = {
+    {"challenger", constexpr std::make_shared<query::U>("/tft/league/v1/challenger")},
+    {"grandmaster", constexpr std::make_shared<query::U>("/tft/league/v1/grandmaster")},
+    {"master", constexpr std::make_shared<query::U>("/tft/league/v1/master")},
+    {"by-summoner-id", constexpr std::make_shared<query::UP>("/tft/league/v1/entries/by-summoner/")},
+    {"by-league-id", constexpr std::make_shared<query::UP>("/tft/league/v1/leagues/")},
+    {"queue-top", constexpr std::make_shared<query::UPU>("/tft/league/v1/rated-ladders/", "/top")},
+    {"by-tier-division", constexpr std::make_shared<query::UPP>("/tft/league/v1/entries/")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> TFT_MATCH_V1 = {
-    {"by-puuid", std::make_shared<query::UPU>(std::string("/tft/match/v1/matches/by-puuid/"), std::string("/ids"))},
-    {"by-match", std::make_shared<query::UP>(std::string("/tft/match/v1/matches/"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> TFT_MATCH_V1 = {
+    {"by-puuid", constexpr std::make_shared<query::UPU>("/tft/match/v1/matches/by-puuid/", "/ids")},
+    {"by-match", constexpr std::make_shared<query::UP>("/tft/match/v1/matches/")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> TFT_STATUS_V1 = {
-    {"v1", std::make_shared<query::U>(std::string("/tft/status/v1/platform-data"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> TFT_STATUS_V1 = {
+    {"v1", constexpr std::make_shared<query::U>("/tft/status/v1/platform-data")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> TFT_SUMMONER_V1 = {
-    {"by-account", std::make_shared<query::UP>(std::string("/tft/summoner/v1/summoners/by-account/"))},
-    {"by-name", std::make_shared<query::UP>(std::string("/tft/summoner/v1/summoners/by-name/"))},
-    {"by-puuid", std::make_shared<query::UP>(std::string("/tft/summoner/v1/summoners/by-puuid/"))},
-    {"by-summoner-id", std::make_shared<query::UP>(std::string("/tft/summoner/v1/summoners/"))},
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> TFT_SUMMONER_V1 = {
+    {"by-account", constexpr std::make_shared<query::UP>("/tft/summoner/v1/summoners/by-account/")},
+    {"by-name", constexpr std::make_shared<query::UP>("/tft/summoner/v1/summoners/by-name/")},
+    {"by-puuid", constexpr std::make_shared<query::UP>("/tft/summoner/v1/summoners/by-puuid/")},
+    {"by-summoner-id", constexpr std::make_shared<query::UP>("/tft/summoner/v1/summoners/")},
 };;
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> VAL_CONTENT_V1 = {
-    {"content", std::make_shared<query::U>(std::string("/val/content/v1/contents"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> VAL_CONTENT_V1 = {
+    {"content", constexpr std::make_shared<query::U>("/val/content/v1/contents")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> VAL_MATCH_V1 = {
-    {"by-match", std::make_shared<query::UP>(std::string("/val/match/v1/matches/"))},
-    {"by-puuid", std::make_shared<query::UP>(std::string("/val/match/v1/matchlists/by-puuid/"))},
-    {"by-queue", std::make_shared<query::UP>(std::string("/val/match/v1/recent-matches/by-queue/"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> VAL_MATCH_V1 = {
+    {"by-match", constexpr std::make_shared<query::UP>("/val/match/v1/matches/")},
+    {"by-puuid", constexpr std::make_shared<query::UP>("/val/match/v1/matchlists/by-puuid/")},
+    {"by-queue", constexpr std::make_shared<query::UP>("/val/match/v1/recent-matches/by-queue/")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> VAL_RANKED_V1 = {
-    {"by-act", std::make_shared<query::UP>(std::string("/val/ranked/v1/leaderboards/by-act/"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> VAL_RANKED_V1 = {
+    {"by-act", constexpr std::make_shared<query::UP>("/val/ranked/v1/leaderboards/by-act/")}
 };
 
-const std::unordered_map<std::string, std::shared_ptr<query::QueryType>> VAL_STATUS_V1 = {
-    {"v1", std::make_shared<query::U>(std::string("/val/status/v1/platform-data"))}
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> VAL_STATUS_V1 = {
+    {"v1", constexpr std::make_shared<query::U>("/val/status/v1/platform-data")}
 };
 
-const std::unordered_map<std::string, std::unordered_map<std::string, std::shared_ptr<query::QueryType>>> RiotApiClient::query_types = {
+const std::unordered_map<std::string_view, std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>>> RiotApiClient::query_types = {
     {"ACCOUNT-V1", ACCOUNT_V1},
     {"CHAMPION-MASTERY-V1", CHAMPION_MASTERY_V1},
     {"CHAMPION-V3", CHAMPION_V3},
@@ -166,7 +166,7 @@ Json::Value RiotApiClient::query(std::string endpoint, std::string end_type, std
 
     std::string address = (*(this->query_types.at(endpoint).at(end_type))).construct_url(params);
 
-    std::shared_ptr<query_attempts> attempts = std::make_shared<query_attempts>(0, 0, 0);
+    std::shared_ptr<query_attempts> attempts = constexpr std::make_shared<query_attempts>(0, 0, 0);
 
     return this->get(address, attempts);
 }

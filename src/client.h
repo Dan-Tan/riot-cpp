@@ -26,7 +26,7 @@ namespace client {
             
         private:
             static const std::unordered_map<int, std::string> Err_Codes;
-            static const std::unordered_map<std::string, std::unordered_map<std::string, std::shared_ptr<query::QueryType>>> query_types;
+            static const std::unordered_map<std::string_view, std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>>> query_types;
             struct curl_slist *header = nullptr;
             CURL* easy_handle = nullptr;
             std::vector<char> buffer;
