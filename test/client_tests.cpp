@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include <string>
-#include "../src/client.h"
+#include "../src/client/client.h"
 #include <jsoncpp/json/json.h>
 
 #define CONFIG "../../.api_keys/riot_config.json", "../test/test_log.txt", true, false

@@ -1,7 +1,6 @@
-#include "client.h"
+#include "../client/client.h"
 #include "query_type.h"
 
-#define STR (std::string)
 using namespace client;
 
 static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> ACCOUNT_V1 = {

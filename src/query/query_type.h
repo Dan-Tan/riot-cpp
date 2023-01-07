@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <cstdarg>
 #include <vector>
 
 namespace query {

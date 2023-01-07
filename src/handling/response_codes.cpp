@@ -1,5 +1,4 @@
-#include "client.h"
-#include <iostream>
+#include "../client/client.h"
 #include <stdio.h>
 #include <string>
 #include <curl/curl.h>
@@ -36,20 +35,16 @@ bool RiotApiClient::handle_response(std::string_view address, long response_code
 
     } else if (response_code == 500) {
         if (attempt->internal_errors > this->internal_attempts) {
-            std::cout << "Repeated error 500: Internal server error, Aborting, too many attempts..." << std::endl;
             repeat = false;
         } else {
-            std::cout << "Error 500: Internal server error, attempting to handle..." << std::endl;
             attempt->internal_errors += 1;
             this->handle_rate(this->internal_wait_type);
             repeat = true;
         }
     } else if (response_code == 503) {
         if (attempt->service_denials > this->service_attempts) {
-            std::cout << "Repeated error 503: Service unavailable, Aborting, too many attempts" << std::endl;
             repeat = false;
         } else {
-            std::cout << "Error 503: Service unavailable, attempting to handle..." << std::endl;
             attempt->service_denials += 1;
             this->handle_rate(this->service_wait_type);
             repeat = true;
@@ -94,12 +89,9 @@ void RiotApiClient::log_request(std::string_view address_sent, long response_cod
 
 void RiotApiClient::handle_rate(bool wait_type) {
     if (!wait_type) {
-        std::cout << "Long timeout: waiting..." << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(120));
     } else {
-        std::cout << "waiting..." << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
-    std::cout << "trying again..." << std::endl;
     return;
 }

@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include <memory>
 #include <tuple>
-#include "query_type.h"
+#include "../query/query_type.h"
 
 typedef struct query_attempts {
     int rate_denials;
