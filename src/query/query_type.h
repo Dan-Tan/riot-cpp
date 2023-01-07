@@ -7,7 +7,7 @@ namespace query {
     class QueryType {
         public:
             constexpr QueryType() {};
-            ~QueryType();
+            virtual ~QueryType();
             virtual std::string construct_url(std::vector<std::string>) = 0;
             inline std::string base_url(std::string region) {
                 return "https://" + region + ".api.riotgames.com";

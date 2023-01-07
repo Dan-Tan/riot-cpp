@@ -41,6 +41,7 @@ RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log
     if (!config) {
         std::string err_msg("Cannot open config file: ");
         err_msg = err_msg + path_to_config;
+        fclose(log);
         throw std::domain_error(err_msg);
     }
     
@@ -49,6 +50,7 @@ RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log
 
     if (!retrieving_key) {
         std::string err_msg("Unable to read api json");
+        fclose(log);
         throw std::domain_error(err_msg);
     }
     else {
