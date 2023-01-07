@@ -1,5 +1,6 @@
 #include "../client/client.h"
 #include "query_type.h"
+#include <stdexcept>
 
 using namespace client;
 
@@ -155,17 +156,19 @@ const std::unordered_map<std::string_view, std::unordered_map<std::string_view, 
     {"VAL-STATUS-V1", VAL_STATUS_V1}
 };
 
-#include <iostream>
-
 Json::Value RiotApiClient::query(std::string endpoint, std::string end_type, std::vector<std::string> params) {
-
+    
     for (int i = 0; i < params.size(); i++) {
         params[i] = this->encode_url(params[i]);
     }
+    try {
+        std::string address = (*(this->query_types.at(endpoint).at(end_type))).construct_url(params);
+        std::shared_ptr<query_attempts> attempts = std::make_shared<query_attempts>(0, 0, 0);
+        return this->get(address, attempts);
+    }
+    catch (const std::out_of_range& endpoint_exception) {
+        throw std::invalid_argument("Invalid (endpoint, end_type) combination given: (" + endpoint + ", " + end_type + ") \nMAP EXCEPTION: " + std::string(endpoint_exception.what()) + "\n");
+    }
 
-    std::string address = (*(this->query_types.at(endpoint).at(end_type))).construct_url(params);
 
-    std::shared_ptr<query_attempts> attempts = std::make_shared<query_attempts>(0, 0, 0);
-
-    return this->get(address, attempts);
 }
