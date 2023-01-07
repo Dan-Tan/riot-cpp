@@ -8,17 +8,11 @@ find_package(CURL REQUIRED)
 project(RIOTAPICLIENT)
 
 add_executable(tests test/client_tests.cpp)
-add_executable(benchmarks test/benchmark_client.cpp)
 add_subdirectory(src)
 
 target_link_libraries(tests PRIVATE client)
 target_link_libraries(tests PRIVATE curl)
 target_link_libraries(tests PRIVATE jsoncpp)
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
-
-target_link_libraries(benchmarks PRIVATE client)
-target_link_libraries(benchmarks PRIVATE curl)
-target_link_libraries(benchmarks PRIVATE jsoncpp)
-target_link_libraries(benchmarks PRIVATE Catch2::Catch2WithMain)
 
 
