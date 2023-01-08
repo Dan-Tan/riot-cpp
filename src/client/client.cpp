@@ -13,6 +13,7 @@ RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log
     curl_global_init(CURL_GLOBAL_ALL);
 
     this->log_all = log_all;
+    this->reader = std::shared_ptr<Json::Reader>();
 
     FILE* log;
 
@@ -61,6 +62,7 @@ RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log
     
     this->path_to_log = path_to_log;
     this->easy_handle = curl_easy_init();
+    this->rate_handler = RateLimiter(this->easy_handle, this->reader);
 
     fprintf(log, "Curl initialised\n");
     
@@ -87,7 +89,6 @@ static size_t WriteCallBack(void* contents, size_t size, size_t nmemb, void* buf
 
 Json::Value RiotApiClient::get(std::string_view address, std::shared_ptr<query_attempts> attempt) {
 
-    Json::Reader reader;
     Json::Value result;
 
     CURLcode res_;
@@ -98,6 +99,9 @@ Json::Value RiotApiClient::get(std::string_view address, std::shared_ptr<query_a
 
     curl_easy_setopt(this->easy_handle, CURLOPT_WRITEFUNCTION, WriteCallBack);
     curl_easy_setopt(this->easy_handle, CURLOPT_WRITEDATA, &this->buffer);
+
+    curl_easy_setopt(this->easy_handle, CURLOPT_HEADERFUNCTION, WriteCallBack);
+    curl_easy_setopt(this->easy_handle, CURLOPT_HEADERDATA, &this->rate_handler->header_buffer);
 
     res_ = curl_easy_perform(this->easy_handle);
 
@@ -113,9 +117,10 @@ Json::Value RiotApiClient::get(std::string_view address, std::shared_ptr<query_a
     if (repeat) {
         return this->get(address, attempt);
     } 
+
     if (response_code = 200) {
         std::string result_(this->buffer.data());
-        bool json_conversion = reader.parse(result_, result);
+        bool json_conversion = this->reader->parse(result_, result);
         if (!json_conversion) {
             std::domain_error("Unable to cast output string to Json");
         }

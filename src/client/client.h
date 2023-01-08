@@ -32,6 +32,8 @@ namespace client {
             std::vector<char> buffer;
 
             std::string path_to_log;
+            std::shared_ptr<Json::Reader> reader;
+            rate::RateLimiter rate_handler;
 
             int n_attempts;
             int internal_attempts;
@@ -42,7 +44,6 @@ namespace client {
 
             Json::Value get(std::string_view end_url, std::shared_ptr<query_attempts> attempt);
 
-            void handle_rate(bool wait_type);
             bool handle_response(std::string_view address, long response_code, std::shared_ptr<query_attempts> attempt);
 
             void log_request(std::string_view address_sent, long response_code, 
@@ -52,6 +53,7 @@ namespace client {
                 std::string url_start = "https://" + region + ".api.riotgames.com";;
                 return url_start;
             }
+
             inline std::string encode_url(std::string query_arg) {
                 std::string encoding = curl_easy_escape(this->easy_handle, query_arg.data(), query_arg.length());
                 return encoding;
