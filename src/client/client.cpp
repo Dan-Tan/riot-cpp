@@ -42,6 +42,8 @@ namespace client {
     }
 
     RiotApiClient::~RiotApiClient() {
+        curl_slist_free_all(this->header);
+        curl_easy_cleanup(this->easy_handle);
         curl_global_cleanup();
     }
 

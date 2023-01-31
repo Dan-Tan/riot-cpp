@@ -26,7 +26,9 @@ namespace client {
             bool get(std::shared_ptr<query::query> request);
 
             inline std::string encode_url(std::string query_arg) {
-                std::string encoding = curl_easy_escape(this->easy_handle, query_arg.data(), query_arg.length());
+                char *encoded= curl_easy_escape(this->easy_handle, query_arg.data(), query_arg.length());
+                std::string encoding = encoded;
+                curl_free(encoded);
                 return encoding;
             };       
 
