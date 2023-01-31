@@ -1,31 +1,37 @@
 #include <catch2/catch_test_macros.hpp>
+#include <ctime>
+#include <queue>
+#include <vector>
 #include <string>
 #include "../src/client/client.h"
 #include <jsoncpp/json/json.h>
 
-#define CONFIG "../../.api_keys/riot_config.json", "../test/test_log.txt", true, false
+#define CONFIG "../../.api_keys/riot_config.json"
 
 using namespace client;
+
 
 TEST_CASE( "TESTING ACCOUNT_V1 QUERIES") {
     RiotApiClient test_client(CONFIG);
 
-    std::vector<std::string> region = {"americas", "asia", "europe"};
-    std::string puuid = "nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A";
+    std::vector<std::string> region = {"AMERICAS", "ASIA", "EUROPE"};
+    std::string puuid; // puuid is key specific
     std::string gamename = "DanTan1"; std::string tagline = "fresn";
     std::string game = "val";
+    std::vector<std::string> end_types = {"by-riot-id", "by-puuid", "by-game"};
 
     std::string endpoint = "ACCOUNT-V1";
 
     Json::Value result;
     
-    for (int i = 0; i < 3; i++) {
-        result = test_client.query(endpoint, std::string("by-puuid"), std::vector<std::string>{region[i], puuid});
-        REQUIRE(result["puuid"] == puuid);
-        result = test_client.query(endpoint, std::string("by-riot-id"), std::vector<std::string>{region[i], gamename, tagline});
+    for (int i = 0; i < 1; i++) {
+        result = test_client.query(endpoint, end_types.at(0), std::vector<std::string>{region[i], gamename, tagline});
         REQUIRE(result["gameName"] == gamename);
         REQUIRE(result["tagLine"] == tagline);
-        result = test_client.query(endpoint, std::string("by-game"), std::vector<std::string>{region[i], game, puuid});
+        puuid = result["puuid"].asString();
+        result = test_client.query(endpoint, end_types.at(1), std::vector<std::string>{region[i], puuid});
+        REQUIRE(result["puuid"] == puuid);
+        result = test_client.query(endpoint, end_types.at(2), std::vector<std::string>{region[i], game, puuid});
         REQUIRE(result["puuid"] == puuid);
     }
 }
@@ -39,8 +45,8 @@ TEST_CASE( "TESTING LEAGUE_V4 QUERIES") {
     std::vector<std::string> queue = {"RANKED_SOLO_5x5", "RANKED_FLEX_SR"};
     std::vector<std::string> division = {"I", "II", "III", "IV"};
     std::vector<std::string> tier = {"DIAMOND", "PLATINUM", "GOLD", "SILVER", "BRONZE", "IRON"};
-    std::string summoner_id = "Ob0sRhCSzqtSRNHfAk_kS6Ac9TNOzKVhqj_kYr74HOhf2II";
-    std::string league_id = "16dfc561-5064-4a5d-b4c4-9d4bfa03773f";
+    std::string summoner_id;
+    std::string league_id;
 
     std::string endpoint = "LEAGUE-V4";
 
@@ -59,6 +65,11 @@ TEST_CASE( "TESTING LEAGUE_V4 QUERIES") {
             REQUIRE(result["queue"] == queue[i]);
         }
     }
+    result = test_client.query(endpoint, std::string("master"), std::vector<std::string>{region, queue[0]});
+    summoner_id = result["entries"][0]["summonerId"].asString();
+    league_id = result["leagueId"].asString();
+
+    Json::StreamWriterBuilder builder;
 
     SECTION("Testing specific queue queries") {
         for (int qu = 0; qu < queue.size(); qu++) {
@@ -139,7 +150,7 @@ TEST_CASE( "TESTING MATCH QUERIES", "[RiotApiClient::MATCH_V5]" ) {
 //    result = test_client.CLASH_V1_tournamentid(tournament_id, region);
 //
 //}
-//
+
 // TODO: 
 //
 // Legends of Runeterra Queries

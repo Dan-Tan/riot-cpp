@@ -4,11 +4,16 @@
 │   ├── client.cpp
 │   └── client.h
 ├── [01;34mhandling[0m
-│   └── response_codes.cpp
+│   ├── handlers.cpp
+│   ├── handlers.h
+│   ├── response_codes.cpp
+│   └── [01;34mstructures[0m
+│       ├── rate_structures.h
+│       └── request_history.cpp
 ├── [01;34mquery[0m
 │   ├── query.cpp
-│   ├── query_type.cpp
-│   └── query_type.h
+│   ├── query.h
+│   └── query_type.cpp
 └── version
 
-3 directories, 8 files
+4 directories, 12 files
