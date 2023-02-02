@@ -1,6 +1,6 @@
 # Riot Api Client in Cpp
 
-Basic api alient for RIOT GAMES API. Currently handles rate limiting, 5XX error codes and basic logging functionality. Only implements league of legends queries currently and in the process of adding and testing all other queries.
+Basic api alient for RIOT GAMES API. Currently handles rate limiting and 5XX error codes.
 
 Currently in development. 
 
@@ -11,20 +11,23 @@ Uses libcurl to send requests and jsoncpp to store return values. Shared object 
 Currently incorrect names of endpoints will cause an exception, I will write a more informative exception
 
 ```Cpp
-#include <jsoncpp>
+#include <jsoncpp/json/json.h>
 #include <string>
+
+using required_args_type = std::vector<std::string>;
+using optional_args_type = std::vector<std::pair<std::string, std::string>>;
 
 int main() {
     
-    std::string PATH_TO_API_KEY, PATH_TO_LOG_FILE;
-    bool log_all, overwrite_logs;
-    client::RiotApiClient example_client(PATH_TO_API_KEY, PATH_TO_LOG_FILE, log_all, overwrite_logs);
+    std::string PATH_TO_API_KEY;
+    client::RiotApiClient example_client(PATH_TO_API_KEY);
     
     Json::Value response;
-    std::string endpoint = "SUMMONER-V4";
-    std::string method = "by-name";
+    std::string endpoint = "MATCH-V5";
+    std::string method = "by-puuid";
 
-    std::vector<std::string> params = {"Kr", "Hide on bush"}; // region, params...
+    required_args_type params = {"<routing_here>", "<puuid_here>"}; // region, params...
+    optional_args_type optional_arguments = {{"startTime", "<user_arg>"}, {"endTime", <user_arg>}, ...}  
 
     response = example_client.query(endpoint, method,  params);
 }
@@ -40,48 +43,13 @@ Pass path to file to client constructor.
 }
 ```
 
-## Example Log 
+## Testing
 
-Used invalid api_key
+Testing of most endpoints is located in the test directory. Currently, my basic development key does not giving access to all endpoints to test. 
 
-```txt
---- Client Initialised Started ---
-Time initialised: Sunday Sun Jan  1 17:27:20 2023
-Path to log file: ../test/test_log.txt
-overwite: true, log_all queries: false
-Retrieved API key
-Curl initialised
-MAX SERVICE DENIALS (503): 2 
-MAX INTERNAL SERVICE ERRORS (500): 2 
---- Client Successfully Initialised ---
- 
---- NEW QUERY --- 
-Address_sent: https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/6dgDp5y88RxqOmVMv1GRoGaCmPP-uAbmlsVRhKQj4g0KdIH_GxqCEE6w0JRmHRxSTzbtxMFGypJZIg/ids
-Time finished: Sunday Sun Jan  1 17:27:21 2023
-Final Response Code: 403
-Final Response Message: Forbidden
-Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0 
- 
---- NEW QUERY --- 
-Address_sent: https://asia.api.riotgames.com/lol/match/v5/matches/KR_6279823690
-Time finished: Sunday Sun Jan  1 17:27:21 2023
-Final Response Code: 403
-Final Response Message: Forbidden
-Attempts: rate_denials: 0, internal_errors: 0, service_denials: 0
-```
+## To do/How to contribute:
 
-## To do:
+All contribution are welcome, see the issues of the repository to see what you can work on or suggest something else you think might be interesting.
 
-Short Term
-<<<<<<< HEAD
-* Create tests for all queries
-=======
-* Handle 5XX better
-* Add more flexible rate handling (developer, app, ...)
-* Create/Re-write tests for all queries
-* Document all query methods
->>>>>>> restructuring
+Create a pull request when you're ready.
 
-Long Term
-* Add higher level queries (All, csv conversion?)
-* Python wrapper?
