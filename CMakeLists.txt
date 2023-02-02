@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.22.1)
+project(RIOTAPICLIENT)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
 if (CMAKE_CXX_CPPCHECK)
     list(
@@ -13,14 +15,14 @@ endif()
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(GCC_CXX_FLAGS ${GCC_CXX_FLAGS} "-static-libgcc -static-libstdc++ -static")
+set(GCC_CXX_FLAGS ${GCC_CXX_FLAGS} "-static-libgcc -static-libstdc++ -static -ggdb3")
 
 find_package(Catch2 3 REQUIRED)
 find_package(CURL REQUIRED)
 
-project(RIOTAPICLIENT)
 
 add_executable(tests test/client_tests.cpp)
+add_executable(rate_tests test/Rate_Tests.cpp)
 add_subdirectory(src)
 
 target_link_libraries(tests PRIVATE client)
@@ -28,4 +30,8 @@ target_link_libraries(tests PRIVATE curl)
 target_link_libraries(tests PRIVATE jsoncpp)
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 
+target_link_libraries(rate_tests PRIVATE client)
+target_link_libraries(rate_tests PRIVATE curl)
+target_link_libraries(rate_tests PRIVATE jsoncpp)
+target_link_libraries(rate_tests PRIVATE Catch2::Catch2WithMain)
 

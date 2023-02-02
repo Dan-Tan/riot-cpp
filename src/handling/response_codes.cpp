@@ -29,7 +29,7 @@ bool RiotApiClient::handle_response(std::string_view address, long response_code
         repeat = false;
     } else if (response_code == 429) {
         bool wait_type = !(attempt->rate_denials >= 1);
-        this->handle_rate(wait_type);
+        this->rate_handler->handle_limit();
         attempt->rate_denials += 1;
         repeat = true;
 
@@ -46,7 +46,7 @@ bool RiotApiClient::handle_response(std::string_view address, long response_code
             repeat = false;
         } else {
             attempt->service_denials += 1;
-            this->handle_rate(this->service_wait_type);
+            this->rate_handler->handle_rate();
             repeat = true;
         }
     } else {
@@ -87,11 +87,3 @@ void RiotApiClient::log_request(std::string_view address_sent, long response_cod
     fclose(log);
 }
 
-void RiotApiClient::handle_rate(bool wait_type) {
-    if (!wait_type) {
-        std::this_thread::sleep_for(std::chrono::seconds(120));
-    } else {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
-    return;
-}
