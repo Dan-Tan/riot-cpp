@@ -89,7 +89,7 @@ namespace client {
     bool RiotApiClient::get(std::shared_ptr<query::query> request) {
 
         Json::Reader reader;
-        std::vector<char> content_buffer;
+        std::vector<char> content_buffer = {};
         std::vector<char> header_buffer = {'{'};
 
         curl_easy_setopt(this->easy_handle, CURLOPT_URL, request->url.data());

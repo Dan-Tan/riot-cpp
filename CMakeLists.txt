@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.22.1)
+project(RIOTAPICLIENT)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
 if (CMAKE_CXX_CPPCHECK)
     list(
@@ -18,7 +20,6 @@ set(GCC_CXX_FLAGS ${GCC_CXX_FLAGS} "-static-libgcc -static-libstdc++ -static -gg
 find_package(Catch2 3 REQUIRED)
 find_package(CURL REQUIRED)
 
-project(RIOTAPICLIENT)
 
 add_executable(tests test/client_tests.cpp)
 add_executable(rate_tests test/Rate_Tests.cpp)

@@ -17,7 +17,7 @@ static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryTy
     {"by-game",    std::make_shared<query::UPUP>("/riot/account/v1/active-shards/by-game/", "/by-puuid/", false)},
 };
 
-static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> CHAMPION_MASTERY_V1 = {
+static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> CHAMPION_MASTERY_V4 = {
     {"by-summoner-id",     std::make_shared<query::UP>("/lol/champion-mastery/v4/champion-masteries/by-summoner/", false)},
     {"by-champion",     std::make_shared<query::UPUP>("/lol/champion-mastery/v4/champion-masteries/by-summoner/", "/by-champion/", false)},
     {"summoner-top",    std::make_shared<query::UPU>("/lol/champion-mastery/v4/champion-masteries/by-summoner/", "/top", true)},
@@ -51,9 +51,9 @@ static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryTy
 static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>> LOL_CHALLENGES_V1 = {
     {"config",               std::make_shared<query::U>("/lol/challenges/v1/challenges/config", false)},
     {"percentiles",          std::make_shared<query::U>("/lol/challenges/v1/challenges/percentiles", false)},
-    {"chalenge-config",      std::make_shared<query::UPU>("/lol/challenges/v1/challenges/", "/config", false)}, 
+    {"challenge-config",      std::make_shared<query::UPU>("/lol/challenges/v1/challenges/", "/config", false)}, 
     {"challenge-leaderboard", std::make_shared<query::UPUP>("/lol/challenges/v1/challenges/", "/leaderboards/by-level/", true)},
-    {"chalenge-percentiles", std::make_shared<query::UPU>("/lol/challenges/v1/challenges/", "/percentiles", false)}, 
+    {"challenge-percentiles", std::make_shared<query::UPU>("/lol/challenges/v1/challenges/", "/percentiles", false)}, 
     {"by-puuid",             std::make_shared<query::UP>("/lol/challenges/v1/player-data/", false)} 
 };
 
@@ -140,7 +140,7 @@ static const std::unordered_map<std::string_view, std::shared_ptr<query::QueryTy
 
 const std::unordered_map<std::string_view, std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>>> RiotApiClient::query_types = {
     {"ACCOUNT-V1", ACCOUNT_V1},
-    {"CHAMPION-MASTERY-V1", CHAMPION_MASTERY_V1},
+    {"CHAMPION-MASTERY-V4", CHAMPION_MASTERY_V4},
     {"CHAMPION-V3", CHAMPION_V3},
     {"CLASH-V1", CLASH_V1},
     {"LEAGUE-EXP-V4", LEAGUE_EXP_V4},
@@ -182,7 +182,7 @@ Json::Value RiotApiClient::query(std::string endpoint, std::string end_type, std
 
     try {
         bool parse_success;
-        std::string address = (*(this->query_types.at(endpoint).at(end_type))).construct_url(params);
+        std::string address = (*(this->query_types.at(endpoint).at(end_type))).construct_url(params, optional_args);
         std::shared_ptr<query::query> request = std::make_shared<query::query>(endpoint + "-" + end_type, params.at(0), address);
         while (this->request_handler.review_request(request)) {
             if (request->last_response == 200) {
@@ -195,11 +195,12 @@ Json::Value RiotApiClient::query(std::string endpoint, std::string end_type, std
             wait_until(request->send_time);
             this->get(request);
         }
+        std::cout << request->url << '\n';
         //log failure
         return request->response_content;
     }
     catch (const std::out_of_range& endpoint_exception) { //invalid request
-        throw std::invalid_argument("Given request type does not exist: (" + endpoint + ", " + end_type + ")");
+        throw std::invalid_argument(std::string(endpoint_exception.what()) + "\nGiven request type does not exist: (" + endpoint + ", " + end_type + ")");
     }
 }
 }

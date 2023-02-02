@@ -19,7 +19,7 @@ static inline std::string construct_args(const std::string& accumm, const opt_ar
 std::string QueryType::query_params(const std::vector<opt_args> optional_args){
     if (!this->takes_optional_arguments && optional_args.size() != 0) {
         throw std::invalid_argument("This query type does not accept optional arguements");
-    } else if (!optional_args.size() != 0) {
+    } else if (optional_args.size() == 0) {
         return std::string("");
     } else {
         return std::accumulate(optional_args.begin(), --optional_args.end(), std::string("?"), construct_args);

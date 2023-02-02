@@ -96,7 +96,7 @@ void RateHandler::review_request(std::shared_ptr<query::query> request) {
     }
     if (request->last_response == 429) {
         const std::time_t c_time = std::time(NULL);
-        request->send_time = std::mktime(std::gmtime(&c_time)) + static_cast<std::time_t>(request->response_header["Retry-After"].asInt());
+        request->send_time = std::mktime(std::gmtime(&c_time)) + static_cast<std::time_t>(fast_atoi(request->response_header["Retry-After"].asString().data()));
         try {
             std::string limit_type = request->response_header["X-Rate-Limit-Type"].asString();
             if (limit_type == "application") {

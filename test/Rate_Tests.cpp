@@ -203,3 +203,4 @@ TEST_CASE("RATE TESTS") {
         REQUIRE_FALSE(wait_time);
     }
 }
+
