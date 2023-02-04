@@ -8,11 +8,12 @@ Uses libcurl to send requests and jsoncpp to store return values. Shared object 
 
 ## Usage
 
-Currently incorrect names of endpoints will cause an exception, I will write a more informative exception
-
 ```Cpp
 #include <jsoncpp/json/json.h>
 #include <string>
+#include <vector>
+#include <util>
+#include "path/to/client.h"
 
 using required_args_type = std::vector<std::string>;
 using optional_args_type = std::vector<std::pair<std::string, std::string>>;
@@ -27,7 +28,7 @@ int main() {
     std::string method = "by-puuid";
 
     required_args_type params = {"<routing_here>", "<puuid_here>"}; // region, params...
-    optional_args_type optional_arguments = {{"startTime", "<user_arg>"}, {"endTime", <user_arg>}, ...}  
+    optional_args_type optional_arguments = {{"startTime", "<user_arg>"}, {"endTime", "<user_arg>"}, ...}  
 
     response = example_client.query(endpoint, method,  params);
 }

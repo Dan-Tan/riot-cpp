@@ -21,16 +21,16 @@ find_package(Catch2 3 REQUIRED)
 find_package(CURL REQUIRED)
 
 
-add_executable(tests test/client_tests.cpp)
+add_executable(client_tests test/client_tests.cpp)
 add_executable(rate_tests test/Rate_Tests.cpp)
 add_subdirectory(src)
 
-target_link_libraries(tests PRIVATE client)
-target_link_libraries(tests PRIVATE curl)
-target_link_libraries(tests PRIVATE jsoncpp)
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+target_link_libraries(client_tests PRIVATE riot-cpp)
+target_link_libraries(client_tests PRIVATE curl)
+target_link_libraries(client_tests PRIVATE jsoncpp)
+target_link_libraries(client_tests PRIVATE Catch2::Catch2WithMain)
 
-target_link_libraries(rate_tests PRIVATE client)
+target_link_libraries(rate_tests PRIVATE riot-cpp)
 target_link_libraries(rate_tests PRIVATE curl)
 target_link_libraries(rate_tests PRIVATE jsoncpp)
 target_link_libraries(rate_tests PRIVATE Catch2::Catch2WithMain)

@@ -6,7 +6,6 @@
 ├── [01;34mhandling[0m
 │   ├── handlers.cpp
 │   ├── handlers.h
-│   ├── response_codes.cpp
 │   └── [01;34mstructures[0m
 │       ├── rate_structures.h
 │       └── request_history.cpp
@@ -16,4 +15,4 @@
 │   └── query_type.cpp
 └── version
 
-4 directories, 12 files
+4 directories, 11 files
