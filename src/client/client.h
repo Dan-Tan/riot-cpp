@@ -8,6 +8,7 @@
 #include <memory>
 #include "../query/query.h"
 #include "../handling/handlers.h"
+#include "../logging/logger.h"
 
 namespace client {
 
@@ -17,7 +18,7 @@ namespace client {
         private: 
 
         public:
-            RiotApiClient(std::string path_to_config);
+            RiotApiClient(std::string path_to_config, std::string path_to_log, logging::level report_level = logging::level::warning, bool log_verbose = false, bool log_frequency = true);
             ~RiotApiClient();
 
             Json::Value query(std::string endpoint, std::string end_type, std::vector<std::string> params, std::vector<opt_args> optional_args = {});
@@ -32,8 +33,8 @@ namespace client {
                 return encoding;
             };       
 
-
-            handler::RequestHandler request_handler;
+            std::unique_ptr<handler::RequestHandler> request_handler;
+            std::unique_ptr<logging::Logger> logger;
 
             static const std::unordered_map<int, std::string> Err_Codes;
             static const std::unordered_map<std::string_view, std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>>> query_types;

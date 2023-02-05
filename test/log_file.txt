@@ -1,0 +1,246 @@
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+Log file successfully opened. 
+[Sun, 05 Feb 23 13:20:16 GMT]: WARNING Request executed
+  [Method Key: ACCOUNT-V1-by-riot-id], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:17 GMT]: WARNING Request executed
+  [Method Key: ACCOUNT-V1-by-puuid], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:17 GMT]: WARNING Request executed
+  [Method Key: ACCOUNT-V1-by-game], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:18 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-challenger], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:19 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-grandmaster], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:19 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-master], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:20 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-challenger], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:20 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-grandmaster], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:20 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-master], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:21 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-master], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:23 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-master], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:23 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:23 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:23 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:24 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:24 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:24 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:25 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:25 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:25 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:26 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:26 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:26 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:26 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:27 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:27 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:27 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:28 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:28 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:28 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:29 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:29 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:29 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:30 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:30 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:30 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:30 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:31 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:31 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:31 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:32 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:32 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:32 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:33 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:33 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:33 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:33 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:34 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:34 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:34 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:35 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:35 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:35 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:36 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:36 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:36 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:36 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:37 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:37 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-specific-league], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:39 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-master], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:39 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-by-summoner-id], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:40 GMT]: WARNING Request executed
+  [Method Key: LEAGUE-V4-by-league-id], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:41 GMT]: WARNING Request executed
+  [Method Key: SUMMONER-V4-by-name], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:41 GMT]: WARNING Request executed
+  [Method Key: SUMMONER-V4-by-account-id], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:41 GMT]: WARNING Request executed
+  [Method Key: SUMMONER-V4-by-puuid], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:41 GMT]: WARNING Request executed
+  [Method Key: SUMMONER-V4-by-summoner-id], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:41 GMT]: WARNING Request executed
+  [Method Key: MATCH-V5-by-match-id], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:42 GMT]: WARNING Request executed
+  [Method Key: MATCH-V5-match-timeline], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:42 GMT]: WARNING Request executed
+  [Method Key: CHAMPION-MASTERY-V4-by-summoner-id], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:42 GMT]: WARNING Request executed
+  [Method Key: CHAMPION-MASTERY-V4-by-champion], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:42 GMT]: WARNING Request executed
+  [Method Key: CHAMPION-MASTERY-V4-summoner-top], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:42 GMT]: WARNING Request executed
+  [Method Key: CHAMPION-MASTERY-V4-summoner-scores], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:43 GMT]: WARNING Request executed
+  [Method Key: CHAMPION-V3-rotations], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:44 GMT]: WARNING Request executed
+  [Method Key: LOL-CHALLENGES-V1-config], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:44 GMT]: WARNING Request executed
+  [Method Key: LOL-CHALLENGES-V1-percentiles], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:44 GMT]: WARNING Request executed
+  [Method Key: LOL-CHALLENGES-V1-challenge-config], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:44 GMT]: WARNING Request executed
+  [Method Key: LOL-CHALLENGES-V1-challenge-percentiles], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:44 GMT]: WARNING Request executed
+  [Method Key: LOL-CHALLENGES-V1-by-puuid], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:45 GMT]: WARNING Request executed
+  [Method Key: LOL-STATUS-v4], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:46 GMT]: WARNING Request executed
+  [Method Key: SUMMONER-V4-by-name], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:47 GMT]: WARNING Request executed
+  [Method Key: LOR-MATCH-V1-by-puuid], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:47 GMT]: WARNING Request executed
+  [Method Key: LOR-MATCH-V1-by-match], [Last Response Code: 404]
+  Data not found: The requested resource was not found.Log file successfully opened. 
+[Sun, 05 Feb 23 13:20:49 GMT]: WARNING Request executed
+  [Method Key: LOR-RANKED-V1-leaderboards], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:50 GMT]: WARNING Request executed
+  [Method Key: LOR-STATUS-V1-v1], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:50 GMT]: WARNING Request executed
+  [Method Key: SPECTATOR-V4-featured-games], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:50 GMT]: WARNING Request executed
+  [Method Key: SUMMONER-V4-by-name], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:50 GMT]: WARNING Request executed
+  [Method Key: SPECTATOR-V4-by-summoner-id], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:51 GMT]: WARNING Request executed
+  [Method Key: TFT-LEAGUE-V1-challenger], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:51 GMT]: WARNING Request executed
+  [Method Key: TFT-LEAGUE-V1-grandmaster], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:53 GMT]: WARNING Request executed
+  [Method Key: TFT-LEAGUE-V1-master], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:53 GMT]: WARNING Request executed
+  [Method Key: TFT-LEAGUE-V1-by-summoner-id], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:54 GMT]: WARNING Request executed
+  [Method Key: TFT-LEAGUE-V1-by-league-id], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:54 GMT]: WARNING Request executed
+  [Method Key: TFT-LEAGUE-V1-queue-top], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:54 GMT]: WARNING Request executed
+  [Method Key: TFT-LEAGUE-V1-by-tier-division], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:55 GMT]: WARNING Request executed
+  [Method Key: SUMMONER-V4-by-name], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:56 GMT]: WARNING Request executed
+  [Method Key: TFT-MATCH-V1-by-puuid], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:56 GMT]: WARNING Request executed
+  [Method Key: TFT-MATCH-V1-by-match], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:57 GMT]: WARNING Request executed
+  [Method Key: TFT-STATUS-V1-v1], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:20:58 GMT]: WARNING Request executed
+  [Method Key: TFT-SUMMONER-V1-by-name], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:58 GMT]: WARNING Request executed
+  [Method Key: TFT-SUMMONER-V1-by-account], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:59 GMT]: WARNING Request executed
+  [Method Key: TFT-SUMMONER-V1-by-puuid], [Last Response Code: 200]
+  Successful request: Successful request[Sun, 05 Feb 23 13:20:59 GMT]: WARNING Request executed
+  [Method Key: TFT-SUMMONER-V1-by-summoner-id], [Last Response Code: 200]
+  Successful request: Successful requestLog file successfully opened. 
+[Sun, 05 Feb 23 13:21:02 GMT]: WARNING Request executed
+  [Method Key: VAL-CONTENT-V1-content], [Last Response Code: 200]
+  Successful request: Successful request

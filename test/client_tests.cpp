@@ -6,7 +6,7 @@
 #include "../src/client/client.h"
 #include <jsoncpp/json/json.h>
 
-#define CONFIG "../../.api_keys/riot_config.json"
+#define CONFIG "../../.api_keys/riot_config.json", "../test/log_file.txt"
 
 using namespace client;
 
