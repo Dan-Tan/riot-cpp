@@ -32,7 +32,7 @@ namespace logging {
             //Logger& operator<<(const unsigned int err_code); todo
             //Logger& operator<<(const std::shared_ptr<query::query> request);
             Logger& operator<<(const int terminate) {
-                if (terminate == 0) {
+                if (this->_incoming && !terminate) {
                     this->_log_file << '\n';
                     this->_incoming = false;
                     return *this;

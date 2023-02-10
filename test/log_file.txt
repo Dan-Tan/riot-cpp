@@ -1,244 +1,38 @@
-[Fri, 10 Feb 23 07:29:18 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:55:53 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:20 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:20 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:20 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:20 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:55:56 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:22 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:23 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:24 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:24 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:24 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:24 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:25 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:25 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:04 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:27 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:27 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:28 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:28 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:28 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:29 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:29 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:29 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:29 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:30 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:30 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:30 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:30 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:31 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:31 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:31 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:32 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:33 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:33 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:33 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:34 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:34 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:34 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:34 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:35 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:35 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:35 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:36 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:36 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:36 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:36 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:37 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:37 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:37 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:37 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:38 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:38 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:38 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:38 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:39 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:39 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:39 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:40 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:40 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:40 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:40 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:41 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:41 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:41 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:41 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:30 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:43 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:44 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:45 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:45 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:36 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:45 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:45 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:45 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:45 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:45 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:37 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:46 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:46 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:46 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:38 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:47 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:47 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:47 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:47 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:47 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:39 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:47 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:47 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:39 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:48 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:49 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:49 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:49 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:49 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:49 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:41 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:49 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:49 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:42 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:50 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:51 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:51 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:51 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:45 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:52 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:52 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:46 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:53 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:53 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:47 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:54 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:54 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:54 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:54 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:48 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:55 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:55 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:57 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:57 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:57 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:57 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:58 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:29:58 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:52 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:29:59 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:30:00 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:30:00 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:30:00 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:54 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:30:00 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:30:00 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:55 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:30:01 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:30:02 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:30:02 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:30:03 GMT] INFO:
-  Request Sent
-[Fri, 10 Feb 23 07:30:03 GMT] Log Initialisation:
+[Fri, 10 Feb 23 07:56:57 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:30:04 GMT] INFO:
-  Request Sent
