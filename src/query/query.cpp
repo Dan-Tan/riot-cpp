@@ -188,12 +188,11 @@ Json::Value RiotApiClient::query(std::string endpoint, std::string end_type, std
                 return request->response_content;
             } 
             if (!this->request_handler->validate_request(request)) {
-                //log invalid request
+                (*this->logger) << logging::LEVEL::WARNING << "Request sent was invalid or the server is unavailable" << 0;
                 throw std::runtime_error("Request sent was invalid or the server is unavailable");
             }
             wait_until(request->send_time);
             this->get(request);
-            (*this->logger) << logging::LEVEL::INFO << "Request Sent" << 0; 
         }
         //log failure
         return request->response_content;
