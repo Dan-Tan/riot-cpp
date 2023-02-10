@@ -181,8 +181,7 @@ Json::Value RiotApiClient::query(std::string endpoint, std::string end_type, std
     }
 
     try {
-        bool parse_success;
-        std::string address = (*(this->query_types.at(endpoint).at(end_type))).construct_url(params, optional_args);
+        bool parse_success; std::string address = (*(this->query_types.at(endpoint).at(end_type))).construct_url(params, optional_args);
         std::shared_ptr<query::query> request = std::make_shared<query::query>(endpoint + "-" + end_type, params.at(0), address);
         while (this->request_handler->review_request(request)) {
             if (request->last_response == 200) {
@@ -194,9 +193,8 @@ Json::Value RiotApiClient::query(std::string endpoint, std::string end_type, std
             }
             wait_until(request->send_time);
             this->get(request);
-            this->logger->log(std::string("Request executed"), logging::level::warning, *request);
+            (*this->logger) << logging::LEVEL::INFO << "Request Sent" << 0; 
         }
-        std::cout << request->url << '\n';
         //log failure
         return request->response_content;
     }

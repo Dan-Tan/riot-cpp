@@ -18,7 +18,7 @@ namespace client {
         private: 
 
         public:
-            RiotApiClient(std::string path_to_config, std::string path_to_log, logging::level report_level = logging::level::warning, bool log_verbose = false, bool log_frequency = true);
+            RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level = logging::LEVEL::INFO);
             ~RiotApiClient();
 
             Json::Value query(std::string endpoint, std::string end_type, std::vector<std::string> params, std::vector<opt_args> optional_args = {});

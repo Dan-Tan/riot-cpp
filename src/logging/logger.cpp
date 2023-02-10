@@ -64,94 +64,66 @@ namespace logging {
         }
     };
 
-
-    static std::string level_string(level &log_level) {
+    static std::string level_string(const LEVEL &log_level) {
         switch (log_level) {
-            case debug:
-                return std::string("DEBUG   ");
-            case info:
-                return std::string("INFO    ");
-            case warning:
-                return std::string("WARNING ");
-            case error:
-                return std::string("ERROR   ");
-            case critical:
+            case LEVEL::DEBUG:
+                return std::string("DEBUG");
+            case LEVEL::INFO:
+                return std::string("INFO");
+            case LEVEL::WARNING:
+                return std::string("WARNING");
+            case LEVEL::ERROR:
+                return std::string("ERROR");
+            case LEVEL::CRITICAL:
                 return std::string("CRITICAL");
             default:
-                return std::string("INVALID LOG LEVEL");
+                throw std::invalid_argument("Invalid log level passed"); // somehow
         }
     }
     
-    Logger::Logger(std::string log_path, level log_level, bool verbose, bool write_immediately) {
-        this->_log_path = log_path;
-        this->_log_level = log_level;
-        this->_verbose = verbose;
-        this->_log_file.open(log_path, std::ios::app); 
-        this->_frequency = write_immediately;
-        if (!this->_log_file.is_open()) {
-            throw std::runtime_error("Unable to open log file");
-        } else {
-            this->_log_file << "Log file successfully opened. \n";
-        }
-    }
-
-    Logger::~Logger() {
-        this->dump();
-        this->_log_file.close();
-    }
-
-    std::string Logger::log_message(const std::string &message, level report_level) {
-
+    static const std::string get_current_time() { // riot format
         const std::time_t cur_time = std::time(NULL);
         std::tm *gmt_time = std::gmtime(&cur_time);
         char time_buf[sizeof("Sun, 05 Feb 2023 08:36:28 GMT") + 2];
         strftime(time_buf, sizeof time_buf, "[%a, %d %b %y %H:%M:%S GMT]", gmt_time);
         std::string log_msg{time_buf};
-        log_msg = log_msg + ": " + level_string(report_level) + message + "\n";
-
         return log_msg;
-    }
+    };
 
-    void Logger::log(std::string message, level report_level) {
-
-        if (report_level < this->_log_level) {
-            return;
-        }
-        std::string log_msg = this->log_message(message, report_level);
-
-        if (this->_frequency) {
+    Logger& Logger::operator<<(const LEVEL& log_level) {
+        if (this->_log_level <= log_level) {
+            std::string log_msg = get_current_time();
+            log_msg = log_msg + " " + level_string(log_level) + ":";
             this->_log_file << log_msg;
-            return;
+            this->_incoming = true;
+            return *this;
+        } else {
+            return *this; // does nothing 
         }
-        this->_buffer.push(log_msg);
-        
+    };
+
+    Logger& Logger::operator<<(const std::string& message) {
+        if (this->_incoming) {
+            this->_log_file << "\n  " << message;
+            return *this;
+        } else {
+            return *this;
+        }
+    }
+    
+    Logger::Logger(std::string log_path, LEVEL log_level) {
+        this->_log_path = log_path;
+        this->_log_level = log_level;
+        this->_log_file.open(log_path, std::ios::app); 
+        std::string init_time = get_current_time();
+        if (!this->_log_file.is_open()) {
+            throw std::runtime_error("Unable to open log file");
+        } else {
+            this->_log_file << init_time << " Log Initialisation:\n  Log file successfully opened. \n";
+        }
     }
 
-    void Logger::log(std::string message, level report_level, const query::query &request) {
-
-        if (report_level < this->_log_level) {
-            return;
-        }
-        std::string log_msg = this->log_message(message, report_level);
-        log_msg = log_msg + "  " + "[Method Key: " + request.method_key + "], " + "[Last Response Code: " + std::to_string(request.last_response) + "]\n";
-        log_msg = log_msg + "  " + Err_Codes(request.last_response) + ": " + Code_Meaning(request.last_response);
-
-        if (this->_verbose) {
-            log_msg = log_msg + ": " + Json::writeString(this->_builder, request.response_header);
-        }
-
-        if (this->_frequency) {
-            this->_log_file << log_msg;
-            return;
-        }
-
-        this->_buffer.push(log_msg);
-    }
-
-    void Logger::dump() {
-        while (!this->_buffer.empty()) {
-            this->_log_file << this->_buffer.front();
-            this->_buffer.pop();
-        }
+    Logger::~Logger() {
+        this->_log_file.close();
     }
 }

@@ -13,7 +13,7 @@
 
 namespace client {
 
-    RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log, logging::level report_level, bool log_verbose, bool log_frequency) {
+    RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level) {
         curl_global_init(CURL_GLOBAL_ALL);
 
         // initialised libcurl handle and header
@@ -40,7 +40,7 @@ namespace client {
         
         this->easy_handle = curl_easy_init();
         this->request_handler = std::make_unique<handler::RequestHandler>();
-        this->logger = std::make_unique<logging::Logger>(path_to_log, report_level, log_verbose, log_frequency);
+        this->logger = std::make_unique<logging::Logger>(path_to_log, report_level);
     }
 
     RiotApiClient::~RiotApiClient() {

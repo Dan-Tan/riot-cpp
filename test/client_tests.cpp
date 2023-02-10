@@ -154,6 +154,7 @@ TEST_CASE("CHAMPION-MASTERY-V4 QUERIES") {
     REQUIRE(result[0]["summonerId"] == SUMMONER_ID);
     result = test_client.query(endpoint, std::string("summoner-scores"),std::vector<std::string>{ROUTING, SUMMONER_ID});
 }
+
 TEST_CASE("CHAMPION-V3") {
     RiotApiClient test_client(CONFIG);
     
@@ -165,6 +166,7 @@ TEST_CASE("CHAMPION-V3") {
     REQUIRE(result.isMember("freeChampionIds"));
     REQUIRE(result.isMember("freeChampionIdsForNewPlayers"));
 }
+
 TEST_CASE("LOL-CHALLENGES-V1") {
     RiotApiClient test_client(CONFIG);
     
