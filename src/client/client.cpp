@@ -9,6 +9,7 @@
 #include <fstream>
 #include <stdio.h>
 #include <queue>
+#include <cstring>
 #include "client.h"
 
 namespace client {
