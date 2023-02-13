@@ -9,6 +9,7 @@
 #include "../query/query.h"
 #include "../handling/handlers.h"
 #include "../logging/logger.h"
+#include <functional>
 
 namespace client {
 
@@ -16,14 +17,17 @@ namespace client {
 
     class RiotApiClient {
         private: 
+;
 
         public:
             RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level = logging::LEVEL::INFO);
             ~RiotApiClient();
 
-            Json::Value query(std::string endpoint, std::string end_type, std::vector<std::string> params, std::vector<opt_args> optional_args = {});
+            query::ACCOUNT_V1 Account;
+
             
         private:
+            Json::Value query(std::shared_ptr<query::query> request);
             bool get(std::shared_ptr<query::query> request);
 
             inline std::string encode_url(std::string query_arg) {
@@ -36,8 +40,6 @@ namespace client {
             std::unique_ptr<handler::RequestHandler> request_handler;
             std::unique_ptr<logging::Logger> logger;
 
-            static const std::unordered_map<int, std::string> Err_Codes;
-            static const std::unordered_map<std::string_view, std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>>> query_types;
             CURL* easy_handle = nullptr;
             struct curl_slist *header = nullptr;
     }; 

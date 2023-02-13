@@ -1,8 +1,10 @@
 #pragma once
+#include <concepts>
 #include <jsoncpp/json/json.h>
 #include <ctime>
 #include <string>
 #include <vector>
+#include <functional>
 
 namespace query {
 
@@ -17,105 +19,46 @@ namespace query {
         int server_errors = 0;
     } query;
 
-    using opt_args = std::pair<std::string, std::string>;
+    template <typename T>
+    concept param = requires {std::convertible_to<T, std::string>;};
 
-    class QueryType {
+    typedef struct Endpoint {
+
+        std::shared_ptr<std::function<Json::Value(std::shared_ptr<query>)>> _query;
+        std::string _url;
+        
+        private: 
+            template <param R>
+            std::stringstream construct_base(const R& routing) const; 
+
+            template <std::size_t N, param ... Params>
+            std::string full_query(const std::array<std::string, N>& method_urls, const std::tuple<Params ...>& params) const;
+        
+            template <std::size_t N, param ... Params, param ... opts>
+            std::string full_query(const std::array<std::string, N>& method_urls, const std::tuple<Params ...>& params, const std::tuple<std::pair<std::string, opts>...>& optional_args) const;
+            
         public:
-            constexpr QueryType() {};
-            virtual ~QueryType();
+            template <param R>
+            std::shared_ptr<query> request(const std::string& key, const std::string& method_url, const R& routing);
 
-            virtual std::string construct_url(const std::vector<std::string>& params, const std::vector<opt_args>& optional_args = {}) = 0;
+            template <std::size_t N, param ... Params>
+            std::shared_ptr<query> request(const std::string& key, const std::array<std::string, N>& method_urls, const Params& ... params);
 
-        protected:
-            inline std::string base_url(std::string region) {
-                return "https://" + region + ".api.riotgames.com";
-            };
+            template <std::size_t N, param ... Params, param ... opts>
+            std::shared_ptr<query> request(const std::string& key, const std::array<std::string, N>& method_urls, const Params& ... params, const std::pair<std::string, opts>& ... optional_args);
 
-            bool takes_optional_arguments = false;
-            std::string query_params(const std::vector<opt_args> optional_args);
-    };
+    } Endpoint;
 
-    class U : public QueryType {
-        public:
-            constexpr U(const char *u1, bool optional_args) {
-                this->u1 = u1;
-                this->takes_optional_arguments = optional_args;
-            };
-            ~U();
-            std::string construct_url(const std::vector<std::string>& params, const std::vector<opt_args>& optional_args = {}) override;
+    typedef struct ACCOUNT_V1 : public Endpoint{
+        ACCOUNT_V1(const std::string url, std::shared_ptr<std::function<Json::Value(std::shared_ptr<query>)>> client_query) {
+            _query = client_query;
+            _url = url;
+        }
+        Json::Value by_puuid(const std::string& routing, const std::string& puuid);
 
-        private:
-            const char *u1;
-    };
+        Json::Value by_riot_id(const std::string& routing, const std::string& gameName, const std::string& tagline);
 
-    class UP : public QueryType {
-        public:
-            constexpr UP(const char *u1, bool optional_args) {
-                this->u1 = u1;
-                this->takes_optional_arguments = optional_args;
-            };
-            ~UP();
-                std::string construct_url(const std::vector<std::string>& params, const std::vector<opt_args>& optional_args = {}) override;
+        Json::Value by_game(const std::string& routing, const std::string& game, const std::string& puuid);
+    } ACCOUNT_V1;
 
-        private:
-            const char *u1;
-    };
-
-    class UPU : public QueryType {
-        public:
-            constexpr UPU(const char *u1, const char *u2, bool optional_args) {
-                this->u1 = u1;
-                this->u2 = u2;
-                this->takes_optional_arguments = optional_args;
-            };
-            ~UPU();
-                std::string construct_url(const std::vector<std::string>& params, const std::vector<opt_args>& optional_args = {}
-                        ) override;
-
-        private:
-            const char *u1;
-            const char *u2;
-    };
-
-    class UPP : public QueryType {
-        public:
-            constexpr UPP(const char *u1, bool optional_args) {
-                this->u1 = u1;
-                this->takes_optional_arguments = optional_args;
-            };
-            ~UPP();
-                std::string construct_url(const std::vector<std::string>& params, const std::vector<opt_args>& optional_args = {}
-                        ) override;
-
-        private:
-            const char *u1;
-    };
-
-    class UPUP : public QueryType {
-        public:
-            constexpr UPUP(const char *u1, const char *u2, bool optional_args){
-                this->u1 = u1;
-                this->u2 = u2;
-                this->takes_optional_arguments = optional_args;
-            };
-            ~UPUP();
-                std::string construct_url(const std::vector<std::string>& params, const std::vector<opt_args>& optional_args = {}
-                        ) override;
-
-        private:
-            const char *u1;
-            const char *u2;
-    };
-
-    class UPPP : public QueryType {
-        public:
-            constexpr UPPP(const char *u1, bool optional_args) {
-                this->u1 = u1;
-                this->takes_optional_arguments = optional_args;
-            };
-            ~UPPP();
-                std::string construct_url(const std::vector<std::string>& params, const std::vector<opt_args>& optional_args = {}) override;
-        private:
-            const char *u1;
-    };
 }

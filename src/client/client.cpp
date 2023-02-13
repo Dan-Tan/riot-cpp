@@ -5,6 +5,7 @@
 #include <ctime>
 #include <algorithm>
 #include <stdexcept>
+#include <functional>
 
 #include <fstream>
 #include <stdio.h>
@@ -13,7 +14,8 @@
 
 namespace client {
 
-    RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level) {
+    RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level) : 
+    Account("riot/account/v1/", std::make_shared<std::function<Json::Value(std::shared_ptr<query::query>)>>(std::bind_front(&RiotApiClient::query, this))){
         curl_global_init(CURL_GLOBAL_ALL);
 
         // initialised libcurl handle and header
@@ -41,6 +43,10 @@ namespace client {
         this->easy_handle = curl_easy_init();
         this->request_handler = std::make_unique<handler::RequestHandler>();
         this->logger = std::make_unique<logging::Logger>(path_to_log, report_level);
+
+
+        auto request = std::make_shared<std::function<Json::Value(std::shared_ptr<query::query>)>>(std::bind_front(&RiotApiClient::query, this));
+        this->Account = query::ACCOUNT_V1("riot/account/v1/", request);
     }
 
     RiotApiClient::~RiotApiClient() {
