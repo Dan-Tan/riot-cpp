@@ -24,10 +24,15 @@ namespace client {
             ~RiotApiClient();
 
             query::ACCOUNT_V1 Account;
+            query::CHAMPION_MASTERY_V4 Champion_Mastery;
+            query::CHAMPION_V3 Champion;
+            query::CLASH_V1 Clash;
+            query::LEAGUE_EXP_V4 League_Exp;
 
             
         private:
             Json::Value query(std::shared_ptr<query::query> request);
+            std::function<Json::Value(std::shared_ptr<query::query>)> endpoint_call;
             bool get(std::shared_ptr<query::query> request);
 
             inline std::string encode_url(std::string query_arg) {
