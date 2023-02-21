@@ -101,6 +101,13 @@ namespace logging {
         return *this;
     };
 
+    Logger& Logger::operator<<(const char* message) {
+        if (this->_incoming) {
+            this->_log_file << "\n  " << message;
+        }
+        return *this;
+    }
+
     Logger& Logger::operator<<(const std::string& message) {
         if (this->_incoming) {
             this->_log_file << "\n  " << message;
@@ -108,7 +115,12 @@ namespace logging {
         return *this;
     }
 
-    Logger& Logger::operator<<(const unsigned int err_code) {
+    Logger& Logger::operator<<(const int err_code) {
+        if (this->_incoming && !err_code) {
+            this->_log_file << '\n';
+            this->_incoming = false;
+            return *this;
+        }
         if (this->_incoming) {
             this->_log_file << "\n  " << err_code << ": " << Err_Codes(err_code);
             if (this->_verbose){
@@ -118,14 +130,10 @@ namespace logging {
         return *this;
     }
 
-    Logger& Logger::operator<<(const std::shared_ptr<query::query> request) {
+    Logger& Logger::operator<<(const Json::Value& response) {
         if (this->_incoming) {
-            this->_log_file << "\n  Endpoint: " << request->method_key;
-            if (this->_verbose) {
-                Json::StreamWriterBuilder builder;
-                this->_log_file << Json::writeString(builder, request->response_header);
-                this->_log_file << Json::writeString(builder, request->response_content);
-            }
+            Json::StreamWriterBuilder builder;
+            this->_log_file << "\n " << Json::writeString(builder, response);
         }
         return *this;
     }

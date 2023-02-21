@@ -31,18 +31,8 @@ namespace logging {
 
             Logger& operator<<(const LEVEL& log_level);
             Logger& operator<<(const std::string& message);
-            Logger& operator<<(const unsigned int err_code);
-            Logger& operator<<(const std::shared_ptr<query::query> request);
-            //Logger& operator<<(const unsigned int err_code); todo
-            //Logger& operator<<(const std::shared_ptr<query::query> request);
-            Logger& operator<<(const int terminate) {
-                if (this->_incoming && !terminate) {
-                    this->_log_file << '\n';
-                    this->_incoming = false;
-                    return *this;
-                } else {
-                    return *this;
-                }
-            };
+            Logger& operator<<(const char* message);
+            Logger& operator<<(const int err_code);
+            Logger& operator<<(const Json::Value& response);
     };
 }

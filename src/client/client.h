@@ -20,7 +20,7 @@ namespace client {
 ;
 
         public:
-            RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level = logging::LEVEL::INFO);
+            RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level = logging::LEVEL::INFO, bool verbose_logging = false);
             ~RiotApiClient();
 
             query::ACCOUNT_V1 Account;
@@ -42,8 +42,8 @@ namespace client {
                 return encoding;
             };       
 
-            std::unique_ptr<handler::RequestHandler> request_handler;
-            std::unique_ptr<logging::Logger> logger;
+            handler::RequestHandler request_handler;
+            logging::Logger logger;
 
             CURL* easy_handle = nullptr;
             struct curl_slist *header = nullptr;

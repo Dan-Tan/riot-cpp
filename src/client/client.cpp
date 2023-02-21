@@ -16,7 +16,9 @@ namespace client {
 
     using func_type = std::function<Json::Value(std::shared_ptr<query::query>)>;
 
-    RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level) : 
+    RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level, bool verbose_logging) : 
+        logger(path_to_log, report_level, verbose_logging),
+        request_handler(&(this->logger)),
         endpoint_call(std::bind_front(&RiotApiClient::query, this)),
         Account(&this->endpoint_call), 
         Champion_Mastery(&this->endpoint_call), 
@@ -48,8 +50,6 @@ namespace client {
         }
         
         this->easy_handle = curl_easy_init();
-        this->request_handler = std::make_unique<handler::RequestHandler>();
-        this->logger = std::make_unique<logging::Logger>(path_to_log, report_level);
     }
 
     RiotApiClient::~RiotApiClient() {

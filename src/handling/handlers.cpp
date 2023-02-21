@@ -47,9 +47,12 @@ static void limitDurationExtraction(std::string_view header_strings, int iters, 
 bool RateHandler::validate_request(std::shared_ptr<query::query> request) {
     int wait_time = this->routing_queues.at(routing_to_int(request->routing_value)).validate_request(request->method_key);
     if (wait_time == 0) {
+        (*this->_logger) << logging::LEVEL::DEBUG << request->method_key << "No wait time" << 0;
         return true;
     } else {
         const std::time_t c_time = std::time(NULL);
+        char wait = wait_time + '0';
+        (*this->_logger) << logging::LEVEL::INFO << request->method_key << std::string("Rate Limiting, Waiting ") + wait + " seconds" << 0;
         request->send_time = std::mktime(std::gmtime(&c_time)) + wait_time;
         return false;
     }
