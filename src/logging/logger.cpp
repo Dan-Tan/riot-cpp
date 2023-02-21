@@ -1,10 +1,11 @@
 #include <ctime>
+#include <jsoncpp/json/json.h>
+#include <jsoncpp/json/writer.h>
 #include <stdexcept>
 #include "logger.h"
 
 namespace logging {
-
-    static std::string Err_Codes(int code) { // official message
+    static std::string Err_Codes(const unsigned int code) { // official message
         switch (code) {
             case 200:
                 return std::string("Successful request");
@@ -35,7 +36,7 @@ namespace logging {
         }
     }
 
-    static std::string Code_Meaning(int code) { // more informative (ty shieldbow riot api)
+    static std::string Code_Meaning(const unsigned int code) { // more informative (ty shieldbow riot api)
         switch (code) {
             case 200:
                 return std::string("Successful request");
@@ -96,24 +97,43 @@ namespace logging {
             log_msg = log_msg + " " + level_string(log_level) + ":";
             this->_log_file << log_msg;
             this->_incoming = true;
-            return *this;
-        } else {
-            return *this; // does nothing 
         }
+        return *this;
     };
 
     Logger& Logger::operator<<(const std::string& message) {
         if (this->_incoming) {
             this->_log_file << "\n  " << message;
-            return *this;
-        } else {
-            return *this;
         }
+        return *this;
+    }
+
+    Logger& Logger::operator<<(const unsigned int err_code) {
+        if (this->_incoming) {
+            this->_log_file << "\n  " << err_code << ": " << Err_Codes(err_code);
+            if (this->_verbose){
+                this->_log_file << "\n  " << Code_Meaning(err_code);
+            }
+        }
+        return *this;
+    }
+
+    Logger& Logger::operator<<(const std::shared_ptr<query::query> request) {
+        if (this->_incoming) {
+            this->_log_file << "\n  Endpoint: " << request->method_key;
+            if (this->_verbose) {
+                Json::StreamWriterBuilder builder;
+                this->_log_file << Json::writeString(builder, request->response_header);
+                this->_log_file << Json::writeString(builder, request->response_content);
+            }
+        }
+        return *this;
     }
     
-    Logger::Logger(std::string log_path, LEVEL log_level) {
+    Logger::Logger(std::string log_path, LEVEL log_level, bool verbose) {
         this->_log_path = log_path;
         this->_log_level = log_level;
+        this->_verbose = verbose;
         this->_log_file.open(log_path, std::ios::app); 
         std::string init_time = get_current_time();
         if (!this->_log_file.is_open()) {
