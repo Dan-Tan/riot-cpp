@@ -172,4 +172,130 @@ Json::Value LEAGUE_EXP_V4::entries(const std::string &routing, const std::string
     std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue, tier, division);
     return (*this->_query)(new_request);
 }
+
+Json::Value LEAGUE_V4::challenger(const_str_r routing, const_str_r queue) {
+    const std::string method_key("LEAGUE-V4-challenger");
+    const std::array<std::string, 1> method_urls{"challengerleagues/by-queue/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue);
+    return (*this->_query)(new_request);
+}
+
+Json::Value LEAGUE_V4::grandmaster(const_str_r routing, const_str_r queue) {
+    const std::string method_key("LEAGUE-V4-grandmaster");
+    const std::array<std::string, 1> method_urls{"grandmasterleagues/by-queue/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue);
+    return (*this->_query)(new_request);
+}
+
+Json::Value LEAGUE_V4::master(const_str_r routing, const_str_r queue) {
+    const std::string method_key("LEAGUE-V4-master");
+    const std::array<std::string, 1> method_urls{"masterleagues/by-queue/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue);
+    return (*this->_query)(new_request);
+}
+
+Json::Value LEAGUE_V4::by_summoner_id(const_str_r routing, const_str_r summoner_id) {
+    const std::string method_key("LEAGUE-V4-by-summoner-id");
+    const std::array<std::string, 1> method_urls{"entries/by-summoner/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, summoner_id);
+    return (*this->_query)(new_request);
+}
+
+Json::Value LEAGUE_V4::by_league_id(const_str_r routing, const_str_r league_id) {
+    const std::string method_key("LEAGUE-V4-by-league-id");
+    const std::array<std::string, 1> method_urls{"leagues/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, league_id);
+    return (*this->_query)(new_request);
+}
+
+Json::Value LEAGUE_V4::specific_league(const std::string &routing, const std::string &queue, const std::string &tier, const std::string &division) {
+    const std::string method_key("LEAGUE-V4-specific-league");
+    const std::array<std::string, 3> method_urls{"entries/", "/", "/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue, tier, division);
+    return (*this->_query)(new_request);
+}
+
+Json::Value LOL_CHALLENGES_V1::config(const std::string &routing) {
+    const std::string method_key("LOL-CHALLENGES-V1-config");
+    const std::array<std::string, 1> method_urls{"challenges/config"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
+    return (*this->_query)(new_request);
+}
+Json::Value LOL_CHALLENGES_V1::percentiles(const std::string &routing) {
+    const std::string method_key("LOL-CHALLENGES-V1-percentiles");
+    const std::array<std::string, 1> method_urls{"challenges/percentiles"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
+    return (*this->_query)(new_request);
+}
+Json::Value LOL_CHALLENGES_V1::challenge_config(const std::string& routing, const std::string &challenge_id) {
+    const std::string method_key("LOL-CHALLENGES-V1-challenge-config");
+    const std::array<std::string, 2> method_urls{"challenges/", "/config"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, challenge_id);
+    return (*this->_query)(new_request);
+}
+
+Json::Value LOL_CHALLENGES_V1::challenge_leaderboard(const std::string &routing, const std::string& challenge_id, const std::string& level) {
+    const std::string method_key("LOL-CHALLENGES-V1-challenge-leaderboard")
+    const std::array<std::string, 2> method_urls{"challenges/", "/leaderboards/by-level/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, challenge_id, level);
+    return (*this->_query)(new_request);
+}
+Json::Value LOL_CHALLENGES_V1::challenge_percentiles(const std::string& routing, const std::string& challenge_id) {
+    const std::string method_key("LOL-CHALLENGES-V1-challenge-percentiles");
+    const std::array<std::string, 2> method_urls{"challenges/", "/percentiles"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, challenge_id);
+    return (*this->_query)(new_request);
+}
+Json::Value LOL_CHALLENGES_V1::by_puuid(const std::string& routing, const std::string& puuid) {
+    const std::string method_key("LOL-CHALLENGES-V1-by-puuid");
+    const std::array<std::string, 1> method_urls{"player-data/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, puuid);
+    return (*this->_query)(new_request);
+}
+
+Json::Value LOL_STATUS::v3(const std::string& routing) {
+    const std::string method_key("LOL-STATUS-v3");
+    const std::array<std::string, 1> method_urls{"v3/shard-data"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
+    return (*this->_query)(new_request);
+}
+
+Json::Value LOL_STATUS::v4(const std::string& routing) {
+    const std::string method_key("LOL-STATUS-v4");
+    const std::array<std::string, 1> method_urls{"v4/platform-data"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
+    return (*this->_query)(new_request);
+}
+
+Json::Value LOR_MATCH_V1::by_puuid(const std::string& routing, const std::string& puuid) {
+    const std::string method_key("LOR-MATCH-V1-by-puuid");
+    const std::array<std::string, 2> method_urls{"matches/by-puuid/", "/ids"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, puuid);
+    return (*this->_query)(new_request);
+}
+
+Json::Value LOR_MATCH_V1::by_match(const std::string& routing, const std::string& match) {
+    const std::string method_key("LOR-MATCH-V1-by-match");
+    const std::array<std::string, 1> method_urls{"matches/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, match);
+    return (*this->_query)(new_request);
+}
+
+Json::Value LOR_RANKED_V1::leaderboards(const std::string& routing) {
+    const std::string method_key("LOR-RANKED-V1-leaderboards");
+    const std::array<std::string, 1> method_urls{"leaderboards"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
+    return (*this->_query)(new_request);
+}
+
+Json::Value LOR_STATUS_V1::v1(const std::string& routing) {
+    const std::string method_key("LOR-STATUS-V1-v1");
+    const std::array<std::string, 1> method_urls{"platform-data"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
+    return (*this->_query)(new_request);
+}
+
+//    {"by-puuid", std::make_shared<query::UPU>("/lol/match/v5/matches/by-puuid/", "/ids", true)},
+//    {"by-match-id", std::make_shared<query::UP>("/lol/match/v5/matches/", false)},
+//    {"match-timeline", std::make_shared<query::UPU>("/lol/match/v5/matches/", "/timeline", false)}
 }
