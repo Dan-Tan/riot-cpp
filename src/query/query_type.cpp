@@ -117,10 +117,10 @@ Json::Value CHAMPION_MASTERY_V4::by_summoner_by_champion(const std::string &rout
     return (*this->_query)(new_request);
 }
 
-Json::Value CHAMPION_MASTERY_V4::by_summoner_top(const std::string &routing, const std::string &summoner_id) {
+Json::Value CHAMPION_MASTERY_V4::by_summoner_top(const std::string &routing, const std::string &summoner_id, const std::pair<std::string, int>& count) {
     const std::string method_key("CHAMPION-MASTERY-V4-by-summoner-top");
     const std::array<std::string, 2> method_urls{"champion-masteries/by-summoner/", "/top"};
-    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, summoner_id);
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, summoner_id, count);
     return (*this->_query)(new_request);
 }
 
@@ -166,10 +166,10 @@ Json::Value CLASH_V1::by_tournament(const std::string &routing, const std::strin
     return (*this->_query)(new_request);
 }
 
-Json::Value LEAGUE_EXP_V4::entries(const std::string &routing, const std::string &queue, const std::string &tier, const std::string &division) {
+Json::Value LEAGUE_EXP_V4::entries(const std::string &routing, const std::string &queue, const std::string &tier, const std::string &division, const std::pair<std::string, int>& page) {
     const std::string method_key("LEAGUE-EXP-V4-entries");
     const std::array<std::string, 3> method_urls{"entries/", "/", "/"};
-    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue, tier, division);
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue, tier, division, page);
     return (*this->_query)(new_request);
 }
 
@@ -208,10 +208,10 @@ Json::Value LEAGUE_V4::by_league_id(const_str_r routing, const_str_r league_id) 
     return (*this->_query)(new_request);
 }
 
-Json::Value LEAGUE_V4::specific_league(const std::string &routing, const std::string &queue, const std::string &tier, const std::string &division) {
+Json::Value LEAGUE_V4::specific_league(const std::string &routing, const std::string &queue, const std::string &tier, const std::string &division, const std::pair<std::string, int>& page) {
     const std::string method_key("LEAGUE-V4-specific-league");
     const std::array<std::string, 3> method_urls{"entries/", "/", "/"};
-    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue, tier, division);
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue, tier, division, page);
     return (*this->_query)(new_request);
 }
 
@@ -235,11 +235,19 @@ Json::Value LOL_CHALLENGES_V1::challenge_config(const std::string& routing, cons
 }
 
 Json::Value LOL_CHALLENGES_V1::challenge_leaderboard(const std::string &routing, const std::string& challenge_id, const std::string& level) {
-    const std::string method_key("LOL-CHALLENGES-V1-challenge-leaderboard")
+    const std::string method_key("LOL-CHALLENGES-V1-challenge-leaderboard");
     const std::array<std::string, 2> method_urls{"challenges/", "/leaderboards/by-level/"};
     std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, challenge_id, level);
     return (*this->_query)(new_request);
 }
+
+Json::Value LOL_CHALLENGES_V1::challenge_leaderboard(const std::string &routing, const std::string& challenge_id, const std::string& level, const std::pair<std::string, int>& limit) {
+    const std::string method_key("LOL-CHALLENGES-V1-challenge-leaderboard");
+    const std::array<std::string, 2> method_urls{"challenges/", "/leaderboards/by-level/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, challenge_id, level, limit);
+    return (*this->_query)(new_request);
+}
+
 Json::Value LOL_CHALLENGES_V1::challenge_percentiles(const std::string& routing, const std::string& challenge_id) {
     const std::string method_key("LOL-CHALLENGES-V1-challenge-percentiles");
     const std::array<std::string, 2> method_urls{"challenges/", "/percentiles"};
@@ -295,7 +303,206 @@ Json::Value LOR_STATUS_V1::v1(const std::string& routing) {
     return (*this->_query)(new_request);
 }
 
-//    {"by-puuid", std::make_shared<query::UPU>("/lol/match/v5/matches/by-puuid/", "/ids", true)},
-//    {"by-match-id", std::make_shared<query::UP>("/lol/match/v5/matches/", false)},
-//    {"match-timeline", std::make_shared<query::UPU>("/lol/match/v5/matches/", "/timeline", false)}
+Json::Value MATCH_V5::by_match_id(const std::string& routing, const std::string& match_id) {
+    const std::string method_key = "MATCH-V5-by-match-id";
+    const std::array<std::string, 1> method_urls = {"matches/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, match_id);
+    return (*this->_query)(new_request);
+}
+
+Json::Value MATCH_V5::timeline(const std::string& routing, const std::string& match_id) {
+    const std::string method_key = "MATCH-V5-timeline";
+    const std::array<std::string, 2> method_urls = {"matches/", "/timeline"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, match_id);
+    return (*this->_query)(new_request);
+}
+
+Json::Value SUMMONER_V4::by_rso_puuid(const std::string& routing, const std::string& puuid) {
+    const std::string method_key = "SUMMONER-V4-by-rso-puuid";
+    const std::array<std::string, 1> method_urls = {"fulfillment/v1/summoners/by-puuid/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, puuid);
+    return (*this->_query)(new_request);
+}
+
+Json::Value SUMMONER_V4::by_account_id(const std::string& routing, const std::string& account_id) {
+    const std::string method_key = "SUMMONER-V4-by-account-id";
+    const std::array<std::string, 1> method_urls = {"summoners/by-account/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, account_id);
+    return (*this->_query)(new_request);
+}
+
+Json::Value SUMMONER_V4::by_name(const std::string& routing, const std::string& name) {
+    const std::string method_key = "SUMMONER-V4-by-name";
+    const std::array<std::string, 1> method_urls = {"summoners/by-name/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, name);
+    return (*this->_query)(new_request);
+}
+
+Json::Value SUMMONER_V4::by_puuid(const std::string& routing, const std::string& puuid) {
+    const std::string method_key = "SUMMONER-V4-by-puuid";
+    const std::array<std::string, 1> method_urls = {"summoners/by-puuid/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, puuid);
+    return (*this->_query)(new_request);
+}
+
+Json::Value SUMMONER_V4::by_summoner_id(const std::string& routing, const std::string& summoner_id) {
+    const std::string method_key = "SUMMONER-V4-by-summoner-id";
+    const std::array<std::string, 1> method_urls = {"summoners/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, summoner_id);
+    return (*this->_query)(new_request);
+}
+
+Json::Value SPECTATOR_V4::by_summoner_id(const std::string& routing, const std::string& summonerId) {
+    const std::string method_key = "SPECTATOR-V4-by-summoner-id";
+    const std::array<std::string, 1> method_urls= {"active-games/by-summoner/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, summonerId);
+    return (*this->_query)(new_request);
+}
+
+Json::Value SPECTATOR_V4::featured_games(const std::string& routing) {
+    const std::string method_key = "SPECTATOR-V4-featured-games";
+    const std::array<std::string, 1> method_urls= {"featured-games"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
+    return (*this->_query)(new_request);
+}
+
+Json::Value TFT_LEAGUE_V1::challenger(const std::string& routing) {
+    const std::string method_key = "TFT-LEAGUE-V1-challenger";
+    const std::array<std::string, 1> method_urls = { "challenger" };
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
+    return (*this->_query)(new_request);
+}
+
+Json::Value TFT_LEAGUE_V1::grandmaster(const std::string& routing) {
+    const std::string method_key = "TFT-LEAGUE-V1-grandmaster";
+    const std::array<std::string, 1> method_urls = { "grandmaster" };
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
+    return (*this->_query)(new_request);
+}
+
+Json::Value TFT_LEAGUE_V1::master(const std::string& routing) {
+    const std::string method_key = "TFT-LEAGUE-V1-master";
+    const std::array<std::string, 1> method_urls = { "master" };
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
+    return (*this->_query)(new_request);
+}
+
+Json::Value TFT_LEAGUE_V1::by_summoner_id(const std::string& routing, const std::string& summoner_id) {
+    const std::string method_key = "TFT-LEAGUE-V1-by-summoner-id";
+    const std::array<std::string, 2> method_urls = { "entries/by-summoner/", "" };
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, summoner_id);
+    return (*this->_query)(new_request);
+}
+
+Json::Value TFT_LEAGUE_V1::by_league_id(const std::string& routing, const std::string& league_id) {
+    const std::string method_key = "TFT-LEAGUE-V1-by-league-id";
+    const std::array<std::string, 2> method_urls = { "leagues/", "" };
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, league_id);
+    return (*this->_query)(new_request);
+}
+
+Json::Value TFT_LEAGUE_V1::queue_top(const std::string& routing, const std::string& queue) {
+    const std::string method_key = "TFT_LEAGUE_V1-queue-top";
+    const std::array<std::string, 2> method_urls = {"rated-ladders/", "/top"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue);
+    return (*this->_query)(new_request);
+}
+
+Json::Value TFT_LEAGUE_V1::by_tier_division(const std::string& routing, const std::string& tier, const std::string& division) {
+    const std::string method_key = "TFT_LEAGUE_V1-by-tier-division";
+    const std::array<std::string, 2> method_urls = {"entries/", "/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing,tier, division);
+    return (*this->_query)(new_request);
+}
+
+Json::Value TFT_MATCH_V1::by_match(const std::string& routing, const std::string& match_id) {
+    const std::string method_key = "TFT-MATCH-V1-by-match";
+    const std::array<std::string, 1> method_urls = {"matches/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, match_id);
+    return (*this->_query)(new_request);
+}
+
+Json::Value TFT_STATUS_V1::v1(const std::string& routing) {
+    const std::string method_key = "TFT-STATUS-V1-v1";
+    const std::array<std::string, 1> method_urls= {"platform-data"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
+    return (*this->_query)(new_request);
+}
+
+Json::Value TFT_SUMMONER_V1::by_account(const std::string& routing, const std::string& account_id) {
+    const std::string method_key = "TFT-SUMMONER-V1-by-account";
+    const std::array<std::string, 1> method_urls= {"summoners/by-account/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, account_id);
+    return (*this->_query)(new_request);
+}
+
+Json::Value TFT_SUMMONER_V1::by_name(const std::string& routing, const std::string& summoner_name) {
+    const std::string method_key = "TFT-SUMMONER-V1-by-name";
+    const std::array<std::string, 1> method_urls= {"summoners/by-name/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, summoner_name);
+    return (*this->_query)(new_request);
+}
+
+Json::Value TFT_SUMMONER_V1::by_puuid(const std::string& routing, const std::string& puuid) {
+    const std::string method_key = "TFT-SUMMONER-V1-by-puuid";
+    const std::array<std::string, 1> method_urls= {"summoners/by-puuid/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, puuid);
+    return (*this->_query)(new_request);
+}
+
+Json::Value TFT_SUMMONER_V1::by_summoner_id(const std::string& routing, const std::string& summoner_id) {
+    const std::string method_key = "TFT-SUMMONER-V1-by-summoner-id";
+    const std::array<std::string, 1> method_urls= {"summoners/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, summoner_id);
+    return (*this->_query)(new_request);
+}
+
+Json::Value VAL_CONTENT_V1::content(const std::string& routing, const std::pair<std::string, std::string>& optional_arg) {
+    const std::string method_key = "VAL-CONTENT-V1-content";
+    const std::array<std::string, 1> method_urls = { "contents" };
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, optional_arg);
+    return (*this->_query)(new_request);
+}
+
+Json::Value VAL_CONTENT_V1::content(const std::string& routing) {
+    const std::string method_key = "VAL-CONTENT-V1-content";
+    const std::array<std::string, 1> method_urls = { "contents" };
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
+    return (*this->_query)(new_request);
+}
+
+Json::Value VAL_MATCH_V1::by_match(const std::string& routing, const std::string& match_id) {
+    const std::string method_key = "VAL-MATCH-V1-by-match";
+    const std::array<std::string, 1> method_urls= {"matches/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, match_id);
+    return (*this->_query)(new_request);
+}
+
+Json::Value VAL_MATCH_V1::by_puuid(const std::string& routing, const std::string& puuid) {
+    const std::string method_key = "VAL-MATCH-V1-by-puuid";
+    const std::array<std::string, 2> method_urls= {"matchlists/by-puuid/", "/"};
+    std::shared_ptr<query> new_request = this->request(routing, method_urls, routing, puuid);
+    return (*this->_query)(new_request);
+}
+
+Json::Value VAL_MATCH_V1::by_queue(const std::string& routing, const std::string& queue) {
+    const std::string method_key = "VAL-MATCH-V1-by-queue";
+    const std::array<std::string, 2> method_urls= {"recent-matches/by-queue/", "/"};
+    std::shared_ptr<query> new_request = this->request(routing, method_urls, routing, queue);
+    return (*this->_query)(new_request);
+}
+
+Json::Value VAL_RANKED_V1::by_act(const std::string& routing, const std::string& actId, const std::pair<std::string, int>& size_p, const std::pair<std::string, int>& startIndex) {
+    const std::string method_key = "VAL_RANKED_V1-by-act";
+    const std::array<std::string, 1> method_urls= {"leaderboards/by-act/"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, actId, size_p, startIndex);
+    return (*this->_query)(new_request);
+}
+
+Json::Value VAL_STATUS_V1::platform_data(const std::string& routing) {
+    const std::string method_key = "VAL-STATUS-V1";
+    const std::array<std::string, 1> method_urls= {"platform-data"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
+    return (*this->_query)(new_request);
+}
 }

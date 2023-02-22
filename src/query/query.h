@@ -65,8 +65,7 @@ namespace query {
         CHAMPION_MASTERY_V4(query_fp client_query) : Endpoint("lol/champion-mastery/v4/", client_query) {};
         Json::Value by_summoner_id(const_str_r routing, const_str_r summoner_id);
         Json::Value by_summoner_by_champion(const_str_r routing, const_str_r summoner_id, const_str_r champion_id);
-        // Json::Value by_summoner_byconst_str_r const_str_r summoner_id, const int champion_id);
-        Json::Value by_summoner_top(const_str_r routing, const_str_r summoner_id); // variadic optional args
+        Json::Value by_summoner_top(const_str_r routing, const_str_r summoner_id, const std::pair<std::string, int>& count = {"count", 3}); 
         Json::Value scores_by_summoner(const_str_r routing, const_str_r summoner_id);
         
     } CHAMPION_MASTERY_V4;
@@ -86,7 +85,7 @@ namespace query {
 
     typedef struct LEAGUE_EXP_V4 : public Endpoint {
         LEAGUE_EXP_V4(query_fp client_query) : Endpoint("lol/league-exp/v4/", client_query) {};
-        Json::Value entries(const_str_r routing, const_str_r queue, const_str_r tier, const_str_r division);
+        Json::Value entries(const_str_r routing, const_str_r queue, const_str_r tier, const_str_r division, const std::pair<std::string, int>& page);
     } LEAGUE_EXP_V4;
 
     typedef struct LEAGUE_V4 : public Endpoint {
@@ -96,7 +95,7 @@ namespace query {
         Json::Value master(const_str_r routing, const_str_r queue);
         Json::Value by_summoner_id(const_str_r routing, const_str_r summoner_id);
         Json::Value by_league_id(const_str_r routing, const_str_r league_id);
-        Json::Value specific_league(const_str_r routing, const_str_r queue, const_str_r tier, const_str_r division);
+        Json::Value specific_league(const_str_r routing, const_str_r queue, const_str_r tier, const_str_r division, const std::pair<std::string, int>& page = {"page", 1});
 
     } LEAGUE_V4;
 
@@ -106,6 +105,7 @@ namespace query {
         Json::Value percentiles(const_str_r routing);
         Json::Value challenge_config(const_str_r routing, const_str_r challenge_id);
         Json::Value challenge_leaderboard(const_str_r routing, const_str_r challenge_id, const_str_r level);
+        Json::Value challenge_leaderboard(const_str_r routing, const_str_r challenge_id, const_str_r level, const std::pair<std::string, int>& limit);
         Json::Value challenge_percentiles(const_str_r routing, const_str_r challenge_id);
         Json::Value by_puuid(const_str_r routing, const_str_r puuid);
     } LOL_CHALLENGES_V1;
@@ -131,4 +131,96 @@ namespace query {
         LOR_STATUS_V1(query_fp client_query) : Endpoint("lor/status/v1/", client_query) {};
         Json::Value v1(const_str_r routing);
     } LOR_STATUS_V1;
+
+    typedef struct MATCH_V5 : public Endpoint {
+        MATCH_V5(query_fp client_query) : Endpoint("lol/match/v5/", client_query) {};
+
+        Json::Value by_match_id(const_str_r routing, const_str_r match_id);
+        Json::Value timeline(const_str_r routing, const_str_r match_id);
+
+        template <param ... T>
+        Json::Value by_puuid(const_str_r routing, const_str_r puuid, const std::pair<std::string, T>& ... optional_args) {
+            const std::string method_key = "MATCH-V5-by-puuid";
+            const std::array<std::string, 2> method_urls= {"matches/by-puuid/", "/ids"};
+            std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, puuid, optional_args ...);
+            return (*this->_query)(new_request);
+        };
+    } MATCH_V5;
+
+    typedef struct SUMMONER_V4 : public Endpoint {
+        SUMMONER_V4(query_fp client_query) : Endpoint("lol/summoner/v4/", client_query) {};
+        Json::Value by_rso_puuid(const_str_r routing, const_str_r puuid);
+        Json::Value by_account_id(const_str_r routing, const_str_r account_id);
+        Json::Value by_name(const_str_r routing, const_str_r name);
+        Json::Value by_puuid(const_str_r routing, const_str_r puuid);
+        Json::Value by_summoner_id(const_str_r routing, const_str_r summoner_id);
+    } SUMMONER_V4;
+
+    typedef struct SPECTATOR_V4 : public Endpoint {
+        SPECTATOR_V4(query_fp client_query) : Endpoint("lol/spectator/v4/", client_query) {};
+        Json::Value by_summoner_id(const_str_r routing, const_str_r summonerId);
+        Json::Value featured_games(const_str_r routing);
+    } SPECTATOR_V4;
+
+    typedef struct TFT_LEAGUE_V1 : public Endpoint {
+        TFT_LEAGUE_V1(query_fp client_query) : Endpoint("tft/league/v1/", client_query) {};
+        Json::Value challenger(const_str_r routing);
+        Json::Value grandmaster(const_str_r routing);
+        Json::Value master(const_str_r routing);
+        Json::Value by_summoner_id(const_str_r routing, const_str_r summoner_id);
+        Json::Value by_league_id(const_str_r routing, const_str_r league_id);
+        Json::Value queue_top(const_str_r routing, const_str_r queue);
+        Json::Value by_tier_division(const_str_r routing, const_str_r tier, const_str_r division);
+    } TFT_LEAGUE_V1;
+
+    typedef struct TFT_MATCH_V1 : public Endpoint {
+        TFT_MATCH_V1(query_fp client_query) : Endpoint("tft/match/v1/", client_query) {};
+        template <param ... T>
+        Json::Value by_puuid(const_str_r routing, const_str_r puuid, const std::pair<std::string, T>& ... optional_args) { //template implementation must be visisble
+            const std::string method_key = "TFT-MATCH-V1-by-puuid";
+            const std::array<std::string, 2> method_urls = {"matches/by-puuid/", "/ids"};
+            std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, puuid, optional_args...);
+            return (*this->_query)(new_request);
+        };
+        Json::Value by_match(const_str_r routing, const_str_r match_id);
+    } TFT_MATCH_V1;
+
+    typedef struct TFT_STATUS_V1 : public Endpoint {
+        TFT_STATUS_V1(query_fp client_query) : Endpoint("tft/status/v1/", client_query) {};
+        Json::Value v1(const_str_r routing);
+    } TFT_STATUS_V1;
+
+    typedef struct TFT_SUMMONER_V1 : public Endpoint {
+        TFT_SUMMONER_V1(query_fp client_query) : Endpoint("tft/summoner/v1/", client_query) {};
+        Json::Value by_account(const_str_r routing, const_str_r account_id);
+        Json::Value by_name(const_str_r routing, const_str_r summoner_name);
+        Json::Value by_puuid(const_str_r routing, const_str_r puuid);
+        Json::Value by_summoner_id(const_str_r routing, const_str_r summoner_id);
+    } TFT_SUMMONER_V1;
+
+    typedef struct VAL_CONTENT_V1 : public Endpoint {
+        VAL_CONTENT_V1(query_fp client_query) : Endpoint("val/content/v1/", client_query) {};
+        Json::Value content(const_str_r routing);
+        Json::Value content(const_str_r routing, const std::pair<std::string, std::string>& optional_arg);
+    } VAL_CONTENT_V1;
+
+    typedef struct VAL_MATCH_V1 : public Endpoint {
+        VAL_MATCH_V1(query_fp client_query) : Endpoint("val/match/v1/", client_query) {};
+        Json::Value by_match(const_str_r routing, const_str_r match_id);
+        Json::Value by_puuid(const_str_r routing, const_str_r puuid);
+        Json::Value by_queue(const_str_r routing, const_str_r queue);
+
+    } VAL_MATCH_V1;
+
+    typedef struct VAL_RANKED_V1 : public Endpoint {
+        VAL_RANKED_V1(query_fp client_query) : Endpoint("val/ranked/v1/", client_query) {};
+        Json::Value by_act(const_str_r routing, const_str_r actId, const std::pair<std::string, int>& size_p = {"size", 200}, const std::pair<std::string, int>& startIndex = {"startIndex", 200});
+    } VAL_RANKED_V1;
+
+    typedef struct VAL_STATUS_V1 : public Endpoint {
+        VAL_STATUS_V1(query_fp client_query) : Endpoint("val/status/v1/", client_query) {};
+        Json::Value platform_data(const_str_r routing);
+
+    } VAL_STATUS_V1;
+
 }

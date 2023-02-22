@@ -116,7 +116,7 @@ namespace client {
         CURLcode res_ = curl_easy_perform(this->easy_handle);
 
         if (res_ != CURLE_OK) {
-            (*this->logger) << logging::LEVEL::CRITICAL << "CURL failed to send request" << 0;
+            this->logger << logging::LEVEL::CRITICAL << "CURL failed to send request" << 0;
             request->last_response = -1; // CURL ERROR
             return false;
         }
@@ -125,7 +125,7 @@ namespace client {
 
         curl_easy_getinfo(this->easy_handle, CURLINFO_RESPONSE_CODE, &(request->last_response));
         if (!reader.parse(header_buffer.data(), request->response_header)) {
-            (*this->logger) << logging::LEVEL::ERROR << "Failed to parse json header string" << 0;
+            this->logger << logging::LEVEL::ERROR << "Failed to parse json header string" << 0;
             request->last_response = -1;
             return false;
         }
@@ -133,7 +133,7 @@ namespace client {
         Json::StreamWriterBuilder builder;
         
         if (request->last_response == 200) { // only parse content to json if request was successful
-            (*this->logger) << logging::LEVEL::DEBUG << "Query Successful" << 0;
+            this->logger << logging::LEVEL::DEBUG << "Query Successful" << 0;
             reader.parse(content_buffer.data(), request->response_content);
         }
 

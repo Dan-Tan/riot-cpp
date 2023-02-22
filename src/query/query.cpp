@@ -177,12 +177,12 @@ static inline void wait_until(std::time_t send_time) {
 
 Json::Value RiotApiClient::query(std::shared_ptr<query::query> request) {
 
-    while (this->request_handler->review_request(request)) {
+    while (this->request_handler.review_request(request)) {
         if (request->last_response == 200) {
             return request->response_content;
         } 
-        if (!this->request_handler->validate_request(request)) {
-            (*this->logger) << logging::LEVEL::WARNING << "Request sent was invalid or the server is unavailable" << 0;
+        if (!this->request_handler.validate_request(request)) {
+            this->logger << logging::LEVEL::WARNING << "Request sent was invalid or the server is unavailable" << 0;
             throw std::runtime_error("Request sent was invalid or the server is unavailable");
         }
         wait_until(request->send_time);
@@ -192,3 +192,4 @@ Json::Value RiotApiClient::query(std::shared_ptr<query::query> request) {
     return request->response_content;
 }
 }
+

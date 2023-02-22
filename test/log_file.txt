@@ -40,3 +40,10 @@
   Log file successfully opened. 
 [Mon, 13 Feb 23 09:43:12 GMT] Log Initialisation:
   Log file successfully opened. 
+[Wed, 22 Feb 23 07:53:02 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Wed, 22 Feb 23 07:53:02 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Wed, 22 Feb 23 07:53:02 GMT] INFO:
+  SUMMONER-V4-by-puuid
+  Rate Limiting, Waiting : seconds
