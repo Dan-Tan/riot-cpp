@@ -28,8 +28,24 @@ namespace client {
             query::CHAMPION_V3 Champion;
             query::CLASH_V1 Clash;
             query::LEAGUE_EXP_V4 League_Exp;
+            query::LEAGUE_V4 League;
+            query::LOL_CHALLENGES_V1 Lol_Challenges; 
+            query::LOL_STATUS Lol_Status;
+            query::LOR_MATCH_V1 Lor_Match;
+            query::LOR_RANKED_V1 Lor_Ranked;
+            query::LOR_STATUS_V1 Lor_Status;
+            query::MATCH_V5 Match;
+            query::SUMMONER_V4 Summoner;
+            query::SPECTATOR_V4 Spectator;
+            query::TFT_LEAGUE_V1 Tft_League;
+            query::TFT_MATCH_V1 Tft_Match;
+            query::TFT_STATUS_V1 Tft_Status;
+            query::TFT_SUMMONER_V1 Tft_Summoner;
+            query::VAL_CONTENT_V1 Val_Content;
+            query::VAL_MATCH_V1 Val_Match;
+            query::VAL_RANKED_V1 Val_Ranked;
+            query::VAL_STATUS_V1 Val_Status;
 
-            
         private:
             Json::Value query(std::shared_ptr<query::query> request);
             std::function<Json::Value(std::shared_ptr<query::query>)> endpoint_call;

@@ -43,59 +43,59 @@ TEST_CASE( "ACCOUNT_V1 QUERIES") {
 
 // League of Legend Queries
 
-//TEST_CASE( "LEAGUE_V4 QUERIES") {
-//    RiotApiClient test_client(CONFIG);
-//    
-//    std::string region = "na1";
-//    std::vector<std::string> queue = {"RANKED_SOLO_5x5", "RANKED_FLEX_SR"};
-//    std::vector<std::string> division = {"I", "II", "III", "IV"};
-//    std::vector<std::string> tier = {"DIAMOND", "PLATINUM", "GOLD", "SILVER", "BRONZE", "IRON"};
-//    std::string summoner_id;
-//    std::string league_id;
-//
-//    std::string endpoint = "LEAGUE-V4";
-//
-//    Json::Value result;
-//
-//    SECTION("CHALLENGER, GRANDMASTER AND MASTER QUEUE") {
-//        for (int i = 0; i < queue.size(); i++) {
-//            result = test_client.query(endpoint, std::string("challenger"), std::vector<std::string>{region, queue[i]});
-//            REQUIRE(result["tier"] == "CHALLENGER");
-//            REQUIRE(result["queue"] == queue[i]);
-//            result = test_client.query(endpoint, std::string("grandmaster"), std::vector<std::string>{region, queue[i]});
-//            REQUIRE(result["tier"] == "GRANDMASTER");
-//            REQUIRE(result["queue"] == queue[i]);
-//            result = test_client.query(endpoint, std::string("master"), std::vector<std::string>{region, queue[i]});
-//            REQUIRE(result["tier"] == "MASTER");
-//            REQUIRE(result["queue"] == queue[i]);
-//        }
-//    }
-//    result = test_client.query(endpoint, std::string("master"), std::vector<std::string>{region, queue[0]});
-//    summoner_id = result["entries"][0]["summonerId"].asString();
-//    league_id = result["leagueId"].asString();
-//
-//    Json::StreamWriterBuilder builder;
-//
-//    SECTION("SPECIFIC QUEUE ") {
-//        for (int qu = 0; qu < queue.size(); qu++) {
-//            for (int ti = 0; ti < tier.size(); ti++) {
-//                for (int div = 0; div < division.size(); div++) {
-//                    result = test_client.query(endpoint, std::string("specific-league"), std::vector<std::string>{region, queue[qu], tier[ti], division[div]});
-//                    REQUIRE(result[0]["queueType"] == queue[qu]);
-//                    REQUIRE(result[0]["tier"] == tier[ti]);
-//                    REQUIRE(result[0]["rank"] == division[div]);
-//                }
-//            }
-//        }
-//    }
-//
-//    SECTION("Testing Summoner ID and League ID") {
-//        result = test_client.query(endpoint, std::string("by-summoner-id"), std::vector<std::string>{region, summoner_id});
-//        REQUIRE(result[0]["summonerId"] == summoner_id);
-//        result = test_client.query(endpoint, std::string("by-league-id"), std::vector<std::string>{region, league_id});
-//        REQUIRE(result["leagueId"] == league_id);
-//    }
-//}
+TEST_CASE( "LEAGUE_V4 QUERIES") {
+    RiotApiClient test_client(CONFIG);
+    
+    std::string region = "na1";
+    std::vector<std::string> queue = {"RANKED_SOLO_5x5", "RANKED_FLEX_SR"};
+    std::vector<std::string> division = {"I", "II", "III", "IV"};
+    std::vector<std::string> tier = {"DIAMOND", "PLATINUM", "GOLD", "SILVER", "BRONZE", "IRON"};
+    std::string summoner_id;
+    std::string league_id;
+
+    std::string endpoint = "LEAGUE-V4";
+
+    Json::Value result;
+
+    SECTION("CHALLENGER, GRANDMASTER AND MASTER QUEUE") {
+        for (int i = 0; i < queue.size(); i++) {
+            result = test_client.League.challenger(region, queue.at(i));
+            REQUIRE(result["tier"] == "CHALLENGER");
+            REQUIRE(result["queue"] == queue[i]);
+            result = test_client.query(endpoint, std::string("grandmaster"), std::vector<std::string>{region, queue[i]});
+            REQUIRE(result["tier"] == "GRANDMASTER");
+            REQUIRE(result["queue"] == queue[i]);
+            result = test_client.query(endpoint, std::string("master"), std::vector<std::string>{region, queue[i]});
+            REQUIRE(result["tier"] == "MASTER");
+            REQUIRE(result["queue"] == queue[i]);
+        }
+    }
+    result = test_client.query(endpoint, std::string("master"), std::vector<std::string>{region, queue[0]});
+    summoner_id = result["entries"][0]["summonerId"].asString();
+    league_id = result["leagueId"].asString();
+
+    Json::StreamWriterBuilder builder;
+
+    SECTION("SPECIFIC QUEUE ") {
+        for (int qu = 0; qu < queue.size(); qu++) {
+            for (int ti = 0; ti < tier.size(); ti++) {
+                for (int div = 0; div < division.size(); div++) {
+                    result = test_client.query(endpoint, std::string("specific-league"), std::vector<std::string>{region, queue[qu], tier[ti], division[div]});
+                    REQUIRE(result[0]["queueType"] == queue[qu]);
+                    REQUIRE(result[0]["tier"] == tier[ti]);
+                    REQUIRE(result[0]["rank"] == division[div]);
+                }
+            }
+        }
+    }
+
+    SECTION("Testing Summoner ID and League ID") {
+        result = test_client.query(endpoint, std::string("by-summoner-id"), std::vector<std::string>{region, summoner_id});
+        REQUIRE(result[0]["summonerId"] == summoner_id);
+        result = test_client.query(endpoint, std::string("by-league-id"), std::vector<std::string>{region, league_id});
+        REQUIRE(result["leagueId"] == league_id);
+    }
+}
 //
 //TEST_CASE(" SUMMONER QUERIES ") {
 //    RiotApiClient test_client(CONFIG);
