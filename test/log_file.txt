@@ -47,3 +47,7 @@
 [Wed, 22 Feb 23 07:53:02 GMT] INFO:
   SUMMONER-V4-by-puuid
   Rate Limiting, Waiting : seconds
+[Sat, 25 Feb 23 08:05:01 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Sat, 25 Feb 23 08:10:00 GMT] Log Initialisation:
+  Log file successfully opened. 

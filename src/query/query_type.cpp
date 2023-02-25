@@ -9,17 +9,25 @@
 
 namespace query {
 
-template <param P>
-static inline std::string construct_args(const std::stringstream& accumm, const std::pair<P, P>& optional_arg) {
-    return accumm << optional_arg.first << "=" << optional_arg.second << "&";
+template <param P, param R>
+static inline std::string opt_helper(const std::stringstream& accumm, const P& arg_key, const R& arg) {
+    return accumm << arg_key << "=" << arg << "&";
+}
+
+template <param ... Opts, std::size_t ... Ixs>
+static inline void construct_args(std::stringstream& accum, const std::tuple<Opts...>& opts) {
+    (opt_helper(accum, std::get<2*Ixs>(opts), std::get<2*Ixs+1>(opts)), ...);
 }
 
 template <param ... opts>
-std::string query_construct(const std::tuple<std::pair<std::string, opts> ...>& optional_args){
+std::string query_construct(const opts&... optional_args){
     std::stringstream ss;
-    ss = std::accumulate(optional_args.begin(), --optional_args.end(), std::stringstream("?"), construct_args);
-    const std::size_t n_args = std::tuple_size<decltype(optional_args)>::value;
-    ss << std::get<n_args-1>(optional_args).first << "=" << std::get<n_args-1>(optional_args).second;
+    constexpr std::size_t n_args = sizeof...(optional_args);
+    static_assert(n_args%2 == 0, "Optional arguments must be passed in pairs");
+    const std::index_sequence<n_args/2-1> n_passed = std::make_index_sequence<sizeof...(opts)/2-1>{};
+    const std::tuple<opts...> store(optional_args...);
+    construct_args(ss, store);
+    ss << std::get<n_args-2>(store) << "=" << std::get<n_args-1>(store);
     return ss.str();
 }
 
@@ -36,25 +44,28 @@ static inline void full_helper(std::stringstream& accum, const std::string& url_
 }
 
 template <std::size_t N, param ... Params, std::size_t ... Ixs>
-static inline void full_iter(std::stringstream& accum, const std::array<std::string, N>& method_urls, const std::tuple<Params ...>& params, std::index_sequence<Ixs ...>) {
-    (full_helper(accum, method_urls[Ixs], std::get<Ixs+1>(params)), ...);
+static inline void full_iter(std::stringstream& accum, const std::array<std::string, N>& method_urls, const std::tuple<Params...>& params, std::index_sequence<Ixs ...>) {
+    (full_helper(accum, method_urls[Ixs], std::get<Ixs>(params)), ...);
 }
 
-template <std::size_t N, param ... Params>
-std::string Endpoint::full_query(const std::array<std::string, N>& method_urls, const std::tuple<Params ...>& store) const {
-    std::stringstream base_url = this->construct_base(std::get<0>(store));
-    const std::size_t n_params = std::tuple_size<std::tuple<Params...>>::value - 1;
+template <std::size_t N, param Routing, param ... Params>
+std::string Endpoint::full_query(const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params) const {
+    std::stringstream base_url = this->construct_base(routing);
+    const std::tuple<Params...> store(params...);
+    const std::size_t n_params = sizeof ...(Params);
     full_iter(base_url, method_urls, store, std::make_index_sequence<N-1>{});
     if constexpr (n_params < N) {
         base_url << method_urls[N-1];
-    } 
+    } else if constexpr (n_params == N) {
+        base_url << method_urls[N-1] << std::get<n_params - 1>(store);
+    }
     return base_url.str();
 }
 
-template <std::size_t N, param ... Params, param ... opts>
-std::string Endpoint::full_query(const std::array<std::string, N>& method_urls, const std::tuple<Params ...>& params, const std::tuple<std::pair<std::string, opts>...>& optional_args) const {
-    std::string final_url = this->full_query(method_urls, params);
-    std::string optional = query_construct(optional_args);
+template <std::size_t N, param Routing, param ... Params, param ... Opts>
+std::string Endpoint::full_query(const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params, OPTS, const Opts& ... optional_args) const {
+    std::string final_url = this->full_query(method_urls, routing, params...);
+    std::string optional = query_construct(optional_args...);
     final_url += optional;
     return final_url;
 }
@@ -65,20 +76,17 @@ std::shared_ptr<query> Endpoint::request(const std::string& key, const std::stri
     return {};
 }
 
-template <std::size_t N, param ... Params>
-std::shared_ptr<query> Endpoint::request(const std::string& key, const std::array<std::string, N>& method_urls, const Params& ... params) {
-    const std::tuple<Params ...> store(params ...);
-    std::string final_url = this->full_query(method_urls, store);
-    std::shared_ptr<query> request = std::make_shared<query>(key, std::get<0>(store), final_url);
+template <std::size_t N, param Routing, param ... Params>
+std::shared_ptr<query> Endpoint::request(const std::string& key, const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params) {
+    std::string final_url = this->full_query(method_urls, routing, params...);
+    std::shared_ptr<query> request = std::make_shared<query>(key, routing, final_url);
     return request;
 }
 
-template <std::size_t N, param ... Params, param ... opts>
-std::shared_ptr<query> Endpoint::request(const std::string& key, const std::array<std::string, N>& method_urls, const Params& ... params, const std::pair<std::string, opts>& ... optional_args) {
-    std::tuple<Params ...> store_params(params ...);
-    std::tuple<std::pair<std::string, opts> ...> store_opts(optional_args...);
-    std::string final_url = this->full_query(method_urls, store_params, store_opts);
-    std::shared_ptr<query> request = std::make_shared<query>(key, std::get<0>(store_params), final_url);
+template <std::size_t N, param Routing, param ... Params, param ... Opts>
+std::shared_ptr<query> Endpoint::request(const std::string& key, const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params, OPTS, const Opts& ... optional_args) {
+    std::string final_url = this->full_query(method_urls, routing, params..., {}, optional_args...);
+    std::shared_ptr<query> request = std::make_shared<query>(key, routing, final_url);
     return request;
 }
 
@@ -114,13 +122,6 @@ Json::Value CHAMPION_MASTERY_V4::by_summoner_by_champion(const std::string &rout
     const std::string method_key("CHAMPION-MASTERY-V4-by-summoner-by-champion");
     const std::array<std::string, 2> method_urls{"champion-masteries/by-summoner/", "/by-champion/"};
     std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, summoner_id, champion_id);
-    return (*this->_query)(new_request);
-}
-
-Json::Value CHAMPION_MASTERY_V4::by_summoner_top(const std::string &routing, const std::string &summoner_id, const std::pair<std::string, int>& count) {
-    const std::string method_key("CHAMPION-MASTERY-V4-by-summoner-top");
-    const std::array<std::string, 2> method_urls{"champion-masteries/by-summoner/", "/top"};
-    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, summoner_id, count);
     return (*this->_query)(new_request);
 }
 
@@ -166,13 +167,6 @@ Json::Value CLASH_V1::by_tournament(const std::string &routing, const std::strin
     return (*this->_query)(new_request);
 }
 
-Json::Value LEAGUE_EXP_V4::entries(const std::string &routing, const std::string &queue, const std::string &tier, const std::string &division, const std::pair<std::string, int>& page) {
-    const std::string method_key("LEAGUE-EXP-V4-entries");
-    const std::array<std::string, 3> method_urls{"entries/", "/", "/"};
-    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue, tier, division, page);
-    return (*this->_query)(new_request);
-}
-
 Json::Value LEAGUE_V4::challenger(const_str_r routing, const_str_r queue) {
     const std::string method_key("LEAGUE-V4-challenger");
     const std::array<std::string, 1> method_urls{"challengerleagues/by-queue/"};
@@ -208,13 +202,6 @@ Json::Value LEAGUE_V4::by_league_id(const_str_r routing, const_str_r league_id) 
     return (*this->_query)(new_request);
 }
 
-Json::Value LEAGUE_V4::specific_league(const std::string &routing, const std::string &queue, const std::string &tier, const std::string &division, const std::pair<std::string, int>& page) {
-    const std::string method_key("LEAGUE-V4-specific-league");
-    const std::array<std::string, 3> method_urls{"entries/", "/", "/"};
-    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue, tier, division, page);
-    return (*this->_query)(new_request);
-}
-
 Json::Value LOL_CHALLENGES_V1::config(const std::string &routing) {
     const std::string method_key("LOL-CHALLENGES-V1-config");
     const std::array<std::string, 1> method_urls{"challenges/config"};
@@ -231,20 +218,6 @@ Json::Value LOL_CHALLENGES_V1::challenge_config(const std::string& routing, cons
     const std::string method_key("LOL-CHALLENGES-V1-challenge-config");
     const std::array<std::string, 2> method_urls{"challenges/", "/config"};
     std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, challenge_id);
-    return (*this->_query)(new_request);
-}
-
-Json::Value LOL_CHALLENGES_V1::challenge_leaderboard(const std::string &routing, const std::string& challenge_id, const std::string& level) {
-    const std::string method_key("LOL-CHALLENGES-V1-challenge-leaderboard");
-    const std::array<std::string, 2> method_urls{"challenges/", "/leaderboards/by-level/"};
-    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, challenge_id, level);
-    return (*this->_query)(new_request);
-}
-
-Json::Value LOL_CHALLENGES_V1::challenge_leaderboard(const std::string &routing, const std::string& challenge_id, const std::string& level, const std::pair<std::string, int>& limit) {
-    const std::string method_key("LOL-CHALLENGES-V1-challenge-leaderboard");
-    const std::array<std::string, 2> method_urls{"challenges/", "/leaderboards/by-level/"};
-    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, challenge_id, level, limit);
     return (*this->_query)(new_request);
 }
 
@@ -457,13 +430,6 @@ Json::Value TFT_SUMMONER_V1::by_summoner_id(const std::string& routing, const st
     return (*this->_query)(new_request);
 }
 
-Json::Value VAL_CONTENT_V1::content(const std::string& routing, const std::pair<std::string, std::string>& optional_arg) {
-    const std::string method_key = "VAL-CONTENT-V1-content";
-    const std::array<std::string, 1> method_urls = { "contents" };
-    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, optional_arg);
-    return (*this->_query)(new_request);
-}
-
 Json::Value VAL_CONTENT_V1::content(const std::string& routing) {
     const std::string method_key = "VAL-CONTENT-V1-content";
     const std::array<std::string, 1> method_urls = { "contents" };
@@ -489,13 +455,6 @@ Json::Value VAL_MATCH_V1::by_queue(const std::string& routing, const std::string
     const std::string method_key = "VAL-MATCH-V1-by-queue";
     const std::array<std::string, 2> method_urls= {"recent-matches/by-queue/", "/"};
     std::shared_ptr<query> new_request = this->request(routing, method_urls, routing, queue);
-    return (*this->_query)(new_request);
-}
-
-Json::Value VAL_RANKED_V1::by_act(const std::string& routing, const std::string& actId, const std::pair<std::string, int>& size_p, const std::pair<std::string, int>& startIndex) {
-    const std::string method_key = "VAL_RANKED_V1-by-act";
-    const std::array<std::string, 1> method_urls= {"leaderboards/by-act/"};
-    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, actId, size_p, startIndex);
     return (*this->_query)(new_request);
 }
 

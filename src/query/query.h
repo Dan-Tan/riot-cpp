@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include <curl/curl.h>
 
 namespace query {
 
@@ -20,9 +21,11 @@ namespace query {
     } query;
 
     template <typename T>
-    concept param = requires {std::convertible_to<T, std::string>;};
+    concept param = requires(std::ostream& os, T a){os << a;};
     using query_fp = std::function<Json::Value(std::shared_ptr<query>)>*;
     using const_str_r = const std::string&;
+    
+    typedef struct {} OPTS;
 
     typedef struct Endpoint {
         
@@ -34,22 +37,23 @@ namespace query {
             template <param R>
             std::stringstream construct_base(const R& routing) const; 
 
-            template <std::size_t N, param ... Params>
-            std::string full_query(const std::array<std::string, N>& method_urls, const std::tuple<Params ...>& params) const;
+            template <std::size_t N, param Routing, param ... Params>
+            std::string full_query(const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params) const;
         
-            template <std::size_t N, param ... Params, param ... opts>
-            std::string full_query(const std::array<std::string, N>& method_urls, const std::tuple<Params ...>& params, const std::tuple<std::pair<std::string, opts>...>& optional_args) const;
+            template <std::size_t N, param Routing, param ... Params, param ... Opts>
+            std::string full_query(const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params, OPTS, const Opts& ... optional_args) const;
             
         public:
             Endpoint(const std::string& url, query_fp client_query) : _query(client_query), _url(url) {};
+            
             template <param R>
             std::shared_ptr<query> request(const_str_r key, const_str_r method_url, const R& routing);
 
-            template <std::size_t N, param ... Params>
-            std::shared_ptr<query> request(const_str_r key, const std::array<std::string, N>& method_urls, const Params& ... params);
+            template <std::size_t N, param Routing, param ... Params>
+            std::shared_ptr<query> request(const_str_r key, const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params);
 
-            template <std::size_t N, param ... Params, param ... opts>
-            std::shared_ptr<query> request(const_str_r key, const std::array<std::string, N>& method_urls, const Params& ... params, const std::pair<std::string, opts>& ... optional_args);
+            template <std::size_t N, param Routing, param ... Params, param ... Opts>
+            std::shared_ptr<query> request(const_str_r key, const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params, OPTS, const Opts& ... optional_args);
 
     } Endpoint;
 
@@ -65,7 +69,14 @@ namespace query {
         CHAMPION_MASTERY_V4(query_fp client_query) : Endpoint("lol/champion-mastery/v4/", client_query) {};
         Json::Value by_summoner_id(const_str_r routing, const_str_r summoner_id);
         Json::Value by_summoner_by_champion(const_str_r routing, const_str_r summoner_id, const_str_r champion_id);
-        Json::Value by_summoner_top(const_str_r routing, const_str_r summoner_id, const std::pair<std::string, int>& count = {"count", 3}); 
+        template<param ... Opts>
+        Json::Value by_summoner_top(const_str_r routing, const_str_r summoner_id, const Opts& ... optional_args) {
+                const std::string method_key("CHAMPION-MASTERY-V4-by-summoner-top");
+                const std::array<std::string, 2> method_urls{"champion-masteries/by-summoner/", "/top"};
+                std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, summoner_id, OPTS(), optional_args...);
+                return (*this->_query)(new_request);
+
+        }; 
         Json::Value scores_by_summoner(const_str_r routing, const_str_r summoner_id);
         
     } CHAMPION_MASTERY_V4;
@@ -82,10 +93,17 @@ namespace query {
         Json::Value tournament_by_team(const_str_r routing, const_str_r team);
         Json::Value by_tournament(const_str_r routing, const_str_r tournament);
     } CLASH_V1;
-
+    
     typedef struct LEAGUE_EXP_V4 : public Endpoint {
         LEAGUE_EXP_V4(query_fp client_query) : Endpoint("lol/league-exp/v4/", client_query) {};
-        Json::Value entries(const_str_r routing, const_str_r queue, const_str_r tier, const_str_r division, const std::pair<std::string, int>& page);
+
+        template <param ... Opts>
+        Json::Value entries(const_str_r routing, const_str_r queue, const_str_r tier, const_str_r division, const Opts& ... optional_args) {
+            const std::string method_key("LEAGUE-EXP-V4-entries");
+            const std::array<std::string, 3> method_urls{"entries/", "/", "/"};
+            std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue, tier, division, OPTS(), optional_args...);
+            return (*this->_query)(new_request);
+        };
     } LEAGUE_EXP_V4;
 
     typedef struct LEAGUE_V4 : public Endpoint {
@@ -95,8 +113,14 @@ namespace query {
         Json::Value master(const_str_r routing, const_str_r queue);
         Json::Value by_summoner_id(const_str_r routing, const_str_r summoner_id);
         Json::Value by_league_id(const_str_r routing, const_str_r league_id);
-        Json::Value specific_league(const_str_r routing, const_str_r queue, const_str_r tier, const_str_r division, const std::pair<std::string, int>& page = {"page", 1});
 
+        template <param ... Opts>
+        Json::Value specific_league(const_str_r routing, const_str_r queue, const_str_r tier, const_str_r division, const Opts& ... optional_args) {
+            const std::string method_key("LEAGUE-V4-specific-league");
+            const std::array<std::string, 3> method_urls{"entries/", "/", "/"};
+            std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue, tier, division, OPTS(), optional_args ...);
+            return (*this->_query)(new_request);
+        }
     } LEAGUE_V4;
 
     typedef struct LOL_CHALLENGES_V1 : public Endpoint {
@@ -104,8 +128,14 @@ namespace query {
         Json::Value config(const_str_r routing);
         Json::Value percentiles(const_str_r routing);
         Json::Value challenge_config(const_str_r routing, const_str_r challenge_id);
-        Json::Value challenge_leaderboard(const_str_r routing, const_str_r challenge_id, const_str_r level);
-        Json::Value challenge_leaderboard(const_str_r routing, const_str_r challenge_id, const_str_r level, const std::pair<std::string, int>& limit);
+
+        template <param ... Opts>
+        Json::Value challenge_leaderboard(const_str_r routing, const_str_r challenge_id, const_str_r level, const Opts& ... optional_args) {
+            const std::string method_key("LOL-CHALLENGES-V1-challenge-leaderboard");
+            const std::array<std::string, 2> method_urls{"challenges/", "/leaderboards/by-level/"};
+            std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, challenge_id, level, OPTS(), optional_args ...);
+            return (*this->_query)(new_request);
+        };
         Json::Value challenge_percentiles(const_str_r routing, const_str_r challenge_id);
         Json::Value by_puuid(const_str_r routing, const_str_r puuid);
     } LOL_CHALLENGES_V1;
@@ -138,11 +168,11 @@ namespace query {
         Json::Value by_match_id(const_str_r routing, const_str_r match_id);
         Json::Value timeline(const_str_r routing, const_str_r match_id);
 
-        template <param ... T>
-        Json::Value by_puuid(const_str_r routing, const_str_r puuid, const std::pair<std::string, T>& ... optional_args) {
+        template <param ... Opts>
+        Json::Value by_puuid(const_str_r routing, const_str_r puuid, const Opts& ... optional_args) {
             const std::string method_key = "MATCH-V5-by-puuid";
             const std::array<std::string, 2> method_urls= {"matches/by-puuid/", "/ids"};
-            std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, puuid, optional_args ...);
+            std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, puuid, OPTS(), optional_args ...);
             return (*this->_query)(new_request);
         };
     } MATCH_V5;
@@ -175,11 +205,11 @@ namespace query {
 
     typedef struct TFT_MATCH_V1 : public Endpoint {
         TFT_MATCH_V1(query_fp client_query) : Endpoint("tft/match/v1/", client_query) {};
-        template <param ... T>
-        Json::Value by_puuid(const_str_r routing, const_str_r puuid, const std::pair<std::string, T>& ... optional_args) { //template implementation must be visisble
+        template <param ... Opts>
+        Json::Value by_puuid(const_str_r routing, const_str_r puuid, const Opts& ... optional_args) { //template implementation must be visisble
             const std::string method_key = "TFT-MATCH-V1-by-puuid";
             const std::array<std::string, 2> method_urls = {"matches/by-puuid/", "/ids"};
-            std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, puuid, optional_args...);
+            std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, puuid, OPTS(), optional_args...);
             return (*this->_query)(new_request);
         };
         Json::Value by_match(const_str_r routing, const_str_r match_id);
@@ -201,7 +231,14 @@ namespace query {
     typedef struct VAL_CONTENT_V1 : public Endpoint {
         VAL_CONTENT_V1(query_fp client_query) : Endpoint("val/content/v1/", client_query) {};
         Json::Value content(const_str_r routing);
-        Json::Value content(const_str_r routing, const std::pair<std::string, std::string>& optional_arg);
+
+        template <param ... Opts>
+        Json::Value content(const_str_r routing, const Opts& ... optional_arg) {
+            const std::string method_key = "VAL-CONTENT-V1-content";
+            const std::array<std::string, 1> method_urls = { "contents" };
+            std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, OPTS(), optional_arg ...);
+            return (*this->_query)(new_request);
+        };
     } VAL_CONTENT_V1;
 
     typedef struct VAL_MATCH_V1 : public Endpoint {
@@ -214,7 +251,13 @@ namespace query {
 
     typedef struct VAL_RANKED_V1 : public Endpoint {
         VAL_RANKED_V1(query_fp client_query) : Endpoint("val/ranked/v1/", client_query) {};
-        Json::Value by_act(const_str_r routing, const_str_r actId, const std::pair<std::string, int>& size_p = {"size", 200}, const std::pair<std::string, int>& startIndex = {"startIndex", 200});
+        template <param ... Opts>
+        Json::Value by_act(const_str_r routing, const_str_r actId, const Opts& ... optional_args) {
+            const std::string method_key = "VAL_RANKED_V1-by-act";
+            const std::array<std::string, 1> method_urls= {"leaderboards/by-act/"};
+            std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, actId, OPTS(), optional_args ...);
+            return (*this->_query)(new_request);
+        };
     } VAL_RANKED_V1;
 
     typedef struct VAL_STATUS_V1 : public Endpoint {
