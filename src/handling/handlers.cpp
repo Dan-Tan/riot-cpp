@@ -47,9 +47,12 @@ static void limitDurationExtraction(std::string_view header_strings, int iters, 
 bool RateHandler::validate_request(std::shared_ptr<query::query> request) {
     int wait_time = this->routing_queues.at(routing_to_int(request->routing_value)).validate_request(request->method_key);
     if (wait_time == 0) {
+        (*this->_logger) << logging::LEVEL::DEBUG << request->method_key << "No wait time" << 0;
         return true;
     } else {
         const std::time_t c_time = std::time(NULL);
+        char wait = wait_time + '0';
+        (*this->_logger) << logging::LEVEL::INFO << request->method_key << std::string("Rate Limiting, Waiting ") + wait + " seconds" << 0;
         request->send_time = std::mktime(std::gmtime(&c_time)) + wait_time;
         return false;
     }
@@ -89,7 +92,7 @@ void RateHandler::init_queues(std::shared_ptr<query::query> request) {
 }
 
 void RateHandler::review_request(std::shared_ptr<query::query> request) {
-    if (!this->initialised && request->last_response != 0) {
+    if (!this->initialised && request->last_response != -2) {
         this->initialised = true;
         this->init_queues(request);
         return;
@@ -123,7 +126,7 @@ void RateHandler::review_request(std::shared_ptr<query::query> request) {
 
 bool ResponseHandler::review_request(std::shared_ptr<query::query> request) {
     long last_response = request->last_response;
-    if (last_response == 200 || last_response == 0 || last_response == 429) {
+    if (last_response == 200 || last_response == -2 || last_response == 429) {
         auto& errs = this->response_errors.at(routing_to_int(request->routing_value));
         errs[0] = 0; errs[1] = 0;
         return true;

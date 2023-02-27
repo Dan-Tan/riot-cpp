@@ -1,10 +1,11 @@
 #include <ctime>
+#include <jsoncpp/json/json.h>
+#include <jsoncpp/json/writer.h>
 #include <stdexcept>
 #include "logger.h"
 
 namespace logging {
-
-    static std::string Err_Codes(int code) { // official message
+    static std::string Err_Codes(const int code) { // official message
         switch (code) {
             case 200:
                 return std::string("Successful request");
@@ -30,12 +31,14 @@ namespace logging {
                 return std::string("Service unavailable");
             case 504:
                 return std::string("Gateway timeout");
+            case -2:
+                return std::string("Default response code (not sent)");
             default:
                 throw std::invalid_argument("Invalide error code passed" + std::to_string(code));
         }
     }
 
-    static std::string Code_Meaning(int code) { // more informative (ty shieldbow riot api)
+    static std::string Code_Meaning(const int code) { // more informative (ty shieldbow riot api)
         switch (code) {
             case 200:
                 return std::string("Successful request");
@@ -59,6 +62,8 @@ namespace logging {
                 return std::string("The server is down. Please try again later.");
             case 504:
                 return std::string("Gateway timeout");
+            case -2:
+                return std::string("request not sent yet");
             default:
                 throw std::invalid_argument("Invalid error code passed: " + std::to_string(code));
         }
@@ -96,24 +101,51 @@ namespace logging {
             log_msg = log_msg + " " + level_string(log_level) + ":";
             this->_log_file << log_msg;
             this->_incoming = true;
-            return *this;
-        } else {
-            return *this; // does nothing 
         }
+        return *this;
     };
+
+    Logger& Logger::operator<<(const char* message) {
+        if (this->_incoming) {
+            this->_log_file << "\n  " << message;
+        }
+        return *this;
+    }
 
     Logger& Logger::operator<<(const std::string& message) {
         if (this->_incoming) {
             this->_log_file << "\n  " << message;
-            return *this;
-        } else {
+        }
+        return *this;
+    }
+
+    Logger& Logger::operator<<(const int err_code) {
+        if (this->_incoming && !err_code) {
+            this->_log_file << '\n';
+            this->_incoming = false;
             return *this;
         }
+        if (this->_incoming) {
+            this->_log_file << "\n  " << err_code << ": " << Err_Codes(err_code);
+            if (this->_verbose){
+                this->_log_file << "\n  " << Code_Meaning(err_code);
+            }
+        }
+        return *this;
+    }
+
+    Logger& Logger::operator<<(const Json::Value& response) {
+        if (this->_incoming) {
+            Json::StreamWriterBuilder builder;
+            this->_log_file << "\n " << Json::writeString(builder, response);
+        }
+        return *this;
     }
     
-    Logger::Logger(std::string log_path, LEVEL log_level) {
+    Logger::Logger(std::string log_path, LEVEL log_level, bool verbose) {
         this->_log_path = log_path;
         this->_log_level = log_level;
+        this->_verbose = verbose;
         this->_log_file.open(log_path, std::ios::app); 
         std::string init_time = get_current_time();
         if (!this->_log_file.is_open()) {

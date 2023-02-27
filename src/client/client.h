@@ -9,6 +9,7 @@
 #include "../query/query.h"
 #include "../handling/handlers.h"
 #include "../logging/logger.h"
+#include <functional>
 
 namespace client {
 
@@ -16,14 +17,38 @@ namespace client {
 
     class RiotApiClient {
         private: 
+;
 
         public:
-            RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level = logging::LEVEL::INFO);
+            RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level = logging::LEVEL::INFO, bool verbose_logging = false);
             ~RiotApiClient();
 
-            Json::Value query(std::string endpoint, std::string end_type, std::vector<std::string> params, std::vector<opt_args> optional_args = {});
-            
+            query::ACCOUNT_V1 Account;
+            query::CHAMPION_MASTERY_V4 Champion_Mastery;
+            query::CHAMPION_V3 Champion;
+            query::CLASH_V1 Clash;
+            query::LEAGUE_EXP_V4 League_Exp;
+            query::LEAGUE_V4 League;
+            query::LOL_CHALLENGES_V1 Lol_Challenges; 
+            query::LOL_STATUS Lol_Status;
+            query::LOR_MATCH_V1 Lor_Match;
+            query::LOR_RANKED_V1 Lor_Ranked;
+            query::LOR_STATUS_V1 Lor_Status;
+            query::MATCH_V5 Match;
+            query::SUMMONER_V4 Summoner;
+            query::SPECTATOR_V4 Spectator;
+            query::TFT_LEAGUE_V1 Tft_League;
+            query::TFT_MATCH_V1 Tft_Match;
+            query::TFT_STATUS_V1 Tft_Status;
+            query::TFT_SUMMONER_V1 Tft_Summoner;
+            query::VAL_CONTENT_V1 Val_Content;
+            query::VAL_MATCH_V1 Val_Match;
+            query::VAL_RANKED_V1 Val_Ranked;
+            query::VAL_STATUS_V1 Val_Status;
+
         private:
+            Json::Value query(std::shared_ptr<query::query> request);
+            std::function<Json::Value(std::shared_ptr<query::query>)> endpoint_call;
             bool get(std::shared_ptr<query::query> request);
 
             inline std::string encode_url(std::string query_arg) {
@@ -33,11 +58,9 @@ namespace client {
                 return encoding;
             };       
 
-            std::unique_ptr<handler::RequestHandler> request_handler;
-            std::unique_ptr<logging::Logger> logger;
+            handler::RequestHandler request_handler;
+            logging::Logger logger;
 
-            static const std::unordered_map<int, std::string> Err_Codes;
-            static const std::unordered_map<std::string_view, std::unordered_map<std::string_view, std::shared_ptr<query::QueryType>>> query_types;
             CURL* easy_handle = nullptr;
             struct curl_slist *header = nullptr;
     }; 
