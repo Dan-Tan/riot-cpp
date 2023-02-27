@@ -1,53 +1,504 @@
-[Fri, 10 Feb 23 07:55:53 GMT] Log Initialisation:
+[Mon, 27 Feb 23 06:33:42 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:55:56 GMT] Log Initialisation:
+[Mon, 27 Feb 23 06:33:42 GMT] DEBUG:
+  --Query Call--
+  https://AMERICAS.api.riotgames.com/riot/account/v1/accounts/by-riot-id/DanTan1/fresn
+[Mon, 27 Feb 23 06:33:42 GMT] DEBUG:
+  AMERICAS
+  No wait time
+[Mon, 27 Feb 23 06:33:43 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:43 GMT] DEBUG:
+  --Query Call--
+  https://AMERICAS.api.riotgames.com/riot/account/v1/accounts/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
+[Mon, 27 Feb 23 06:33:43 GMT] DEBUG:
+  ACCOUNT-V1-by-puuid
+  No wait time
+[Mon, 27 Feb 23 06:33:44 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:44 GMT] DEBUG:
+  --Query Call--
+  https://AMERICAS.api.riotgames.com/riot/account/v1/active-shards/by-game/val/by-puuid/nvf_tmMcUOXhaWI4neMvma8WG3iymFlqS32-FpUFsLk3FqH9pGB_oQh5DoecV-Uiue2NIYddgww50A
+[Mon, 27 Feb 23 06:33:44 GMT] DEBUG:
+  AMERICAS
+  No wait time
+[Mon, 27 Feb 23 06:33:44 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:44 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:04 GMT] Log Initialisation:
+[Mon, 27 Feb 23 06:33:44 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5
+[Mon, 27 Feb 23 06:33:44 GMT] DEBUG:
+  LEAGUE-V4-challenger
+  No wait time
+[Mon, 27 Feb 23 06:33:45 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:45 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/RANKED_SOLO_5x5
+[Mon, 27 Feb 23 06:33:45 GMT] DEBUG:
+  LEAGUE-V4-grandmaster
+  No wait time
+[Mon, 27 Feb 23 06:33:46 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:46 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5
+[Mon, 27 Feb 23 06:33:46 GMT] DEBUG:
+  LEAGUE-V4-master
+  No wait time
+[Mon, 27 Feb 23 06:33:47 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:48 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_FLEX_SR
+[Mon, 27 Feb 23 06:33:48 GMT] DEBUG:
+  LEAGUE-V4-challenger
+  No wait time
+[Mon, 27 Feb 23 06:33:48 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:48 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/RANKED_FLEX_SR
+[Mon, 27 Feb 23 06:33:48 GMT] DEBUG:
+  LEAGUE-V4-grandmaster
+  No wait time
+[Mon, 27 Feb 23 06:33:48 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:48 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_FLEX_SR
+[Mon, 27 Feb 23 06:33:48 GMT] DEBUG:
+  LEAGUE-V4-master
+  No wait time
+[Mon, 27 Feb 23 06:33:49 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:49 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5
+[Mon, 27 Feb 23 06:33:49 GMT] DEBUG:
+  LEAGUE-V4-master
+  No wait time
+[Mon, 27 Feb 23 06:33:50 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:50 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:30 GMT] Log Initialisation:
+[Mon, 27 Feb 23 06:33:50 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5
+[Mon, 27 Feb 23 06:33:50 GMT] DEBUG:
+  LEAGUE-V4-master
+  No wait time
+[Mon, 27 Feb 23 06:33:53 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:53 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/DIAMOND/I
+[Mon, 27 Feb 23 06:33:53 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:53 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:53 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/DIAMOND/II
+[Mon, 27 Feb 23 06:33:53 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:54 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:54 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/DIAMOND/III
+[Mon, 27 Feb 23 06:33:54 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:55 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:55 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/DIAMOND/IV
+[Mon, 27 Feb 23 06:33:55 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:55 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:55 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/PLATINUM/I
+[Mon, 27 Feb 23 06:33:55 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:55 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:55 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/PLATINUM/II
+[Mon, 27 Feb 23 06:33:55 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:56 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:56 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/PLATINUM/III
+[Mon, 27 Feb 23 06:33:56 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:56 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:56 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/PLATINUM/IV
+[Mon, 27 Feb 23 06:33:56 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:56 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:56 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/GOLD/I
+[Mon, 27 Feb 23 06:33:56 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:57 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:57 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/GOLD/II
+[Mon, 27 Feb 23 06:33:57 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:57 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:57 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/GOLD/III
+[Mon, 27 Feb 23 06:33:57 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:58 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:58 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/GOLD/IV
+[Mon, 27 Feb 23 06:33:58 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:58 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:58 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/SILVER/I
+[Mon, 27 Feb 23 06:33:58 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:58 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:58 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/SILVER/II
+[Mon, 27 Feb 23 06:33:58 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:59 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:59 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/SILVER/III
+[Mon, 27 Feb 23 06:33:59 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:59 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:59 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/SILVER/IV
+[Mon, 27 Feb 23 06:33:59 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:33:59 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:33:59 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/BRONZE/I
+[Mon, 27 Feb 23 06:33:59 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:00 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:00 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/BRONZE/II
+[Mon, 27 Feb 23 06:34:00 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:00 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:00 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/BRONZE/III
+[Mon, 27 Feb 23 06:34:00 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:01 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:01 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/BRONZE/IV
+[Mon, 27 Feb 23 06:34:01 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:01 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:01 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/IRON/I
+[Mon, 27 Feb 23 06:34:01 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:01 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:01 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/IRON/II
+[Mon, 27 Feb 23 06:34:01 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:02 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:02 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/IRON/III
+[Mon, 27 Feb 23 06:34:02 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:02 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:02 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/IRON/IV
+[Mon, 27 Feb 23 06:34:02 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:03 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:03 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/DIAMOND/I
+[Mon, 27 Feb 23 06:34:03 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:03 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:03 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/DIAMOND/II
+[Mon, 27 Feb 23 06:34:03 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:03 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:03 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/DIAMOND/III
+[Mon, 27 Feb 23 06:34:03 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:04 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:04 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/DIAMOND/IV
+[Mon, 27 Feb 23 06:34:04 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:04 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:04 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/PLATINUM/I
+[Mon, 27 Feb 23 06:34:04 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:04 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:04 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/PLATINUM/II
+[Mon, 27 Feb 23 06:34:04 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:05 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:05 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/PLATINUM/III
+[Mon, 27 Feb 23 06:34:05 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:05 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:05 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/PLATINUM/IV
+[Mon, 27 Feb 23 06:34:05 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:06 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:06 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/GOLD/I
+[Mon, 27 Feb 23 06:34:06 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:06 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:06 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/GOLD/II
+[Mon, 27 Feb 23 06:34:06 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:06 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:06 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/GOLD/III
+[Mon, 27 Feb 23 06:34:06 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:07 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:07 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/GOLD/IV
+[Mon, 27 Feb 23 06:34:07 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:07 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:07 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/SILVER/I
+[Mon, 27 Feb 23 06:34:07 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:07 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:07 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/SILVER/II
+[Mon, 27 Feb 23 06:34:07 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:08 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:08 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/SILVER/III
+[Mon, 27 Feb 23 06:34:08 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:08 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:08 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/SILVER/IV
+[Mon, 27 Feb 23 06:34:08 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:09 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:09 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/BRONZE/I
+[Mon, 27 Feb 23 06:34:09 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:09 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:09 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/BRONZE/II
+[Mon, 27 Feb 23 06:34:09 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:09 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:09 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/BRONZE/III
+[Mon, 27 Feb 23 06:34:09 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:10 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:10 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/BRONZE/IV
+[Mon, 27 Feb 23 06:34:10 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:10 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:10 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/IRON/I
+[Mon, 27 Feb 23 06:34:10 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:10 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:10 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/IRON/II
+[Mon, 27 Feb 23 06:34:10 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:11 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:11 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/IRON/III
+[Mon, 27 Feb 23 06:34:11 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:11 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:11 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_FLEX_SR/IRON/IV
+[Mon, 27 Feb 23 06:34:11 GMT] DEBUG:
+  LEAGUE-V4-specific-league
+  No wait time
+[Mon, 27 Feb 23 06:34:12 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:12 GMT] Log Initialisation:
   Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:36 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:37 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:38 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:39 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:39 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:41 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:42 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:45 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:46 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:47 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:48 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:52 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:54 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:55 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Fri, 10 Feb 23 07:56:57 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Mon, 13 Feb 23 09:41:49 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Mon, 13 Feb 23 09:43:12 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Wed, 22 Feb 23 07:53:02 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Wed, 22 Feb 23 07:53:02 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Wed, 22 Feb 23 07:53:02 GMT] INFO:
-  SUMMONER-V4-by-puuid
-  Rate Limiting, Waiting : seconds
-[Sat, 25 Feb 23 08:05:01 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Sat, 25 Feb 23 08:10:00 GMT] Log Initialisation:
-  Log file successfully opened. 
+[Mon, 27 Feb 23 06:34:12 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5
+[Mon, 27 Feb 23 06:34:12 GMT] DEBUG:
+  LEAGUE-V4-master
+  No wait time
+[Mon, 27 Feb 23 06:34:14 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:14 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/JHZurvjIeiH6ZKad1bCMYvvejAWvWhR-yDS8pdqTKb-fb1I
+[Mon, 27 Feb 23 06:34:14 GMT] DEBUG:
+  LEAGUE-V4-by-summoner-id
+  No wait time
+[Mon, 27 Feb 23 06:34:15 GMT] DEBUG:
+  Query Successful
+[Mon, 27 Feb 23 06:34:15 GMT] DEBUG:
+  --Query Call--
+  https://na1.api.riotgames.com/lol/league/v4/leagues/64de6776-701d-3731-9884-9f22c07f5e6b
+[Mon, 27 Feb 23 06:34:15 GMT] DEBUG:
+  LEAGUE-V4-by-league-id
+  No wait time
+[Mon, 27 Feb 23 06:34:16 GMT] DEBUG:
+  Query Successful

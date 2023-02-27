@@ -26,6 +26,7 @@ namespace client {
         Clash(&this->endpoint_call), 
         League_Exp(&this->endpoint_call),
         League(&this->endpoint_call),
+        Lol_Challenges(&this->endpoint_call),
         Lol_Status(&this->endpoint_call),
         Lor_Match(&this->endpoint_call),
         Lor_Ranked(&this->endpoint_call),

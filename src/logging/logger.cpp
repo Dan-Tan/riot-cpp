@@ -5,7 +5,7 @@
 #include "logger.h"
 
 namespace logging {
-    static std::string Err_Codes(const unsigned int code) { // official message
+    static std::string Err_Codes(const int code) { // official message
         switch (code) {
             case 200:
                 return std::string("Successful request");
@@ -31,12 +31,14 @@ namespace logging {
                 return std::string("Service unavailable");
             case 504:
                 return std::string("Gateway timeout");
+            case -2:
+                return std::string("Default response code (not sent)");
             default:
                 throw std::invalid_argument("Invalide error code passed" + std::to_string(code));
         }
     }
 
-    static std::string Code_Meaning(const unsigned int code) { // more informative (ty shieldbow riot api)
+    static std::string Code_Meaning(const int code) { // more informative (ty shieldbow riot api)
         switch (code) {
             case 200:
                 return std::string("Successful request");
@@ -60,6 +62,8 @@ namespace logging {
                 return std::string("The server is down. Please try again later.");
             case 504:
                 return std::string("Gateway timeout");
+            case -2:
+                return std::string("request not sent yet");
             default:
                 throw std::invalid_argument("Invalid error code passed: " + std::to_string(code));
         }

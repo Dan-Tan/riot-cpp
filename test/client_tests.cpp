@@ -6,7 +6,7 @@
 #include "../src/client/client.h"
 #include <jsoncpp/json/json.h>
 
-#define CONFIG "../../.api_keys/riot_config.json", "../test/log_file.txt"
+#define CONFIG "../../.api_keys/riot_config.json", "../test/log_file.txt", logging::LEVEL::DEBUG
 
 using namespace client;
 
@@ -62,15 +62,15 @@ TEST_CASE( "LEAGUE_V4 QUERIES") {
             result = test_client.League.challenger(region, queue.at(i));
             REQUIRE(result["tier"] == "CHALLENGER");
             REQUIRE(result["queue"] == queue[i]);
-            result = test_client.query(endpoint, std::string("grandmaster"), std::vector<std::string>{region, queue[i]});
+            result = test_client.League.grandmaster(region, queue.at(i));
             REQUIRE(result["tier"] == "GRANDMASTER");
             REQUIRE(result["queue"] == queue[i]);
-            result = test_client.query(endpoint, std::string("master"), std::vector<std::string>{region, queue[i]});
+            result = test_client.League.master(region, queue.at(i));
             REQUIRE(result["tier"] == "MASTER");
             REQUIRE(result["queue"] == queue[i]);
         }
     }
-    result = test_client.query(endpoint, std::string("master"), std::vector<std::string>{region, queue[0]});
+    result = test_client.League.master(region, queue.at(0));
     summoner_id = result["entries"][0]["summonerId"].asString();
     league_id = result["leagueId"].asString();
 
@@ -80,7 +80,7 @@ TEST_CASE( "LEAGUE_V4 QUERIES") {
         for (int qu = 0; qu < queue.size(); qu++) {
             for (int ti = 0; ti < tier.size(); ti++) {
                 for (int div = 0; div < division.size(); div++) {
-                    result = test_client.query(endpoint, std::string("specific-league"), std::vector<std::string>{region, queue[qu], tier[ti], division[div]});
+                    result = test_client.League.specific_league(region, queue.at(qu), tier.at(ti), division.at(div));
                     REQUIRE(result[0]["queueType"] == queue[qu]);
                     REQUIRE(result[0]["tier"] == tier[ti]);
                     REQUIRE(result[0]["rank"] == division[div]);
@@ -90,9 +90,9 @@ TEST_CASE( "LEAGUE_V4 QUERIES") {
     }
 
     SECTION("Testing Summoner ID and League ID") {
-        result = test_client.query(endpoint, std::string("by-summoner-id"), std::vector<std::string>{region, summoner_id});
+        result = test_client.League.by_summoner_id(region, summoner_id);
         REQUIRE(result[0]["summonerId"] == summoner_id);
-        result = test_client.query(endpoint, std::string("by-league-id"), std::vector<std::string>{region, league_id});
+        result = test_client.League.by_league_id(region, league_id);
         REQUIRE(result["leagueId"] == league_id);
     }
 }
