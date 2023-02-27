@@ -1263,6 +1263,32 @@
   400: Bad request
 [Mon, 27 Feb 23 08:04:19 GMT] Log Initialisation:
   Log file successfully opened. 
+<<<<<<< HEAD
+[Wed, 15 Feb 23 15:37:31 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Wed, 15 Feb 23 15:37:31 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Wed, 15 Feb 23 15:37:32 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Wed, 15 Feb 23 15:37:33 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Wed, 15 Feb 23 15:37:34 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Wed, 15 Feb 23 15:37:35 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Wed, 15 Feb 23 15:37:36 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Wed, 15 Feb 23 15:37:36 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Wed, 15 Feb 23 15:37:36 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Wed, 15 Feb 23 15:37:36 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Wed, 15 Feb 23 15:37:36 GMT] Log Initialisation:
+  Log file successfully opened. 
+[Wed, 15 Feb 23 15:37:36 GMT] Log Initialisation:
+  Log file successfully opened. 
+=======
 [Mon, 27 Feb 23 08:04:19 GMT] DEBUG:
   --Query Call--
   https://oc1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Monkeys%20R%20Us
@@ -3012,3 +3038,4 @@
   No wait time
 [Mon, 27 Feb 23 08:15:27 GMT] DEBUG:
   Query Successful
+>>>>>>> dev

@@ -1,38 +1,27 @@
 # Riot Api Client in Cpp
 
-Basic api alient for RIOT GAMES API. Currently handles rate limiting and 5XX error codes.
+Basic api alient for RIOT GAMES API. Currently handles rate limiting, response errors and logging.
 
 Currently in development. 
 
-Uses libcurl to send requests and jsoncpp to store return values. Shared object files and lib can be found in the build/src directory. In the process of documenting usage and making the library more accessible. If you find any error or want to suggest some changes, feel free to make a pull request.
+Uses libcurl to send requests and jsoncpp to store return values. In the process of documenting usage and making the library more accessible. If you find any error or want to suggest some changes, feel free to make a pull request.
 
 ## Usage
 
 ```Cpp
 #include <jsoncpp/json/json.h>
-#include <string>
-#include <vector>
-#include <util>
 #include "path/to/client.h"
-
-using required_args_type = std::vector<std::string>;
-using optional_args_type = std::vector<std::pair<std::string, std::string>>;
 
 int main() {
     
-    std::string PATH_TO_API_KEY;
-    client::RiotApiClient example_client(PATH_TO_API_KEY);
-    
+    client::RiotApiClient example_client("<path/to/api/key>", "<path/to/logging/file>", logging::LEVEL::<level>, <bool verbose>);
     Json::Value response;
-    std::string endpoint = "MATCH-V5";
-    std::string method = "by-puuid";
 
-    required_args_type params = {"<routing_here>", "<puuid_here>"}; // region, params...
-    optional_args_type optional_arguments = {{"startTime", "<user_arg>"}, {"endTime", "<user_arg>"}, ...}  
-
-    response = example_client.query(endpoint, method,  params);
+    response = example_client.Match.by_puuid("routing", "puuid", {"startTime", <user_arg>}, {"endTime", <user_arg>}, ...);
 }
 ```
+
+NOTE: optional arguements that are passed as string must be first
 
 ## Including API Key
 

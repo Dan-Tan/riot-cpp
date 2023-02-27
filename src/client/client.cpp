@@ -10,7 +10,6 @@
 #include <fstream>
 #include <stdio.h>
 #include <queue>
-#include <cstring>
 #include "client.h"
 
 namespace client {
@@ -100,7 +99,7 @@ namespace client {
         }
         char to_insert[3] = {'\"', ':', '\"'};
         char* colon_ind = std::find(new_chars, new_chars + nmemb, ':');
-        if (colon_ind == new_chars + strlen(new_chars)) {
+        if (colon_ind == new_chars + nmemb) {
             return real_size;
         }
         std::vector<char> *new_buffer = reinterpret_cast<std::vector<char>*>(buffer);
@@ -110,7 +109,7 @@ namespace client {
         new_buffer->push_back('\"');
         new_buffer->insert(new_buffer->end(), &new_chars[0], &colon_ind[0]);
         new_buffer->insert(new_buffer->end(), &to_insert[0], to_insert + 3);
-        new_buffer->insert(new_buffer->end(), &colon_ind[2], new_chars + strlen(new_chars) - 1);
+        new_buffer->insert(new_buffer->end(), &colon_ind[2], new_chars + nmemb - 1);
         new_buffer->back() = '\"';
         return real_size;
     }
