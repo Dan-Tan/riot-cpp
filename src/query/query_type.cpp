@@ -9,6 +9,13 @@
 
 namespace query {
 
+static const std::string encode_params(const std::string& to_encode) {
+    char* encoded = curl_easy_escape(NULL, to_encode.c_str(), to_encode.length());
+    const std::string encoded_str(encoded);
+    curl_free(encoded);
+    return encoded_str;
+}
+
 template <param opt>
 static inline void opt_helper(std::stringstream& accumm, const std::pair<std::string, opt>& optional) {
     if (!optional.first.compare("")) {return;};
@@ -23,13 +30,11 @@ static inline void construct_args(std::stringstream& accum, const std::tuple<std
 template <param ... opts>
 std::string query_construct(const std::pair<std::string, opts>&... optional_args){
     std::stringstream ss;
+    ss << "?";
     constexpr std::size_t n_args = sizeof...(optional_args);
     const std::tuple<std::pair<std::string, opts>...> store(optional_args...);
     construct_args(ss, store, std::make_index_sequence<n_args>{});
     std::string final = ss.str();
-    if (final.length() == 0) {
-        return final;
-    }
     final.pop_back();
     return final;
 }
@@ -44,6 +49,10 @@ std::stringstream Endpoint::construct_base(const R& routing) const {
 template <param P>
 static inline void full_helper(std::stringstream& accum, const std::string& url_seg, const P& param) {
     accum << url_seg << param;
+}
+
+static inline void full_helper(std::stringstream& accum, const std::string& url_seg, const std::string& param) {
+    accum << url_seg << encode_params(param);
 }
 
 template <std::size_t N, param ... Params, std::size_t ... Ixs>
@@ -299,7 +308,7 @@ Json::Value MATCH_V5::timeline(const std::string& routing, const std::string& ma
     return (*this->_query)(new_request);
 }
 
-Json::Value MATCH_V5::by_puuid(const std::string& routing, const std::string& puuid, const std::pair<std::string, long>& startTime, const std::pair<std::string, long>& endTime, const std::pair<std::string, int>& queue, const std::pair<std::string, std::string>& types, const std::pair<std::string, int>& start, const std::pair<std::string, int>& count) {
+Json::Value MATCH_V5::by_puuid(const std::string& routing, const std::string& puuid, const std::pair<std::string, std::string>& types, const std::pair<std::string, long>& startTime, const std::pair<std::string, long>& endTime, const std::pair<std::string, int>& queue, const std::pair<std::string, int>& start, const std::pair<std::string, int>& count) {
     const std::string method_key = "MATCH-V5-by-puuid";
     const std::array<std::string, 2> method_urls= {"matches/by-puuid/", "/ids"};
     std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, puuid);
@@ -392,16 +401,17 @@ Json::Value TFT_LEAGUE_V1::by_league_id(const std::string& routing, const std::s
 }
 
 Json::Value TFT_LEAGUE_V1::queue_top(const std::string& routing, const std::string& queue) {
-    const std::string method_key = "TFT_LEAGUE_V1-queue-top";
+    const std::string method_key = "TFT-LEAGUE-V1-queue-top";
     const std::array<std::string, 2> method_urls = {"rated-ladders/", "/top"};
     std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, queue);
     return (*this->_query)(new_request);
 }
 
-Json::Value TFT_LEAGUE_V1::by_tier_division(const std::string& routing, const std::string& tier, const std::string& division) {
+Json::Value TFT_LEAGUE_V1::by_tier_division(const std::string& routing, const std::string& tier, const std::string& division, const std::pair<std::string, int>& count) {
     const std::string method_key = "TFT_LEAGUE_V1-by-tier-division";
     const std::array<std::string, 2> method_urls = {"entries/", "/"};
     std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing,tier, division);
+    new_request->url += query_construct(count);
     return (*this->_query)(new_request);
 }
 Json::Value TFT_MATCH_V1::by_puuid(const std::string& routing, const std::string& puuid, const std::pair<std::string, int>& start, const std::pair<std::string, long>& endTime, const std::pair<std::string, long>& startTime, const std::pair<std::string, int>& count) {

@@ -138,7 +138,7 @@ namespace query {
         Json::Value by_match_id(const_str_r routing, const_str_r match_id);
         Json::Value timeline(const_str_r routing, const_str_r match_id);
 
-        Json::Value by_puuid(const_str_r routing, const_str_r puuid, const std::pair<std::string, long>& startTime = {"", 0}, const std::pair<std::string, long>& endTime = {"", 0}, const std::pair<std::string, int>& queue = {"", 0}, const std::pair<std::string, std::string>& type_ = {"", ""}, const std::pair<std::string, int>& start = {"", 0}, const std::pair<std::string, int>& count = {"", 0});
+        Json::Value by_puuid(const_str_r routing, const_str_r puuid, const std::pair<std::string, std::string>& types = {"", ""}, const std::pair<std::string, long>& startTime = {"", 0}, const std::pair<std::string, long>& endTime = {"", 0}, const std::pair<std::string, int>& queue = {"", 0}, const std::pair<std::string, int>& start = {"", 0}, const std::pair<std::string, int>& count = {"", 0});
     } MATCH_V5;
 
     typedef struct SUMMONER_V4 : public Endpoint {
@@ -164,7 +164,7 @@ namespace query {
         Json::Value by_summoner_id(const_str_r routing, const_str_r summoner_id);
         Json::Value by_league_id(const_str_r routing, const_str_r league_id);
         Json::Value queue_top(const_str_r routing, const_str_r queue);
-        Json::Value by_tier_division(const_str_r routing, const_str_r tier, const_str_r division);
+        Json::Value by_tier_division(const_str_r routing, const_str_r tier, const_str_r division, const std::pair<std::string, int>& count = {"", 0});
     } TFT_LEAGUE_V1;
 
     typedef struct TFT_MATCH_V1 : public Endpoint {
