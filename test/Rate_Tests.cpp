@@ -153,7 +153,8 @@ TEST_CASE("REGION HISTORY TESTS") {
 }
 
 TEST_CASE("RATE TESTS") {
-    struct RateHandler handler;
+    logging::Logger logger("../test/log_file.txt");
+    struct RateHandler handler(&logger);
     std::string region = "na1";
     Json::Reader reader;
     std::string example_header_str = "{\n\"Date\": \"Mon, 16 Jan 2023 09:48:45 GMT\",\n\"X-App-Rate-Limit\": \"100:1,1000:10,60000:600,360000:3600\",\n\"X-App-Rate-Limit-Count\": \"1:1,2:10,2:600,2:3600\",\n\"X-Method-Rate-Limit\": \"1000:1\",\n\"X-Method-Rate-Limit-Count\": \"1:1\",\n}";

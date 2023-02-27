@@ -4,6 +4,7 @@
 #include <jsoncpp/json/json.h>
 #include <string>
 #include <fstream>
+#include "../query/query.h"
 
 namespace logging {
 
@@ -22,23 +23,16 @@ namespace logging {
 
             std::ofstream _log_file;
             bool _incoming = false;
+            bool _verbose;
 
         public:
-            Logger(std::string log_path, LEVEL log_level = LEVEL::INFO);
+            Logger(std::string log_path, LEVEL log_level = LEVEL::INFO, bool verbose = false);
             ~Logger();
 
             Logger& operator<<(const LEVEL& log_level);
             Logger& operator<<(const std::string& message);
-            //Logger& operator<<(const unsigned int err_code); todo
-            //Logger& operator<<(const std::shared_ptr<query::query> request);
-            Logger& operator<<(const int terminate) {
-                if (this->_incoming && !terminate) {
-                    this->_log_file << '\n';
-                    this->_incoming = false;
-                    return *this;
-                } else {
-                    return *this;
-                }
-            };
+            Logger& operator<<(const char* message);
+            Logger& operator<<(const int err_code);
+            Logger& operator<<(const Json::Value& response);
     };
 }
