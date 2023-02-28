@@ -23,6 +23,7 @@ namespace handler {
         void review_request(std::shared_ptr<query::query> request);
 
         void init_queues(std::shared_ptr<query::query> request);
+        void init_counts(std::string_view routing, std::string_view method_key, const std::vector<int>& app_counts, const std::vector<int>& method_counts, const std::time_t server_time);
         void update_queues();
         logging::Logger *_logger;
 

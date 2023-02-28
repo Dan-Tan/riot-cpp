@@ -1,14 +1,9 @@
 #include <string>
 #include <numeric>
-#include <iostream>
 #include <stdexcept>
 #include <memory>
 #include <iomanip>
-#include <unordered_map>
-#include <vector>
-#include <ctime>
 #include <jsoncpp/json/json.h>
-#include <queue>
 #include "rate_structures.h"
 
 namespace handler_structs {
@@ -151,9 +146,9 @@ std::time_t RegionHistory::validate_request(std::string_view method_key) {
 void RegionHistory::insert_request(std::time_t server_time, std::string_view method_key, std::string_view method_limits) {
 
     update_scopes();
-
-    for (auto& scope : application_hierachy) {
-        scope.insert_request(server_time);
+    
+    for (auto& history : this->application_hierachy) {
+        history.insert_request(server_time);
     }
 
     try {
@@ -170,11 +165,11 @@ void RegionHistory::insert_request(std::time_t server_time, std::string_view met
 RegionHistory init_region(std::vector<int> limits, std::vector<int> durations) {
 
     RegionHistory new_history;
-
+    
     for (int i = limits.size()-1; i >= 0; i--) {
         new_history.application_hierachy.push_back({.duration = durations[i], .limit = limits[i]});
     }
-    
+
     return new_history;
 }
 

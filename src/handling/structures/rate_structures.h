@@ -1,4 +1,11 @@
 #pragma once
+
+#include <vector>
+#include <queue>
+#include <ctime>
+#include <string_view>
+#include <unordered_map>
+
 namespace handler_structs {
 
     typedef struct ScopeHistory {

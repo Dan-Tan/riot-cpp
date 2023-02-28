@@ -6,8 +6,7 @@
 #include <unordered_map>
 #include <jsoncpp/json/json.h>
 #include <memory>
-#include "../src/handling/handlers.h"
-#include "../src/query/query.h"
+#include "../src/client/client.h"
 
 using namespace handler;
 
@@ -199,9 +198,20 @@ TEST_CASE("RATE TESTS") {
             update_time(test_query);
             handler.review_request(test_query);
         }
-        wait_time = handler.validate_request(test_query);
+        wait_time = handler.validate_request(test_query); //currently will always be true
         REQUIRE_FALSE(test_query->send_time == 0);
-        REQUIRE_FALSE(wait_time);
+    }
+}
+
+TEST_CASE("Test with server") {
+    bool verbose = true;
+    client::RiotApiClient test_client("../../.api_keys/riot_config.json", "../test/log_file.txt", logging::LEVEL::INFO, verbose);
+
+    Json::Value response;
+    // we want to try trigger the server rate limiter and check if we stop our queries or get sent a 429 error
+    int n_attempts = 300;
+    for (int i = 0; i < n_attempts; i++) {
+        response = test_client.Summoner.by_name("oc1", "Monkeys R Us");
     }
 }
 

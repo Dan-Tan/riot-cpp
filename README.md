@@ -33,6 +33,25 @@ Pass path to file to client constructor.
 }
 ```
 
+## Use Library with own project
+
+*Making this more straight forward is on my to do list*
+
+1. Navigate to the repository of your choice
+
+```git 
+git clone git+https://github.com/Dan-Tan/riot-cpp.git
+```
+
+#### With Cmake
+
+2. In your CMakeLists.txt file
+
+```cmake
+add_subdirectory(<path/to/riot-cpp/src>)
+target_link_libraries(<your library or executable> <PRIVATE/PUBLIC> riot-cpp)
+```
+
 ## Testing
 
 Testing of most endpoints is located in the test directory. Currently, my basic development key does not giving access to all endpoints to test. 
