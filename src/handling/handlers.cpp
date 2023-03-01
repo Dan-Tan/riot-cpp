@@ -1,5 +1,4 @@
 #include <chrono>
-#include <iostream>
 #include <iomanip>
 #include <thread>
 #include <vector>
@@ -30,7 +29,7 @@ static int fast_atoi(const char * str, int iters = -1)
     return val;
 }
 
-inline static time_t request_time(std::string server_time) {
+inline static std::time_t request_time(std::string server_time) {
     std::tm tm_time = {0};
     std::stringstream(server_time) >> std::get_time(&tm_time, "%a, %d %b %y %H:%M:%S GMT"); //riot api time format
     return std::mktime(&tm_time);
@@ -44,12 +43,12 @@ static void limitDurationExtraction(std::string_view header_strings, int iters, 
     durations.push_back(duration);
 }
 
-void RateHandler::init_counts(std::string_view routing, std::string_view method_key, const std::vector<int>& app_counts, const std::vector<int>& method_counts, const std::time_t server_time) {
+void RateHandler::init_counts(std::string_view routing, std::string method_key, const std::vector<int>& app_counts, const std::vector<int>& method_counts, const std::time_t server_time) {
 
-    std::queue<std::time_t>& history_ref = this->routing_queues[routing_to_int(routing)].application_hierachy[0].history;
+    std::queue<std::time_t>& history_ref = this->routing_queues.at(routing_to_int(routing)).application_hierachy[0].history;
 
     for (int i = 0; i < app_counts.size(); i++) {
-        history_ref = this->routing_queues[routing_to_int(routing)].application_hierachy[i].history;
+        history_ref = this->routing_queues.at(routing_to_int(routing)).application_hierachy[i].history;
         for (int j = 0; j < app_counts[i]-1; j++) {
             history_ref.push(server_time);
         }
@@ -64,17 +63,24 @@ void RateHandler::init_counts(std::string_view routing, std::string_view method_
 }
 
 bool RateHandler::validate_request(std::shared_ptr<query::query> request) {
-    int wait_time = this->routing_queues.at(routing_to_int(request->routing_value)).validate_request(request->method_key);
-    if (wait_time == 0) {
-        (*this->_logger) << logging::LEVEL::DEBUG << request->method_key << "No wait time" << 0;
-        return true;
-    } else {
-        const std::time_t c_time = std::time(NULL);
-        (*this->_logger) << logging::LEVEL::INFO << request->method_key << std::string("Self Rate Limiting, Waiting ") + std::to_string(wait_time) + " seconds" << request->response_header << 0; // continuing log
-        (*this->_logger) << logging::LEVEL::DEBUG << this->routing_queues.at(routing_to_int(request->routing_value)).application_hierachy << 0; // continuing log
-        request->send_time = std::mktime(std::gmtime(&c_time)) + wait_time;
+    if (request->last_response == 429 || request->last_response == 500 || request->last_response == 503) { // send time already calculated
+        (*this->_logger) << logging::LEVEL::DEBUG << request->method_key << "Retrying" << request->last_response << 0;
         return true;
     }
+    if (request->last_response == -2) {
+        int wait_time = this->routing_queues.at(routing_to_int(request->routing_value)).validate_request(request->method_key);
+        if (wait_time == 0) {
+            (*this->_logger) << logging::LEVEL::DEBUG << request->method_key << "No wait time" << 0;
+            return true;
+        } else {
+            const std::time_t c_time = std::time(NULL);
+            (*this->_logger) << logging::LEVEL::INFO << request->method_key << std::string("Self Rate Limiting, Waiting ") + std::to_string(wait_time) + " seconds" << request->response_header << 0; // continuing log
+            (*this->_logger) << logging::LEVEL::DEBUG << this->routing_queues.at(routing_to_int(request->routing_value)).application_hierachy << 0; // continuing log
+            request->send_time = std::mktime(std::gmtime(&c_time)) + wait_time;
+            return true;
+        }
+    }
+    return false;
 }
 
 void RateHandler::update_queues() {

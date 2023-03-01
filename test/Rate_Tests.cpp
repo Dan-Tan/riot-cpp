@@ -31,7 +31,7 @@ TEST_CASE("SCOPE HISTORY TESTS") {
         int available;
         for (int i = 0; i < test_scope.limit; i++) {
             cur_time = std::time(NULL);
-            test_scope.insert_request(cur_time);
+            test_scope.insert_request(std::mktime(std::gmtime(&cur_time)));
             available = test_scope.available_requests();
             REQUIRE(available == test_scope.limit - i - 1);
         }
@@ -70,17 +70,15 @@ TEST_CASE("SCOPE HISTORY TESTS") {
         REQUIRE(out == 0);
 
         std::time_t c_time;
-        std::time_t current_time;
         for (int i = 0; i < test_scope.limit - 1; i++) {
             c_time = std::time(NULL);
-            current_time = std::mktime(std::gmtime(&c_time));
-            test_scope.insert_request(current_time);
+            test_scope.insert_request(std::mktime(std::gmtime(&c_time)));
         }
         out = test_scope.validate_request();
         REQUIRE(out == 0);
 
         c_time = std::time(NULL);
-        test_scope.insert_request(c_time);
+        test_scope.insert_request(std::mktime(std::gmtime(&c_time)));
         out = test_scope.validate_request();
         REQUIRE(test_scope.history.size() == test_scope.limit);
         REQUIRE(out != 0);
@@ -124,7 +122,7 @@ TEST_CASE("REGION HISTORY TESTS") {
         REQUIRE(endpoint_availability == 0);
         for (int j = 0; j < lim; j++) {
             server_time = std::time(NULL);
-            region.insert_request(server_time, method, method_limit);
+            region.insert_request(std::mktime(std::gmtime(&server_time)), method, method_limit);
         }
         endpoint_availability = region.validate_request(method);
         REQUIRE_FALSE(endpoint_availability == 0);
@@ -143,7 +141,7 @@ TEST_CASE("REGION HISTORY TESTS") {
         REQUIRE(endpoint_availability == 0);
         for (int i = 0; i < lim.at(0); i++) {
             server_time = std::time(NULL);
-            application_testing.insert_request(server_time, method, method_limit);
+            application_testing.insert_request(std::mktime(std::gmtime(&server_time)), method, method_limit);
         }
         endpoint_availability = application_testing.validate_request(method);
         REQUIRE_FALSE(endpoint_availability == 0);
@@ -190,7 +188,7 @@ TEST_CASE("RATE TESTS") {
         test_query->routing_value = "kr";
         test_query->method_key = "SUMMONER-V4-by-puuid";
         test_query->send_time = 0;
-        test_query->last_response = 200;
+        test_query->last_response = -2;
         bool wait_time = handler.validate_request(test_query);
         REQUIRE(wait_time);
         REQUIRE(test_query->send_time == 0);
@@ -209,7 +207,7 @@ TEST_CASE("Test with server") {
 
     Json::Value response;
     // we want to try trigger the server rate limiter and check if we stop our queries or get sent a 429 error
-    int n_attempts = 300;
+    int n_attempts = 500;
     for (int i = 0; i < n_attempts; i++) {
         response = test_client.Summoner.by_name("oc1", "Monkeys R Us");
     }

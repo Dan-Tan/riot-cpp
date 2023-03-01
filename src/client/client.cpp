@@ -1,5 +1,4 @@
 #include <chrono>
-#include <iostream>
 #include <memory>
 #include <thread>
 #include <ctime>
@@ -162,7 +161,6 @@ namespace client {
         if (current_time >= send_time) {
             return;
         } else {
-            std::cout << send_time - current_time << '\n';
             std::this_thread::sleep_for(std::chrono::seconds(send_time - current_time));
             return;
         }
@@ -180,6 +178,7 @@ namespace client {
                 this->logger << logging::LEVEL::WARNING << "Request sent was invalid or the server is unavailable" << 0;
                 throw std::runtime_error("Request sent was invalid or the server is unavailable");
             }
+            this->logger << logging::LEVEL::DEBUG << "Request Validated" << 0;
             wait_until(request->send_time);
             this->get(request);
         }

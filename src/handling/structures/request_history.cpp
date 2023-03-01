@@ -56,12 +56,12 @@ static std::vector<ScopeHistory> init_method_hierachy(std::string_view method_li
 }
 
 void ScopeHistory::update_history() {
-    
-    if (history.size() == 0) {return;};
 
+
+    if (history.size() == 0) {return;};
     bool remove = true;
-    const std::time_t c_time = std::time(NULL);
-    std::time_t current_t = std::mktime(std::gmtime(&c_time));
+    const std::time_t ct = std::time(NULL);
+    std::time_t current_t = std::mktime(std::gmtime(&ct));
     while (remove) {
         if (current_t - history.front() > duration) {
             history.pop();
@@ -73,14 +73,16 @@ void ScopeHistory::update_history() {
     return;
 }
 
-std::time_t ScopeHistory::validate_request() {
+int ScopeHistory::validate_request() {
     update_history();
 
     if (history.size() < limit) {
         return 0;
     } else {
-        const std::time_t c_time = std::time(NULL);
-        return duration - static_cast<int>(std::mktime(std::gmtime(&c_time)) - history.front());
+        const std::time_t ct = std::time(NULL);
+        std::time_t c_time = std::mktime(std::gmtime(&ct));
+        int delay = duration - static_cast<int>(c_time - history.front());
+        return delay;
     }
 }
 
@@ -97,9 +99,8 @@ void ScopeHistory::correct_history(int server_counter, int server_limit, int ser
             history.pop();
         }
     } else {
-        // log unrecorded requests!!
-        const std::time_t c_time = std::time(NULL);
-        std::time_t current = std::mktime(std::gmtime(&c_time));
+        const std::time_t ct = std::time(NULL);
+        std::time_t current = std::mktime(std::gmtime(&ct));
         for (int i = 0; i < -residue; i++) {
             insert_request(current);
         }
@@ -117,16 +118,16 @@ void RegionHistory::update_scopes() {
     }
 }
 
-std::time_t RegionHistory::validate_request(std::string_view method_key) {
+int RegionHistory::validate_request(std::string method_key) {
     
-    std::time_t wait_time = 0;
+    int wait_time = 0;
     bool no_limits = true;
     int hierachy = 0;
-    wait_time = std::accumulate(application_hierachy.begin(), application_hierachy.end(), std::time_t(0), [](std::time_t acc, ScopeHistory new_scope){if (std::time_t n = new_scope.validate_request();n > acc) {return n;} else {return acc;}});
-
-    std::time_t method_time;
+    wait_time = std::accumulate(application_hierachy.begin(), application_hierachy.end(), 0, 
+            [](int acc, ScopeHistory new_scope){if (int n = new_scope.validate_request();n > acc) {return n;} else {return acc;}});
+    int method_time;
     try {
-        std::time_t method_time = std::accumulate(method_queues.at(method_key).begin(), method_queues.at(method_key).end(), std::time_t(0), [](std::time_t acc, ScopeHistory new_scope){if (std::time_t n = new_scope.validate_request();n > acc) {return n;} else {return acc;}});
+        method_time = std::accumulate(method_queues.at(method_key).begin(), method_queues.at(method_key).end(), 0, [](int acc, ScopeHistory new_scope){if (int n = new_scope.validate_request();n > acc) {return n;} else {return acc;}});
     }
     catch (std::out_of_range& exc) {
         method_time = 0;
@@ -145,14 +146,16 @@ void RegionHistory::insert_request(std::time_t server_time, std::string_view met
         history.insert_request(server_time);
     }
 
+    std::string n_method_key{method_key.data()};
+
     try {
-        for (auto& scope : method_queues.at(method_key)) {
+        for (auto& scope : method_queues.at(n_method_key)) {
             scope.insert_request(server_time);
         }
     }
     catch (std::out_of_range& exc) {// insert new method scope
         std::vector<ScopeHistory> new_method_hierachy = init_method_hierachy(method_limits, server_time);
-        method_queues.insert(std::pair<std::string_view, std::vector<ScopeHistory>>(method_key, new_method_hierachy));
+        method_queues.insert(std::pair<std::string_view, std::vector<ScopeHistory>>(n_method_key, new_method_hierachy));
     }
 }
 
