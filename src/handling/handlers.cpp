@@ -71,6 +71,7 @@ bool RateHandler::validate_request(std::shared_ptr<query::query> request) {
     } else {
         const std::time_t c_time = std::time(NULL);
         (*this->_logger) << logging::LEVEL::INFO << request->method_key << std::string("Self Rate Limiting, Waiting ") + std::to_string(wait_time) + " seconds" << request->response_header << 0; // continuing log
+        (*this->_logger) << logging::LEVEL::DEBUG << this->routing_queues.at(routing_to_int(request->routing_value)).application_hierachy << 0; // continuing log
         request->send_time = std::mktime(std::gmtime(&c_time)) + wait_time;
         return true;
     }

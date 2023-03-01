@@ -122,23 +122,17 @@ std::time_t RegionHistory::validate_request(std::string_view method_key) {
     std::time_t wait_time = 0;
     bool no_limits = true;
     int hierachy = 0;
-    while (no_limits && (hierachy < application_hierachy.size())) {
-        wait_time = application_hierachy.at(hierachy).validate_request();
-        if (wait_time != 0) {
-            no_limits = false;
-        }
-        hierachy += 1;
-    }
+    wait_time = std::accumulate(application_hierachy.begin(), application_hierachy.end(), std::time_t(0), [](std::time_t acc, ScopeHistory new_scope){if (std::time_t n = new_scope.validate_request();n > acc) {return n;} else {return acc;}});
 
     std::time_t method_time;
     try {
         std::time_t method_time = std::accumulate(method_queues.at(method_key).begin(), method_queues.at(method_key).end(), std::time_t(0), [](std::time_t acc, ScopeHistory new_scope){if (std::time_t n = new_scope.validate_request();n > acc) {return n;} else {return acc;}});
-        if (method_time > wait_time) {
-            return method_time;
-        }
     }
     catch (std::out_of_range& exc) {
-        wait_time = 0;
+        method_time = 0;
+    }
+    if (method_time > wait_time) {
+        return method_time;
     }
     return wait_time;
 }
@@ -171,6 +165,13 @@ RegionHistory init_region(std::vector<int> limits, std::vector<int> durations) {
     }
 
     return new_history;
+}
+
+const std::string ScopeHistory::queue_state() const {
+    std::stringstream state;
+    state << "oldest: " << std::put_time(std::gmtime(&this->history.front()), "%a, %d %m %Y %H:%M:%S GMT");
+    state << "  newest: " << std::put_time(std::gmtime(&this->history.back()), "%a, %d %m %Y %H:%M:%S GMT");
+    return state.str();
 }
 
 }

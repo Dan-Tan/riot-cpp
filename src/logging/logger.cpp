@@ -139,6 +139,7 @@ namespace logging {
             this->_log_file << "\n  " << "Hierachy denial state ";
             for (auto& method_scope : method_history) {
                 this->_log_file << "\n    (limit: " << method_scope.limit << ")  (duration: "<< method_scope.duration << ")  (count: " << method_scope.history.size() << ")";
+                this->_log_file << "\n    " << method_scope.queue_state();
             }
         }
         return *this;

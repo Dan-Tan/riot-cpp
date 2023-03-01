@@ -162,6 +162,7 @@ namespace client {
         if (current_time >= send_time) {
             return;
         } else {
+            std::cout << send_time - current_time << '\n';
             std::this_thread::sleep_for(std::chrono::seconds(send_time - current_time));
             return;
         }

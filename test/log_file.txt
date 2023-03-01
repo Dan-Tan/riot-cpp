@@ -1,33 +1,7 @@
-[Tue, 28 Feb 23 10:05:29 GMT] Log Initialisation:
+[Tue, 28 Feb 23 13:17:00 GMT] Log Initialisation:
   Log file successfully opened. 
-[Tue, 28 Feb 23 10:05:29 GMT] Log Initialisation:
+[Tue, 28 Feb 23 13:17:00 GMT] Log Initialisation:
   Log file successfully opened. 
-[Tue, 28 Feb 23 10:05:30 GMT] INFO:
+[Tue, 28 Feb 23 13:17:00 GMT] INFO:
   SUMMONER-V4-by-puuid
-  Self Rate Limiting, Waiting 9 seconds
-[Tue, 28 Feb 23 10:05:30 GMT] Log Initialisation:
-  Log file successfully opened. 
-[Tue, 28 Feb 23 10:06:20 GMT] INFO:
-  SUMMONER-V4-by-name
-  Self Rate Limiting, Waiting 71 seconds
- ------header-------
-  null
-[Tue, 28 Feb 23 10:08:26 GMT] ERROR:
-  Hierachy denial state 
-    (limit: 100)  (duration: 120)  (count: 100)
-    (limit: 20)  (duration: 1)  (count: 4)
-[Tue, 28 Feb 23 10:08:26 GMT] ERROR:
- ------header-------
-  {
-	"Connection" : "keep-alive",
-	"Content-Type" : "application/json;charset=utf-8",
-	"Date" : "Tue, 28 Feb 2023 10:08:26 GMT",
-	"Retry-After" : "68",
-	"Transfer-Encoding" : "chunked",
-	"X-App-Rate-Limit" : "20:1,100:120",
-	"X-App-Rate-Limit-Count" : "1:1,101:120",
-	"X-Method-Rate-Limit" : "800:60",
-	"X-Method-Rate-Limit-Count" : "101:60",
-	"X-Rate-Limit-Type" : "application",
-	"X-Riot-Edge-Trace-Id" : "02276d22-bf8e-485e-a949-c27c357789fc"
-}
+  Self Rate Limiting, Waiting 20 seconds

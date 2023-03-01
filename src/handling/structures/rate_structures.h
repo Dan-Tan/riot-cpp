@@ -31,6 +31,8 @@ namespace handler_structs {
             return limit - history.size();
         }
 
+        const std::string queue_state() const;
+
     } ScopeHistory;
 
     typedef struct RegionHistory {

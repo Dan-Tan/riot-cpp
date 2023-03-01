@@ -205,7 +205,7 @@ TEST_CASE("RATE TESTS") {
 
 TEST_CASE("Test with server") {
     bool verbose = true;
-    client::RiotApiClient test_client("../../.api_keys/riot_config.json", "../test/log_file.txt", logging::LEVEL::INFO, verbose);
+    client::RiotApiClient test_client("../../.api_keys/riot_config.json", "../test/log_file.txt", logging::LEVEL::DEBUG, verbose);
 
     Json::Value response;
     // we want to try trigger the server rate limiter and check if we stop our queries or get sent a 429 error
