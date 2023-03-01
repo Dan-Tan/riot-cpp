@@ -1,5 +1,4 @@
 #include <chrono>
-#include <iostream>
 #include <memory>
 #include <thread>
 #include <ctime>
@@ -179,6 +178,7 @@ namespace client {
                 this->logger << logging::LEVEL::WARNING << "Request sent was invalid or the server is unavailable" << 0;
                 throw std::runtime_error("Request sent was invalid or the server is unavailable");
             }
+            this->logger << logging::LEVEL::DEBUG << "Request Validated" << 0;
             wait_until(request->send_time);
             this->get(request);
         }

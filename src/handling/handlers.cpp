@@ -1,5 +1,4 @@
 #include <chrono>
-#include <iostream>
 #include <iomanip>
 #include <thread>
 #include <vector>
@@ -30,7 +29,7 @@ static int fast_atoi(const char * str, int iters = -1)
     return val;
 }
 
-inline static time_t request_time(std::string server_time) {
+inline static std::time_t request_time(std::string server_time) {
     std::tm tm_time = {0};
     std::stringstream(server_time) >> std::get_time(&tm_time, "%a, %d %b %y %H:%M:%S GMT"); //riot api time format
     return std::mktime(&tm_time);
@@ -44,18 +43,44 @@ static void limitDurationExtraction(std::string_view header_strings, int iters, 
     durations.push_back(duration);
 }
 
-bool RateHandler::validate_request(std::shared_ptr<query::query> request) {
-    int wait_time = this->routing_queues.at(routing_to_int(request->routing_value)).validate_request(request->method_key);
-    if (wait_time == 0) {
-        (*this->_logger) << logging::LEVEL::DEBUG << request->method_key << "No wait time" << 0;
-        return true;
-    } else {
-        const std::time_t c_time = std::time(NULL);
-        char wait = wait_time + '0';
-        (*this->_logger) << logging::LEVEL::INFO << request->method_key << std::string("Rate Limiting, Waiting ") + wait + " seconds" << 0;
-        request->send_time = std::mktime(std::gmtime(&c_time)) + wait_time;
-        return false;
+void RateHandler::init_counts(std::string_view routing, std::string method_key, const std::vector<int>& app_counts, const std::vector<int>& method_counts, const std::time_t server_time) {
+
+    std::queue<std::time_t>& history_ref = this->routing_queues.at(routing_to_int(routing)).application_hierachy[0].history;
+
+    for (int i = 0; i < app_counts.size(); i++) {
+        history_ref = this->routing_queues.at(routing_to_int(routing)).application_hierachy[i].history;
+        for (int j = 0; j < app_counts[i]-1; j++) {
+            history_ref.push(server_time);
+        }
     }
+
+    for (int i = 0; i < method_counts.size(); i++) {
+        history_ref = this->routing_queues[routing_to_int(routing)].method_queues[method_key][i].history;
+        for (int j = 0; j < method_counts[i]-1; j++) {
+            history_ref.push(server_time);
+        }
+    }
+}
+
+bool RateHandler::validate_request(std::shared_ptr<query::query> request) {
+    if (request->last_response == 429 || request->last_response == 500 || request->last_response == 503) { // send time already calculated
+        (*this->_logger) << logging::LEVEL::DEBUG << request->method_key << "Retrying" << request->last_response << 0;
+        return true;
+    }
+    if (request->last_response == -2) {
+        int wait_time = this->routing_queues.at(routing_to_int(request->routing_value)).validate_request(request->method_key);
+        if (wait_time == 0) {
+            (*this->_logger) << logging::LEVEL::DEBUG << request->method_key << "No wait time" << 0;
+            return true;
+        } else {
+            const std::time_t c_time = std::time(NULL);
+            (*this->_logger) << logging::LEVEL::INFO << request->method_key << std::string("Self Rate Limiting, Waiting ") + std::to_string(wait_time) + " seconds" << request->response_header << 0; // continuing log
+            (*this->_logger) << logging::LEVEL::DEBUG << this->routing_queues.at(routing_to_int(request->routing_value)).application_hierachy << 0; // continuing log
+            request->send_time = std::mktime(std::gmtime(&c_time)) + wait_time;
+            return true;
+        }
+    }
+    return false;
 }
 
 void RateHandler::update_queues() {
@@ -64,32 +89,48 @@ void RateHandler::update_queues() {
     }
 }
 
+void get_limits_and_counts(std::string_view rep, std::vector<int>& count, std::vector<int>& duration) {
+
+    int comma_index = 0;
+    int beginning_index = 0;
+    
+    while (comma_index != -1) {
+        comma_index = rep.find(',', beginning_index);
+        limitDurationExtraction(rep.substr(beginning_index), comma_index-beginning_index, count, duration);
+        beginning_index = comma_index+1;
+    }
+}
+
 void RateHandler::init_queues(std::shared_ptr<query::query> request) {
     try {
         std::string limits_str = request->response_header["X-App-Rate-Limit"].asString();
+        std::string counts_str = request->response_header["X-App-Rate-Limit-Count"].asString();
         std::string method_str = request->response_header["X-Method-Rate-Limit"].asString();
+        std::string method_counts_str = request->response_header["X-Method-Rate-Limit-Count"].asString();
+        std::vector<int> method_counts;
+        std::vector<int> counts;
         std::vector<int> limits;
         std::vector<int> durations;
-
-        int comma_index = 0;
-        int beginning_index = 0;
+        std::vector<int> temp;
         
-        while (comma_index != -1) {
-            comma_index = limits_str.find(',', beginning_index);
-            limitDurationExtraction(limits_str.substr(beginning_index), comma_index-beginning_index, limits, durations);
-            beginning_index = comma_index+1;
-        }
+        get_limits_and_counts(limits_str, limits, durations);
+        get_limits_and_counts(counts_str, counts, temp);
+        get_limits_and_counts(method_counts_str, method_counts, temp);
 
         for (auto& reg : this->routing_queues) {
             reg = handler_structs::init_region(limits, durations);
         }
 
-        this->routing_queues.at(routing_to_int(request->routing_value)).insert_request(request_time(request->response_header["Date"].asString()), request->method_key, method_str);
+        const std::time_t server_time = request_time(request->response_header["Date"].asString());
+
+        this->routing_queues.at(routing_to_int(request->routing_value)).insert_request(server_time, request->method_key, method_str);
+        this->init_counts(request->routing_value, request->method_key, counts, method_counts, server_time);
     }
     catch (Json::Exception& exc ) {
         throw Json::Exception("Response header key value not found");
     }
 }
+
 
 void RateHandler::review_request(std::shared_ptr<query::query> request) {
     if (!this->initialised && request->last_response != -2) {
@@ -100,21 +141,8 @@ void RateHandler::review_request(std::shared_ptr<query::query> request) {
     if (request->last_response == 429) {
         const std::time_t c_time = std::time(NULL);
         request->send_time = std::mktime(std::gmtime(&c_time)) + static_cast<std::time_t>(fast_atoi(request->response_header["Retry-After"].asString().data()));
-        try {
-            std::string limit_type = request->response_header["X-Rate-Limit-Type"].asString();
-            if (limit_type == "application") {
-                std::cout << "application" << '\n';
-            } else if (limit_type == "method") {
-                std::cout << "method" << '\n';
-            } else if (limit_type == "service") {
-                std::cout << "service" << '\n';
-            } else { // unknown limit type
-                return;
-            }
-        } 
-        catch (Json::Exception& exc) { //underlying service limit
-            std::cout << "503: underlying" << '\n';
-        }
+        (*this->_logger) << logging::LEVEL::ERROR << this->routing_queues.at(routing_to_int(request->routing_value)).application_hierachy << 0;
+        (*this->_logger) << logging::LEVEL::ERROR << request->response_header << 0;
     }
     if (request->last_response != 200) {
         return;

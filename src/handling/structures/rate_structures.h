@@ -1,4 +1,12 @@
 #pragma once
+
+#include <string>
+#include <vector>
+#include <queue>
+#include <ctime>
+#include <string_view>
+#include <unordered_map>
+
 namespace handler_structs {
 
     typedef struct ScopeHistory {
@@ -9,7 +17,7 @@ namespace handler_structs {
 
         void update_history();
         void correct_history(int server_counter, int server_limit, int server_duration);
-        std::time_t validate_request();
+        int validate_request();
 
         inline void insert_request(std::time_t server_time) {
             history.push(server_time); 
@@ -24,16 +32,18 @@ namespace handler_structs {
             return limit - history.size();
         }
 
+        const std::string queue_state() const;
+
     } ScopeHistory;
 
     typedef struct RegionHistory {
         
         std::vector<ScopeHistory> application_hierachy;
-        std::unordered_map<std::string_view, std::vector<ScopeHistory>> method_queues;
+        std::unordered_map<std::string, std::vector<ScopeHistory>> method_queues;
 
         void update_scopes();
         void insert_request(std::time_t server_time, std::string_view method_key, std::string_view method_limits);
-        std::time_t validate_request(std::string_view method_key);
+        int validate_request(std::string method_key);
 
     } RegionHistory;
 
