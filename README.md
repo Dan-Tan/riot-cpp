@@ -54,7 +54,7 @@ target_link_libraries(<your library or executable> <PRIVATE/PUBLIC> riot-cpp)
 
 ## Testing
 
-Testing of most endpoints is located in the test directory. Currently, my basic development key does not giving access to all endpoints to test. 
+Testing of most endpoints is located in the test directory. Currently, my basic development key does not give access to all endpoints to test. 
 
 ## To do/How to contribute:
 
