@@ -1,0 +1,14 @@
+# Required
+version: 2
+
+# Set the version of Python and other tools you might need
+build:
+  apt-packages:
+    libjsoncpp-dev
+    build-essential
+    cmake
+    libcurl-dev
+
+mkdocs:
+  configuration: mkdocs.yml
+
