@@ -12,7 +12,8 @@ nav:
       - How to Contribute: contributing.md
       - Authors: contributing.md
 
-plugins: []
+plugins: [] 
+use_directory_urls: false
 
 theme: 
     name: gitbook
