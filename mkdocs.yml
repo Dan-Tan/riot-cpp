@@ -1,6 +1,6 @@
 site_name: Riot-cpp
 nav: 
-    - Home: index.md
+    - Home: README.md
     - Getting Started: 
       - Installation: installation.md
       - Basic Usage: usage.md
