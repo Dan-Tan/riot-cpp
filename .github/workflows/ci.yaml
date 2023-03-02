@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master 
+      - main
 permissions:
   contents: write
 jobs:
@@ -17,6 +18,7 @@ jobs:
         with:
           key: ${{ github.ref }}
           path: .cache
+      -
       - run: pip install mkdocs
       - run: pip install mkdocs-gitbook 
-      - run: mkdocs gh-deploy
+      - run: mkdocs gh-deploy --force
