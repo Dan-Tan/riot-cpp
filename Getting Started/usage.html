@@ -99,7 +99,7 @@ Theme by GitBook
 
 
 
-<h1 id="basic-usage">Basic Usage</h1>
+<h3 id="basic-usage">Basic Usage</h3>
 <p>Below demonstrates a request to Match V5 endpoint using PUUID with optional arguements. All endpoints return a Json::Value object.</p>
 <pre><code class="language-Cpp">#include &lt;jsoncpp/json/json.h&gt;
 #include &quot;path/to/client.h&quot;
@@ -112,7 +112,7 @@ int main() {
     response = example_client.Match.by_puuid(&quot;routing&quot;, &quot;puuid&quot;, {&quot;startTime&quot;, &lt;user_arg&gt;}, {&quot;endTime&quot;, &lt;user_arg&gt;}, ...);
 }
 </code></pre>
-<h2 id="including-your-api-key">Including your API Key</h2>
+<h3 id="including-your-api-key">Including your API Key</h3>
 <p>It is highly recommended not to included api keys in source code as one may unintentionally share source coded publically with the api key exposed.</p>
 <p>Riot-cpp accepts a path to a json file to extract your api key. The file should be of the following format.</p>
 <pre><code class="language-Json">{
