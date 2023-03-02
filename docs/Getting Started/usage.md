@@ -1,4 +1,4 @@
-# Basic Usage
+### Basic Usage
 
 Below demonstrates a request to Match V5 endpoint using PUUID with optional arguements. All endpoints return a Json::Value object.
 
@@ -15,7 +15,7 @@ int main() {
 }
 ```
 
-## Including your API Key
+### Including your API Key
 
 It is highly recommended not to included api keys in source code as one may unintentionally share source coded publically with the api key exposed.
 
