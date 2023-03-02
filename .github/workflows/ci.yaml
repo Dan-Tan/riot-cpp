@@ -19,4 +19,4 @@ jobs:
           path: .cache
       - run: pip install mkdocs
       - run: pip install mkdocs-gitbook 
-      - run: mkdocs gh-deploy --config-file ../../mkdocs.yml --remote-branch master
+      - run: mkdocs gh-deploy
