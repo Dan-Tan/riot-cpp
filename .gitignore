@@ -1,4 +1,5 @@
 *.json
 Debug/
+site/
 Release/
 .cache/
