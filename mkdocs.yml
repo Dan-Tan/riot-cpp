@@ -1,16 +1,16 @@
 site_name: Riot-cpp
 nav: 
-    - Home: 'index.md'
+    - Home: index.md
     - Getting Started: 
-      - 'Installation': 'installation.md'
-      - 'Basic Usage': 'usage.md'
+      - Installation: installation.md
+      - Basic Usage: usage.md
     - Implementation: 
-      - 'Endpoints': 'endpoints.md'
-      - 'Handlers': 'handlers.md'
-      - 'Logging': 'logging.md'
+      - Endpoints: endpoints.md
+      - Handlers: handlers.md
+      - Logging: logging.md
     - Contributing: 
-      - 'How to Contribute': 'contributing.md'
-      - 'Authors': 'contributing.md'
+      - How to Contribute: contributing.md
+      - Authors: contributing.md
 
 plugins: []
 
