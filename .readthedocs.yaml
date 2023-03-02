@@ -1,13 +1,10 @@
 # Required
 version: 2
 
-# Set the version of Python and other tools you might need
 build:
-  apt-packages:
-    libjsoncpp-dev
-    build-essential
-    cmake
-    libcurl-dev
+  os: ubuntu-22.04
+  tools:
+    python: "3.11"
 
 mkdocs:
   configuration: mkdocs.yml
