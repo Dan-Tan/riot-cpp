@@ -4,8 +4,27 @@ nav:
     - Getting Started: 
       - Installation: 'Getting Started/installation.md'
       - Basic Usage: 'Getting Started/usage.md'
+    - Endpoints:
+      - Account: 'Endpoints/Account.md'
+      - Legends of Runeterra: 'Endpoints/Leagends_of_Runeterra.md'
+      - Valorant: 'Endpoints/Valorant.md'
+      - League of Legends:
+        - Challenges: 'Endpoints/League_of_Legends/Challenges.md'
+        - Champion: 'Endpoints/League_of_Legends/Champion.md'
+        - Champion Mastery: 'Endpoints/League_of_Legends/Champion_Mastery.md'
+        - Clash: 'Endpoints/League_of_Legends/Clash.md'
+        - League: 'Endpoints/League_of_Legends/League.md'
+        - Match: 'Endpoints/League_of_Legends/Match.md'
+        - Spectator: 'Endpoints/League_of_Legends/Spectator.md'
+        - Status: 'Endpoints/League_of_Legends/Status.md'
+        - Summoner: 'Endpoints/League_of_Legends/Summoner.md'
+      - Teamfight Tactics:
+        - League: 'Endpoints/Teamfight_Tactics/League.md'
+        - Match: 'Endpoints/Teamfight_Tactics/Match.md'
+        - Status: 'Endpoints/Teamfight_Tactics/Status.md'
+        - Summoner: 'Endpoints/Teamfight_Tactics/Summoner.md'
     - Implementation: 
-      - Endpoints: 'Implementation/endpoints.md'
+      - Endpoint Structure: 'Implementation/endpoints.md'
       - Handlers: 'Implementation/handlers.md'
       - Logging: 'Implementation/logging.md'
     - Contributing: 
@@ -17,3 +36,7 @@ use_directory_urls: false
 
 theme: 
     name: gitbook
+    highlightjs: true
+    hljs_style: Tokyo Night Light
+    hljs_languages:
+      - c++

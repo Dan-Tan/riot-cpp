@@ -31,3 +31,15 @@ The shared object file is located as $riot-cpp/build/src/libriot-cpp.so$ and can
 ```
 
 See options for linking with gcc, [Options for Linking](https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html)
+
+### Endpoints
+Riot-cpp implements all offical riot api endpoints not including the following:
+
+* LOR-DECK-V1
+* LOR-INVENTORY-V1
+* TOURNAMENT-V4
+* TOURNAMENT-STUB-V4
+
+### Disclaimer
+
+Riot-cpp is not developed or affiliated with Riot games. 

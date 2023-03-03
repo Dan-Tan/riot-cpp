@@ -14,6 +14,7 @@ int main() {
     response = example_client.Match.by_puuid("routing", "puuid", {"startTime", <user_arg>}, {"endTime", <user_arg>}, ...);
 }
 ```
+*Note: All std::pair arguments are optional*
 
 ### Including your API Key
 
