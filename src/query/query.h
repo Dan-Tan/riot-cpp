@@ -65,7 +65,7 @@ namespace query {
     typedef struct CHAMPION_MASTERY_V4 : public Endpoint {
         CHAMPION_MASTERY_V4(query_fp client_query) : Endpoint("lol/champion-mastery/v4/", client_query) {};
         Json::Value by_summoner_id(const_str_r routing, const_str_r summoner_id);
-        Json::Value by_summoner_by_champion(const_str_r routing, const_str_r summoner_id, const_str_r champion_id);
+        Json::Value by_summoner_by_champion(const_str_r routing, const_str_r summoner_id, const int champion_id);
         Json::Value by_summoner_top(const_str_r routing, const_str_r summoner_id, const std::pair<std::string, int>& count = {"", 0});
         Json::Value scores_by_summoner(const_str_r routing, const_str_r summoner_id);
         
@@ -103,10 +103,10 @@ namespace query {
         LOL_CHALLENGES_V1(query_fp client_query) : Endpoint("lol/challenges/v1/", client_query) {};
         Json::Value config(const_str_r routing);
         Json::Value percentiles(const_str_r routing);
-        Json::Value challenge_config(const_str_r routing, const_str_r challenge_id);
+        Json::Value challenge_config(const_str_r routing, const int challenge_id);
 
-        Json::Value challenge_leaderboard(const_str_r routing, const_str_r challenge_id, const_str_r level, const std::pair<std::string, int>& limit = {"", 0});
-        Json::Value challenge_percentiles(const_str_r routing, const_str_r challenge_id);
+        Json::Value challenge_leaderboard(const_str_r routing, const int challenge_id, const_str_r level, const std::pair<std::string, int>& limit = {"", 0});
+        Json::Value challenge_percentiles(const_str_r routing, const int challenge_id);
         Json::Value by_puuid(const_str_r routing, const_str_r puuid);
     } LOL_CHALLENGES_V1;
 

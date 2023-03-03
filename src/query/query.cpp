@@ -106,7 +106,7 @@ Json::Value CHAMPION_MASTERY_V4::by_summoner_id(const std::string& routing, cons
     return (*this->_query)(new_request);
 }
 
-Json::Value CHAMPION_MASTERY_V4::by_summoner_by_champion(const std::string &routing, const std::string &summoner_id, const std::string &champion_id) {
+Json::Value CHAMPION_MASTERY_V4::by_summoner_by_champion(const std::string &routing, const std::string &summoner_id, const int champion_id) {
     const std::string method_key("CHAMPION-MASTERY-V4-by-summoner-by-champion");
     const std::array<std::string, 2> method_urls{"champion-masteries/by-summoner/", "/by-champion/"};
     std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, summoner_id, champion_id);
@@ -224,14 +224,14 @@ Json::Value LOL_CHALLENGES_V1::percentiles(const std::string &routing) {
     std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing);
     return (*this->_query)(new_request);
 }
-Json::Value LOL_CHALLENGES_V1::challenge_config(const std::string& routing, const std::string &challenge_id) {
+Json::Value LOL_CHALLENGES_V1::challenge_config(const std::string& routing, const int challenge_id) {
     const std::string method_key("LOL-CHALLENGES-V1-challenge-config");
     const std::array<std::string, 2> method_urls{"challenges/", "/config"};
     std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, challenge_id);
     return (*this->_query)(new_request);
 }
 
-Json::Value LOL_CHALLENGES_V1::challenge_percentiles(const std::string& routing, const std::string& challenge_id) {
+Json::Value LOL_CHALLENGES_V1::challenge_percentiles(const std::string& routing, const int challenge_id) {
     const std::string method_key("LOL-CHALLENGES-V1-challenge-percentiles");
     const std::array<std::string, 2> method_urls{"challenges/", "/percentiles"};
     std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, challenge_id);
@@ -244,7 +244,7 @@ Json::Value LOL_CHALLENGES_V1::by_puuid(const std::string& routing, const std::s
     return (*this->_query)(new_request);
 }
 
-Json::Value LOL_CHALLENGES_V1::challenge_leaderboard(const_str_r routing, const_str_r challenge_id, const_str_r level, const std::pair<std::string, int>& limit) {
+Json::Value LOL_CHALLENGES_V1::challenge_leaderboard(const_str_r routing, const int challenge_id, const_str_r level, const std::pair<std::string, int>& limit) {
     const std::string method_key("LOL-CHALLENGES-V1-challenge-leaderboard");
     const std::array<std::string, 2> method_urls{"challenges/", "/leaderboards/by-level/"};
     std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, challenge_id, level);

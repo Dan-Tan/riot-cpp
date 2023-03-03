@@ -140,7 +140,7 @@ TEST_CASE( "MATCH QUERIES" ) {
 TEST_CASE("CHAMPION-MASTERY-V4 QUERIES") {
     RiotApiClient test_client(CONFIG);
     
-    std::string champion_id = "1";
+    const int champion_id = 1;
     std::string endpoint = "CHAMPION-MASTERY-V4";
     std::vector<std::pair<std::string, std::string>> optional_args = {{"count", "1"}};
 
@@ -149,7 +149,7 @@ TEST_CASE("CHAMPION-MASTERY-V4 QUERIES") {
     result = test_client.Champion_Mastery.by_summoner_id(ROUTING, SUMMONER_ID);
     REQUIRE(result[0]["summonerId"] == SUMMONER_ID);
     result = test_client.Champion_Mastery.by_summoner_by_champion(ROUTING, SUMMONER_ID, champion_id);
-    REQUIRE(result["championId"] == 1);
+    REQUIRE(result["championId"] == champion_id);
     REQUIRE(result["summonerId"] == SUMMONER_ID);
     result = test_client.Champion_Mastery.by_summoner_top(ROUTING, SUMMONER_ID, {"count", 1});
     REQUIRE(result[0]["summonerId"] == SUMMONER_ID);
@@ -169,7 +169,7 @@ TEST_CASE("CHAMPION-V3") {
 TEST_CASE("LOL-CHALLENGES-V1") {
     RiotApiClient test_client(CONFIG);
     
-    std::string challenge_id = "1";
+    const int challenge_id = 1;
     std::string level = "HIGHEST";
     Json::Value result;
 
