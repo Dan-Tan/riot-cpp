@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-<title>Logging - Riot-cpp</title>
+<title>Legends of Runeterra - Riot-cpp</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 <meta name="generator" content="mkdocs-1.4.2, mkdocs-gitbook-1.0.7">
@@ -42,15 +42,15 @@
 <li class="header">Endpoints</li>
 
 <li>
-<a href="../Endpoints/Account.html" class="">Account</a>
+<a href="Account.html" class="">Account</a>
 </li>
 
 <li>
-<a href="../Endpoints/Leagends_of_Runeterra.html" class="">Legends of Runeterra</a>
+<a href="Leagends_of_Runeterra.html" class="active">Legends of Runeterra</a>
 </li>
 
 <li>
-<a href="../Endpoints/Valorant.html" class="">Valorant</a>
+<a href="Valorant.html" class="">Valorant</a>
 </li>
 
 <li>
@@ -58,39 +58,39 @@
 <ul>
 
 <li>
-<a href="../Endpoints/League_of_Legends/Challenges.html" class="">Challenges</a>
+<a href="League_of_Legends/Challenges.html" class="">Challenges</a>
 </li>
 
 <li>
-<a href="../Endpoints/League_of_Legends/Champion.html" class="">Champion</a>
+<a href="League_of_Legends/Champion.html" class="">Champion</a>
 </li>
 
 <li>
-<a href="../Endpoints/League_of_Legends/Champion_Mastery.html" class="">Champion Mastery</a>
+<a href="League_of_Legends/Champion_Mastery.html" class="">Champion Mastery</a>
 </li>
 
 <li>
-<a href="../Endpoints/League_of_Legends/Clash.html" class="">Clash</a>
+<a href="League_of_Legends/Clash.html" class="">Clash</a>
 </li>
 
 <li>
-<a href="../Endpoints/League_of_Legends/League.html" class="">League</a>
+<a href="League_of_Legends/League.html" class="">League</a>
 </li>
 
 <li>
-<a href="../Endpoints/League_of_Legends/Match.html" class="">Match</a>
+<a href="League_of_Legends/Match.html" class="">Match</a>
 </li>
 
 <li>
-<a href="../Endpoints/League_of_Legends/Spectator.html" class="">Spectator</a>
+<a href="League_of_Legends/Spectator.html" class="">Spectator</a>
 </li>
 
 <li>
-<a href="../Endpoints/League_of_Legends/Status.html" class="">Status</a>
+<a href="League_of_Legends/Status.html" class="">Status</a>
 </li>
 
 <li>
-<a href="../Endpoints/League_of_Legends/Summoner.html" class="">Summoner</a>
+<a href="League_of_Legends/Summoner.html" class="">Summoner</a>
 </li>
 </ul>
 </li>
@@ -100,19 +100,19 @@
 <ul>
 
 <li>
-<a href="../Endpoints/Teamfight_Tactics/League.html" class="">League</a>
+<a href="Teamfight_Tactics/League.html" class="">League</a>
 </li>
 
 <li>
-<a href="../Endpoints/Teamfight_Tactics/Match.html" class="">Match</a>
+<a href="Teamfight_Tactics/Match.html" class="">Match</a>
 </li>
 
 <li>
-<a href="../Endpoints/Teamfight_Tactics/Status.html" class="">Status</a>
+<a href="Teamfight_Tactics/Status.html" class="">Status</a>
 </li>
 
 <li>
-<a href="../Endpoints/Teamfight_Tactics/Summoner.html" class="">Summoner</a>
+<a href="Teamfight_Tactics/Summoner.html" class="">Summoner</a>
 </li>
 </ul>
 </li>
@@ -120,15 +120,15 @@
 <li class="header">Implementation</li>
 
 <li>
-<a href="endpoints.html" class="">Endpoint Structure</a>
+<a href="../Implementation/endpoints.html" class="">Endpoint Structure</a>
 </li>
 
 <li>
-<a href="handlers.html" class="">Handlers</a>
+<a href="../Implementation/handlers.html" class="">Handlers</a>
 </li>
 
 <li>
-<a href="logging.html" class="active">Logging</a>
+<a href="../Implementation/logging.html" class="">Logging</a>
 </li>
 
 <li class="header">Contributing</li>
@@ -177,8 +177,36 @@ Theme by GitBook
 
 
 
-<h1 id="logging">Logging</h1>
-<p><em>to complete</em></p>
+<h3 id="lor-match-v1">LOR-MATCH-V1</h3>
+<p>View <a href="https://developer.riotgames.com/apis#lor-match-v1">Riot's</a> documentation of LOR-MATCH-V1</p>
+<p><strong>by-puuid</strong></p>
+<pre><code class="language-cpp">// function call
+Json::Value response = client_obj.Lor_Match.by_puuid(&quot;&lt;routing&gt;&quot;, &quot;&lt;puuid&gt;&quot;);
+// declaration
+Json::Value by_puuid(std::string, std::string);
+</code></pre>
+<p><strong>by-match</strong></p>
+<pre><code class="language-cpp">// function call
+Json::Value response = client_obj.Lor_Match.by_match(&quot;&lt;routing&gt;&quot;, &quot;&lt;match-id&quot;);
+// declaration
+Json::Value by_match(std::string, std::string);
+</code></pre>
+<h3 id="lor-ranked-v1">LOR-RANKED-V1</h3>
+<p>View <a href="https://developer.riotgames.com/apis#lor-ranked-v1">Riot's</a> documentation of LOR-RANKED-V1</p>
+<p><strong>leaderboards</strong></p>
+<pre><code class="language-cpp">// function call
+Json::Value response = client_obj.Lor_Ranked.leaderboards(&quot;&lt;routing&gt;&quot;);
+// declaration
+Json::Value leaderboards(std::string);
+</code></pre>
+<h3 id="lor-status">LOR-STATUS</h3>
+<p>View <a href="https://developer.riotgames.com/apis#lor-status-v1">Riot's</a> documentation of LOR-STATUS-V1</p>
+<p><strong>v1</strong>
+```cpp
+// function call
+Json::Value response = client_obj.Lor_Status.v1("<routing>");
+// declaration
+Json::Value v1(std::string);</p>
 
 
 </section>

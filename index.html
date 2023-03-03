@@ -39,10 +39,88 @@
 <a href="Getting%20Started/usage.html" class="">Basic Usage</a>
 </li>
 
+<li class="header">Endpoints</li>
+
+<li>
+<a href="Endpoints/Account.html" class="">Account</a>
+</li>
+
+<li>
+<a href="Endpoints/Leagends_of_Runeterra.html" class="">Legends of Runeterra</a>
+</li>
+
+<li>
+<a href="Endpoints/Valorant.html" class="">Valorant</a>
+</li>
+
+<li>
+<a href="#">League of Legends</a>
+<ul>
+
+<li>
+<a href="Endpoints/League_of_Legends/Challenges.html" class="">Challenges</a>
+</li>
+
+<li>
+<a href="Endpoints/League_of_Legends/Champion.html" class="">Champion</a>
+</li>
+
+<li>
+<a href="Endpoints/League_of_Legends/Champion_Mastery.html" class="">Champion Mastery</a>
+</li>
+
+<li>
+<a href="Endpoints/League_of_Legends/Clash.html" class="">Clash</a>
+</li>
+
+<li>
+<a href="Endpoints/League_of_Legends/League.html" class="">League</a>
+</li>
+
+<li>
+<a href="Endpoints/League_of_Legends/Match.html" class="">Match</a>
+</li>
+
+<li>
+<a href="Endpoints/League_of_Legends/Spectator.html" class="">Spectator</a>
+</li>
+
+<li>
+<a href="Endpoints/League_of_Legends/Status.html" class="">Status</a>
+</li>
+
+<li>
+<a href="Endpoints/League_of_Legends/Summoner.html" class="">Summoner</a>
+</li>
+</ul>
+</li>
+
+<li>
+<a href="#">Teamfight Tactics</a>
+<ul>
+
+<li>
+<a href="Endpoints/Teamfight_Tactics/League.html" class="">League</a>
+</li>
+
+<li>
+<a href="Endpoints/Teamfight_Tactics/Match.html" class="">Match</a>
+</li>
+
+<li>
+<a href="Endpoints/Teamfight_Tactics/Status.html" class="">Status</a>
+</li>
+
+<li>
+<a href="Endpoints/Teamfight_Tactics/Summoner.html" class="">Summoner</a>
+</li>
+</ul>
+</li>
+
 <li class="header">Implementation</li>
 
 <li>
-<a href="Implementation/endpoints.html" class="">Endpoints</a>
+<a href="Implementation/endpoints.html" class="">Endpoint Structure</a>
 </li>
 
 <li>
@@ -117,6 +195,16 @@ target_link_libraries(&lt;your library or executable&gt; &lt;PRIVATE/PUBLIC&gt; 
 <pre><code class="language-cpp">#include &quot;path/to/riot-cpp/src/client/client.h&quot;
 </code></pre>
 <p>See options for linking with gcc, <a href="https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html">Options for Linking</a></p>
+<h3 id="endpoints">Endpoints</h3>
+<p>Riot-cpp implements all offical riot api endpoints not including the following:</p>
+<ul>
+<li>LOR-DECK-V1</li>
+<li>LOR-INVENTORY-V1</li>
+<li>TOURNAMENT-V4</li>
+<li>TOURNAMENT-STUB-V4</li>
+</ul>
+<h3 id="disclaimer">Disclaimer</h3>
+<p>Riot-cpp is not developed or affiliated with Riot games. </p>
 
 
 </section>

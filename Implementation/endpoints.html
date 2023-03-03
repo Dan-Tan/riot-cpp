@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-<title>Endpoints - Riot-cpp</title>
+<title>Endpoint Structure - Riot-cpp</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 <meta name="generator" content="mkdocs-1.4.2, mkdocs-gitbook-1.0.7">
@@ -39,10 +39,88 @@
 <a href="../Getting%20Started/usage.html" class="">Basic Usage</a>
 </li>
 
+<li class="header">Endpoints</li>
+
+<li>
+<a href="../Endpoints/Account.html" class="">Account</a>
+</li>
+
+<li>
+<a href="../Endpoints/Leagends_of_Runeterra.html" class="">Legends of Runeterra</a>
+</li>
+
+<li>
+<a href="../Endpoints/Valorant.html" class="">Valorant</a>
+</li>
+
+<li>
+<a href="#">League of Legends</a>
+<ul>
+
+<li>
+<a href="../Endpoints/League_of_Legends/Challenges.html" class="">Challenges</a>
+</li>
+
+<li>
+<a href="../Endpoints/League_of_Legends/Champion.html" class="">Champion</a>
+</li>
+
+<li>
+<a href="../Endpoints/League_of_Legends/Champion_Mastery.html" class="">Champion Mastery</a>
+</li>
+
+<li>
+<a href="../Endpoints/League_of_Legends/Clash.html" class="">Clash</a>
+</li>
+
+<li>
+<a href="../Endpoints/League_of_Legends/League.html" class="">League</a>
+</li>
+
+<li>
+<a href="../Endpoints/League_of_Legends/Match.html" class="">Match</a>
+</li>
+
+<li>
+<a href="../Endpoints/League_of_Legends/Spectator.html" class="">Spectator</a>
+</li>
+
+<li>
+<a href="../Endpoints/League_of_Legends/Status.html" class="">Status</a>
+</li>
+
+<li>
+<a href="../Endpoints/League_of_Legends/Summoner.html" class="">Summoner</a>
+</li>
+</ul>
+</li>
+
+<li>
+<a href="#">Teamfight Tactics</a>
+<ul>
+
+<li>
+<a href="../Endpoints/Teamfight_Tactics/League.html" class="">League</a>
+</li>
+
+<li>
+<a href="../Endpoints/Teamfight_Tactics/Match.html" class="">Match</a>
+</li>
+
+<li>
+<a href="../Endpoints/Teamfight_Tactics/Status.html" class="">Status</a>
+</li>
+
+<li>
+<a href="../Endpoints/Teamfight_Tactics/Summoner.html" class="">Summoner</a>
+</li>
+</ul>
+</li>
+
 <li class="header">Implementation</li>
 
 <li>
-<a href="endpoints.html" class="active">Endpoints</a>
+<a href="endpoints.html" class="active">Endpoint Structure</a>
 </li>
 
 <li>
@@ -99,8 +177,26 @@ Theme by GitBook
 
 
 
-<h1 id="endpoint">Endpoint</h1>
-<p><em>to complete</em></p>
+<h1 id="endpoints">Endpoints</h1>
+<p>Riot-cpp implements all offical riot api endpoints not including the following
+* LOR-DECK-V1
+* LOR-INVECTORY-V1
+* TOURNAMENT-V4
+* TOURNAMENT-STUB-V4</p>
+<p>The following code assumes the client has already been initialised as follows</p>
+<pre><code class="language-cpp">// #include &quot;path/to/client.h&quot;
+
+client::RiotApiClient client_obj{&quot;&lt;path/to/api-key.json&gt;&quot;, // std::string
+                                 &quot;&lt;path/to/logfile&gt;&quot;, // std::string
+                                 logging::LEVEL::&lt;level&gt;, // logging::LEVEL
+                                 verbosity // bool
+                                 }
+</code></pre>
+<h3 id="account-v1">ACCOUNT-V1</h3>
+<h4 id="usage">Usage</h4>
+<pre><code class="language-cpp">// by-puuid
+Json::Value result = client_obj.Account.by_puuid(&quot;&lt;routing&gt;&quot;, &quot;puuid&quot;);
+</code></pre>
 
 
 </section>
