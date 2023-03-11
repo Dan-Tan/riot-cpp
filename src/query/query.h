@@ -139,6 +139,7 @@ namespace query {
         Json::Value timeline(const_str_r routing, const_str_r match_id);
 
         Json::Value by_puuid(const_str_r routing, const_str_r puuid, const std::pair<std::string, std::string>& types = {"", ""}, const std::pair<std::string, long>& startTime = {"", 0}, const std::pair<std::string, long>& endTime = {"", 0}, const std::pair<std::string, int>& queue = {"", 0}, const std::pair<std::string, int>& start = {"", 0}, const std::pair<std::string, int>& count = {"", 0});
+        Json::Value by_puuid(const_str_r routing, const_str_r puuid, const std::pair<std::string, long>& startTime = {"", 0}, const std::pair<std::string, long>& endTime = {"", 0}, const std::pair<std::string, int>& queue = {"", 0}, const std::pair<std::string, int>& start = {"", 0}, const std::pair<std::string, int>& count = {"", 0});
     } MATCH_V5;
 
     typedef struct SUMMONER_V4 : public Endpoint {

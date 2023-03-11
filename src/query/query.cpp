@@ -308,6 +308,14 @@ Json::Value MATCH_V5::timeline(const std::string& routing, const std::string& ma
     return (*this->_query)(new_request);
 }
 
+Json::Value MATCH_V5::by_puuid(const std::string& routing, const std::string& puuid, const std::pair<std::string, long>& startTime, const std::pair<std::string, long>& endTime, const std::pair<std::string, int>& queue, const std::pair<std::string, int>& start, const std::pair<std::string, int>& count) {
+    const std::string method_key = "MATCH-V5-by-puuid";
+    const std::array<std::string, 2> method_urls= {"matches/by-puuid/", "/ids"};
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, puuid);
+    new_request->url += query_construct(startTime, endTime, queue, start, count);
+    return (*this->_query)(new_request);
+}
+
 Json::Value MATCH_V5::by_puuid(const std::string& routing, const std::string& puuid, const std::pair<std::string, std::string>& types, const std::pair<std::string, long>& startTime, const std::pair<std::string, long>& endTime, const std::pair<std::string, int>& queue, const std::pair<std::string, int>& start, const std::pair<std::string, int>& count) {
     const std::string method_key = "MATCH-V5-by-puuid";
     const std::array<std::string, 2> method_urls= {"matches/by-puuid/", "/ids"};
