@@ -46,20 +46,16 @@ namespace client {
             query::VAL_RANKED_V1 Val_Ranked;
             query::VAL_STATUS_V1 Val_Status;
 
+        protected:
+
+            handler::RequestHandler request_handler;
+            logging::Logger logger;
+
         private:
             Json::Value query(std::shared_ptr<query::query> request);
             std::function<Json::Value(std::shared_ptr<query::query>)> endpoint_call;
             bool get(std::shared_ptr<query::query> request);
 
-            inline std::string encode_url(std::string query_arg) {
-                char *encoded= curl_easy_escape(this->easy_handle, query_arg.data(), query_arg.length());
-                std::string encoding = encoded;
-                curl_free(encoded);
-                return encoding;
-            };       
-
-            handler::RequestHandler request_handler;
-            logging::Logger logger;
 
             CURL* easy_handle = nullptr;
             struct curl_slist *header = nullptr;

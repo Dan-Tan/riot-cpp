@@ -1,5 +1,6 @@
 *.json
 Debug/
+docs/
 site/
 Release/
 .cache/
