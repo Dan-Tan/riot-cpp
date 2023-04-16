@@ -69,6 +69,7 @@ bool RateHandler::validate_request(std::shared_ptr<query::query> request) {
     }
     if (request->last_response == -2) {
         int wait_time = this->routing_queues.at(routing_to_int(request->routing_value)).validate_request(request->method_key);
+        (*this->_logger) << logging::LEVEL::DEBUG << this->routing_queues.at(routing_to_int(request->routing_value)).application_hierachy << 0; // continuing log
         if (wait_time == 0) {
             (*this->_logger) << logging::LEVEL::DEBUG << request->method_key << "No wait time" << 0;
             return true;
@@ -76,10 +77,11 @@ bool RateHandler::validate_request(std::shared_ptr<query::query> request) {
             const std::time_t c_time = std::time(NULL);
             (*this->_logger) << logging::LEVEL::INFO << request->method_key << std::string("Self Rate Limiting, Waiting ") + std::to_string(wait_time) + " seconds" << request->response_header << 0; // continuing log
             (*this->_logger) << logging::LEVEL::DEBUG << this->routing_queues.at(routing_to_int(request->routing_value)).application_hierachy << 0; // continuing log
-            request->send_time = std::mktime(std::gmtime(&c_time)) + wait_time;
+            request->send_time = std::mktime(std::gmtime(&c_time)) + wait_time + 1;
             return true;
         }
     }
+    (*this->_logger) << logging::LEVEL::DEBUG << this->routing_queues.at(routing_to_int(request->routing_value)).application_hierachy << 0; // continuing log
     return false;
 }
 
@@ -103,6 +105,7 @@ void get_limits_and_counts(std::string_view rep, std::vector<int>& count, std::v
 
 void RateHandler::init_queues(std::shared_ptr<query::query> request) {
     try {
+        this->initialised = true;
         std::string limits_str = request->response_header["X-App-Rate-Limit"].asString();
         std::string counts_str = request->response_header["X-App-Rate-Limit-Count"].asString();
         std::string method_str = request->response_header["X-Method-Rate-Limit"].asString();
@@ -134,8 +137,8 @@ void RateHandler::init_queues(std::shared_ptr<query::query> request) {
 
 void RateHandler::review_request(std::shared_ptr<query::query> request) {
     if (!this->initialised && request->last_response != -2) {
-        this->initialised = true;
         this->init_queues(request);
+        (*this->_logger) << logging::LEVEL::DEBUG << "Queues Initialised" << 0;
         return;
     }
     if (request->last_response == 429) {
@@ -144,9 +147,14 @@ void RateHandler::review_request(std::shared_ptr<query::query> request) {
         (*this->_logger) << logging::LEVEL::ERROR << this->routing_queues.at(routing_to_int(request->routing_value)).application_hierachy << 0;
         (*this->_logger) << logging::LEVEL::ERROR << request->response_header << 0;
     }
-    if (request->last_response != 200) {
+    if (request->last_response == -2) {
+        (*this->_logger) << logging::LEVEL::DEBUG << "Ignoring... request not sent yet" << 0;
+    }
+    else if (request->last_response != 200) {
+        (*this->_logger) << logging::LEVEL::INFO << "Unsuccussful Request" << 0;
         return;
     } else {
+        (*this->_logger) << logging::LEVEL::DEBUG << "Successful Request" << 0;
         this->routing_queues.at(routing_to_int(request->routing_value)).insert_request(request_time(request->response_header["Date"].asString()), request->method_key, request->response_header["X-Method-Rate-Limit"].asString());
         return;
     }

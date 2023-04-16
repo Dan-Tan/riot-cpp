@@ -150,7 +150,7 @@ TEST_CASE("REGION HISTORY TESTS") {
 }
 
 TEST_CASE("RATE TESTS") {
-    logging::Logger logger("../test/log_file.txt");
+    logging::Logger logger("../test/log_file.txt", logging::LEVEL::INFO);
     struct RateHandler handler(&logger);
     std::string region = "na1";
     Json::Reader reader;
@@ -185,18 +185,20 @@ TEST_CASE("RATE TESTS") {
     }
 
     SECTION("QUERY VALIDATION") {
-        test_query->routing_value = "kr";
+        test_query->routing_value = "na1";
         test_query->method_key = "SUMMONER-V4-by-puuid";
         test_query->send_time = 0;
         test_query->last_response = -2;
         bool wait_time = handler.validate_request(test_query);
         REQUIRE(wait_time);
         REQUIRE(test_query->send_time == 0);
+        test_query->last_response = 200;
         for (int i = 0; i < limits.at(1) + 1; i++){
             update_time(test_query);
             handler.review_request(test_query);
         }
-        wait_time = handler.validate_request(test_query); //currently will always be true
+        test_query->last_response = -2;
+        handler.validate_request(test_query);
         REQUIRE_FALSE(test_query->send_time == 0);
     }
 }

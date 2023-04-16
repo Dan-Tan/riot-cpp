@@ -58,14 +58,14 @@ static std::vector<ScopeHistory> init_method_hierachy(std::string_view method_li
 void ScopeHistory::update_history() {
 
 
-    if (history.size() == 0) {return;};
+    if (this->history.size() == 0) {return;};
     bool remove = true;
     const std::time_t ct = std::time(NULL);
     std::time_t current_t = std::mktime(std::gmtime(&ct));
     while (remove) {
         if (current_t - history.front() > duration) {
-            history.pop();
-            remove = !(history.empty());
+            this->history.pop();
+            remove = !(this->history.empty());
         } else {
             return;
         }
@@ -81,7 +81,7 @@ int ScopeHistory::validate_request() {
     } else {
         const std::time_t ct = std::time(NULL);
         std::time_t c_time = std::mktime(std::gmtime(&ct));
-        int delay = duration - static_cast<int>(c_time - history.front());
+        int delay = duration - static_cast<int>(c_time - history.front()) + 1; // add one to catch rounding errors :(
         return delay;
     }
 }
