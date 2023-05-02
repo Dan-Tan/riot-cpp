@@ -147,10 +147,13 @@ namespace client {
         }
 
         Json::StreamWriterBuilder builder;
+
+        if (!reader.parse(content_buffer.data(), request->response_content)) {
+            this->logger<< logging::LEVEL::ERROR <<  "Failed to parse json content string";
+        }
         
         if (request->last_response == 200) { // only parse content to json if request was successful
             this->logger << logging::LEVEL::DEBUG << "Query Successful" << 0;
-            reader.parse(content_buffer.data(), request->response_content);
         }
 
         return true;

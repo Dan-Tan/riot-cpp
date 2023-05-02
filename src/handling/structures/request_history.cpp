@@ -171,6 +171,9 @@ RegionHistory init_region(std::vector<int> limits, std::vector<int> durations) {
 }
 
 const std::string ScopeHistory::queue_state() const {
+    if (this->history.empty()) {
+        return "Empty History";
+    }
     std::stringstream state;
     state << "oldest: " << std::put_time(std::gmtime(&this->history.front()), "%a, %d %m %Y %H:%M:%S GMT");
     state << "  newest: " << std::put_time(std::gmtime(&this->history.back()), "%a, %d %m %Y %H:%M:%S GMT");

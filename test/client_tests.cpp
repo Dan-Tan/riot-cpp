@@ -303,7 +303,6 @@ TEST_CASE("TFT-MATCH-V1") {
     result = test_client.Summoner.by_name("oc1", "Monkeys R Us");
     std::string puuid = result["puuid"].asString();
     
-    std::vector<std::pair<std::string, std::string>> optional_args = {{"start", "5"}, {"startTime", "0"}, {"count", "20"}};
     result = test_client.Tft_Match.by_puuid("AMERICAS", puuid, {"start", 5}, {"startTime", 0}, {"count", 20});
     REQUIRE(result.isArray());
     REQUIRE(result.size() == 20);
