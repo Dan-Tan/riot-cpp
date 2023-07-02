@@ -1,7 +1,7 @@
 #pragma once
-#include <jsoncpp/json/writer.h>
+#include <json/writer.h>
 #include <queue>
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include <string>
 #include <fstream>
 #include "../query/query.h"

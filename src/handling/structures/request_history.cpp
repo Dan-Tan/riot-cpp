@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <memory>
 #include <iomanip>
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include "rate_structures.h"
 
 namespace handler_structs {
