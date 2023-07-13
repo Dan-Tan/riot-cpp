@@ -77,8 +77,8 @@ namespace logging {
                 return std::string("INFO");
             case LEVEL::WARNING:
                 return std::string("WARNING");
-            case LEVEL::ERROR:
-                return std::string("ERROR");
+            case LEVEL::ERRORS:
+                return std::string("ERRORS");
             case LEVEL::CRITICAL:
                 return std::string("CRITICAL");
             default:

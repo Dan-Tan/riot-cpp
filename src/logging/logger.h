@@ -13,7 +13,7 @@ namespace logging {
         DEBUG,
         INFO,
         WARNING,
-        ERROR,
+        ERRORS,
         CRITICAL
     };
 

@@ -144,8 +144,8 @@ void RateHandler::review_request(std::shared_ptr<query::query> request) {
     if (request->last_response == 429) {
         const std::time_t c_time = std::time(NULL);
         request->send_time = std::mktime(std::gmtime(&c_time)) + static_cast<std::time_t>(fast_atoi(request->response_header["Retry-After"].asString().data()));
-        (*this->_logger) << logging::LEVEL::ERROR << this->routing_queues.at(routing_to_int(request->routing_value)).application_hierachy << 0;
-        (*this->_logger) << logging::LEVEL::ERROR << request->response_header << 0;
+        (*this->_logger) << logging::LEVEL::ERRORS << this->routing_queues.at(routing_to_int(request->routing_value)).application_hierachy << 0;
+        (*this->_logger) << logging::LEVEL::ERRORS << request->response_header << 0;
     }
     if (request->last_response == -2) {
         (*this->_logger) << logging::LEVEL::DEBUG << "Ignoring... request not sent yet" << 0;

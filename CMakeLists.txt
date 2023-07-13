@@ -2,16 +2,6 @@ cmake_minimum_required(VERSION 3.18.4)
 project(RIOTAPICLIENT)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
-if (CMAKE_CXX_CPPCHECK)
-    list(
-        APPEND CMAKE_CXX_CPPCHECK 
-            "--enable=warning"
-            "--inconclusive"
-            "--force" 
-            "--inline-suppr"
-    )
-endif()
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
