@@ -1,8 +1,9 @@
 *.json
+build
 Debug/
 docs/
 site/
 Release/
 .cache/
 .vs/
-test/logfile.txt
+test/log_file.txt
