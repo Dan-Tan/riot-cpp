@@ -28,6 +28,6 @@ jobs:
     - name: Create build directory
       run: mkdir build
     - name: Configure Cmake
-      run: cd build && cmake .. -DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake
+      run: cd build && cmake .. -DCMAKE_TOOLCHAIN_FILE=$HOME/work/riot-cpp/riot-cpp/vcpkg/scripts/buildsystems/vcpkg.cmake
     - name: Compilation Check
       run: cd build && make
