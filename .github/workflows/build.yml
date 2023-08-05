@@ -16,7 +16,7 @@ jobs:
     - name: Install cURL
       run: sudo apt install libcurl4-openssl-dev
     - name: Install Jsoncpp
-      run: sudo apt install libjsoncpp-dev
+      run: sudo apt install jsoncpp-devel
     - name: Clone Catch2
       run: git clone https://github.com/catchorg/Catch2.git
     - name: Build Catch2
