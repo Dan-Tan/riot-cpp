@@ -14,10 +14,8 @@ add_executable(rate_tests test/Rate_Tests.cpp)
 add_subdirectory(src)
 
 target_link_libraries(client_tests riot-cpp)
-target_link_libraries(client_tests jsoncpp)
 target_link_libraries(client_tests Catch2::Catch2WithMain)
 
 target_link_libraries(rate_tests riot-cpp)
-target_link_libraries(rate_tests jsoncpp)
 target_link_libraries(rate_tests Catch2::Catch2WithMain)
 
