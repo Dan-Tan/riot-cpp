@@ -11,7 +11,7 @@ Riot-cpp uses [libcurl](https://curl.se/libcurl/) to send https get requests and
 
 Documentation is located at following page 
 
-[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](https://img.shields.io/badge/View_site-GH_Pages-2ea44f?style=for-the-badge)](https://dan-tan.github.io/riot-cpp/)
+[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](https://dan-tan.github.io/riot-cpp/)
 
 # Basic Usage
 
