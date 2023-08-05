@@ -1,5 +1,7 @@
 # Welcome to Riot-cpp
 
+[![Build Status]](https://github.com/Dan-Tan/riot-cpp/actions/workflows/build.yml/badge.svg?event=push) [![Documentation](https://dan-tan.github.io/riot-cpp/)](https://github.com/Dan-Tan/riot-cpp/actions/workflows/ci.yaml/badge.svg?event=push)
+
 Simple Api client for the Riot Games Resful API implemented in C++ 20. 
 
 This library implements rate limiting to prevent api key blacklisting from exceeding Riot's rate limits. The library handles server response error's and will retry when a successful request is possible (429, 500, 503 errors). The client contains a logging class to help with debugging dependent code as well as providing information of the running of the client. Riot-cpp will adapt to the specific api key's rate limits after the first request and try to recover from errors.
