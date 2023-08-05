@@ -1,6 +1,7 @@
 # Welcome to Riot-cpp
 
-[![Build Status]](https://github.com/Dan-Tan/riot-cpp/actions/workflows/build.yml/badge.svg?event=push) [![Documentation](https://dan-tan.github.io/riot-cpp/)](https://github.com/Dan-Tan/riot-cpp/actions/workflows/ci.yaml/badge.svg?event=push)
+[![ci](https://github.com/Dan-Tan/riot-cpp/workflows/ci/badge.svg)](https://github.com/Dan-Tan/riot-cpp/actions?query=workflow:"ci")
+[![build](https://github.com/Dan-Tan/riot-cpp/workflows/build/badge.svg)](https://github.com/Dan-Tan/riot-cpp/actions?query=workflow:"build")
 
 Simple Api client for the Riot Games Resful API implemented in C++ 20. 
 
@@ -10,7 +11,7 @@ Riot-cpp uses [libcurl](https://curl.se/libcurl/) to send https get requests and
 
 Documentation is located at following page 
 
-[dan-tan.github.io/riot-cpp](https://dan-tan.github.io/riot-cpp/)
+[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](/docs/ "Go to project documentation")
 
 # Basic Usage
 
