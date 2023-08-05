@@ -17,6 +17,12 @@ jobs:
       run: sudo apt install libcurl4-openssl-dev
     - name: Install Jsoncpp
       run: sudo apt install libjsoncpp-dev
+    - name: Clone Catch2
+      run: git clone https://github.com/catchorg/Catch2.git
+    - name: Build Catch2
+      run: cd Catch2 && cmake -Bbuild -H. -DBUILD_TESTING=OFF
+    - name: Install Catch2 
+      run: cd Catch2 && sudo cmake --build build/ --target install
     - name: Create build directory
       run: mkdir build
     - name: Configure Cmake
