@@ -1,0 +1,25 @@
+name: build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install cURL
+      run: sudo apt install libcurl4-openssl-dev
+    - name: Install Jsoncpp
+      run: sudo apt install libjsoncpp-dev
+    - name: Create build directory
+      run: mkdir build
+    - name: Configure Cmake
+      run: cd build && cmake ..
+    - name: Compilation Check
+      run: cd build && make
