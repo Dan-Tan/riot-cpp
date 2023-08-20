@@ -9,9 +9,10 @@ set(GCC_CXX_FLAGS ${GCC_CXX_FLAGS} "-static-libgcc -static-libstdc++ -static -gg
 
 find_package(Catch2 3 REQUIRED)
 
+add_subdirectory(src)
+
 add_executable(client_tests test/client_tests.cpp)
 add_executable(rate_tests test/Rate_Tests.cpp)
-add_subdirectory(src)
 
 target_link_libraries(client_tests riot-cpp)
 target_link_libraries(client_tests Catch2::Catch2WithMain)

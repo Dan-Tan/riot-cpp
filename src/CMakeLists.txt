@@ -11,4 +11,4 @@ target_include_directories(riot-cpp PRIVATE ${CURL_INCLUDE_DIRS})
 target_include_directories(riot-cpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/include)
 
 target_link_libraries(riot-cpp ${CURL_LIBRARIES})
-target_link_libraries(riot-cpp jsoncpp) 
+target_link_libraries(riot-cpp jsoncpp_lib) 
