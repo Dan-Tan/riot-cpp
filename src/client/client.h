@@ -3,7 +3,7 @@
 #include <curl/curl.h>
 #include <string>
 #include <string_view>
-#include <json/json.h>
+#include "json/json.h"
 #include <unordered_map>
 #include <memory>
 #include "../query/query.h"
