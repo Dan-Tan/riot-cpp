@@ -1,6 +1,6 @@
 #include <ctime>
-#include "../jsoncpp/include/json/json.h"
-#include "../jsoncpp/include/json/writer.h"
+#include "../../jsoncpp/include/json/json.h"
+#include "../../jsoncpp/include/json/writer.h"
 #include <stdexcept>
 #include "logger.h"
 

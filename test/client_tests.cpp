@@ -3,7 +3,7 @@
 #include <queue>
 #include <vector>
 #include <string>
-#include "../src/client/client.h"
+#include "../src/riot-cpp/client/client.h"
 #include "../src/jsoncpp/include/json/json.h"
 
 #define CONFIG "../../.api_keys/riot_config.json", "../test/log_file.txt", logging::LEVEL::DEBUG

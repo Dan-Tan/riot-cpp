@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include "../src/jsoncpp/include/json/json.h"
 #include <memory>
-#include "../src/client/client.h"
+#include "../src/riot-cpp/client/client.h"
 
 using namespace handler;
 
