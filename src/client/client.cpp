@@ -142,7 +142,7 @@ namespace client {
         curl_easy_getinfo(this->easy_handle, CURLINFO_RESPONSE_CODE, &(request->last_response));
         if (!reader.parse(header_buffer.data(), request->response_header)) {
             this->logger << logging::LEVEL::ERRORS << "Failed to parse json header string" << 0;
-            request->last_response = -1;
+            request->last_response = -2;
             return false;
         }
 

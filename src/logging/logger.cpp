@@ -31,8 +31,10 @@ namespace logging {
                 return std::string("Service unavailable");
             case 504:
                 return std::string("Gateway timeout");
-            case -2:
-                return std::string("Default response code (not sent)");
+            case -1:
+                return std::string("CURL error. Please check your internet connection or view logs for more information");
+            case -2: 
+                return std::string("Unexpected header response format. Unable to parse header to Json object");
             default:
                 throw std::invalid_argument("Invalide error code passed" + std::to_string(code));
         }
@@ -62,8 +64,10 @@ namespace logging {
                 return std::string("The server is down. Please try again later.");
             case 504:
                 return std::string("Gateway timeout");
-            case -2:
-                return std::string("request not sent yet");
+            case -1:
+                return std::string("CURL error. Please check your internet connection or view logs for more information");
+            case -2: 
+                return std::string("Unexpected header response format. Unable to parse header to Json object");
             default:
                 throw std::invalid_argument("Invalid error code passed: " + std::to_string(code));
         }
