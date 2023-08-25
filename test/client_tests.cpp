@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include "../src/client/client.h"
-#include <json/json.h>
+#include "../src/jsoncpp/include/json/json.h"
 
 #define CONFIG "../../.api_keys/riot_config.json", "../test/log_file.txt", logging::LEVEL::DEBUG
 

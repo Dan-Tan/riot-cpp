@@ -87,29 +87,24 @@ namespace client {
         return real_size;
     }
 
-    static size_t WriteCallBack_header(void* contents, size_t size, size_t nmemb, void* buffer) { 
-        // format the header as chunks are received
-        // fk riot games for not formatting the response header
+    static size_t WriteCallBack_header(char* buffer, size_t size, size_t nitems, void* user_data) { 
+        std::size_t real_size = nitems * size;
 
-        size_t real_size = size * nmemb;
-        char *new_chars = (char *)contents;
-        if (*new_chars == 'H') {
+        if (*buffer == 'H') {
             return real_size;
         }
-        char to_insert[3] = {'\"', ':', '\"'};
-        char* colon_ind = std::find(new_chars, new_chars + nmemb, ':');
-        if (colon_ind == new_chars + nmemb) {
+        
+        Json::Value* new_header = static_cast<Json::Value *>(user_data);
+        
+        char* colon = std::find(buffer, buffer + nitems, ':');
+        if (colon == buffer + nitems) {
             return real_size;
         }
-        std::vector<char> *new_buffer = reinterpret_cast<std::vector<char>*>(buffer);
-        if (new_buffer->size() != 1) {
-            new_buffer->push_back(',');
-        }
-        new_buffer->push_back('\"');
-        new_buffer->insert(new_buffer->end(), &new_chars[0], &colon_ind[0]);
-        new_buffer->insert(new_buffer->end(), &to_insert[0], to_insert + 3);
-        new_buffer->insert(new_buffer->end(), &colon_ind[2], new_chars + nmemb - 1);
-        new_buffer->back() = '\"';
+        std::string key(buffer, colon - 1);
+        // response has white space after ':' and two excess characters \r\n 
+        std::string cont(colon+2, buffer + nitems-2);
+        (*new_header)[key] = cont;
+        
         return real_size;
     }
 
@@ -117,7 +112,6 @@ namespace client {
 
         Json::Reader reader;
         std::vector<char> content_buffer = {};
-        std::vector<char> header_buffer = {'{'};
 
         curl_easy_setopt(this->easy_handle, CURLOPT_URL, request->url.data());
         curl_easy_setopt(this->easy_handle, CURLOPT_HTTPGET, 1);
@@ -127,7 +121,7 @@ namespace client {
         curl_easy_setopt(this->easy_handle, CURLOPT_WRITEDATA, &content_buffer);
 
         curl_easy_setopt(this->easy_handle, CURLOPT_HEADERFUNCTION, WriteCallBack_header);
-        curl_easy_setopt(this->easy_handle, CURLOPT_HEADERDATA, &header_buffer);
+        curl_easy_setopt(this->easy_handle, CURLOPT_HEADERDATA, &request->response_header);
      
         CURLcode res_ = curl_easy_perform(this->easy_handle);
 
@@ -136,17 +130,8 @@ namespace client {
             request->last_response = -1; // CURL ERRORS
             return false;
         }
-        header_buffer.back() = '\"';
-        header_buffer.push_back('}');
 
         curl_easy_getinfo(this->easy_handle, CURLINFO_RESPONSE_CODE, &(request->last_response));
-        if (!reader.parse(header_buffer.data(), request->response_header)) {
-            this->logger << logging::LEVEL::ERRORS << "Failed to parse json header string" << 0;
-            request->last_response = -2;
-            return false;
-        }
-
-        Json::StreamWriterBuilder builder;
 
         if (!reader.parse(content_buffer.data(), request->response_content)) {
             this->logger<< logging::LEVEL::ERRORS <<  "Failed to parse json content string";
