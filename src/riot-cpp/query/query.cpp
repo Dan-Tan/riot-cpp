@@ -88,14 +88,14 @@ Json::Value ACCOUNT_V1::by_puuid(const std::string& routing, const std::string& 
 Json::Value ACCOUNT_V1::by_riot_id(const std::string& routing, const std::string& gameName, const std::string& tagline) {
     const std::string method_key = "ACCOUNT-V1-by-riot-id";
     const std::array<std::string, 2> method_urls= {"accounts/by-riot-id/", "/"};
-    std::shared_ptr<query> new_request = this->request(routing, method_urls, routing, gameName, tagline);
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, gameName, tagline);
     return (*this->_query)(new_request);
 }
 
 Json::Value ACCOUNT_V1::by_game(const std::string& routing, const std::string& game, const std::string& puuid) {
     const std::string method_key = "ACCOUNT-V1-by-game";
     const std::array<std::string, 2> method_urls= {"active-shards/by-game/", "/by-puuid/"};
-    std::shared_ptr<query> new_request = this->request(routing, method_urls, routing, game, puuid);
+    std::shared_ptr<query> new_request = this->request(method_key, method_urls, routing, game, puuid);
     return (*this->_query)(new_request);
 }
 

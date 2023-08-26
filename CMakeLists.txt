@@ -14,12 +14,21 @@ add_subdirectory(src/riot-cpp)
 
 target_link_libraries(riot-cpp jsoncpp_lib)
 
+target_compile_options(riot-cpp PRIVATE -fsanitize=address -static-libasan)
+target_link_options(riot-cpp PRIVATE -fsanitize=address -static-libasan)
+
 add_executable(client_tests test/client_tests.cpp)
 add_executable(rate_tests test/Rate_Tests.cpp)
 
 target_link_libraries(client_tests riot-cpp)
 target_link_libraries(client_tests Catch2::Catch2WithMain)
 
+target_compile_options(client_tests PRIVATE -fsanitize=address -static-libasan)
+target_link_options(client_tests PRIVATE -fsanitize=address -static-libasan)
+
 target_link_libraries(rate_tests riot-cpp)
 target_link_libraries(rate_tests Catch2::Catch2WithMain)
+
+target_compile_options(rate_tests PRIVATE -fsanitize=address -static-libasan)
+target_link_options(rate_tests PRIVATE -fsanitize=address -static-libasan)
 

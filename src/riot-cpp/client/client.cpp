@@ -81,7 +81,7 @@ namespace client {
         if (*new_chars == 'H') {
             return real_size;
         }
-        std::vector<char> *new_buffer = reinterpret_cast<std::vector<char>*>(buffer);
+        std::vector<char> *new_buffer = static_cast<std::vector<char>*>(buffer);
         new_buffer->insert(new_buffer->end(), &new_chars[0], &new_chars[nmemb]);
 
         return real_size;
@@ -100,7 +100,7 @@ namespace client {
         if (colon == buffer + nitems) {
             return real_size;
         }
-        std::string key(buffer, colon - 1);
+        std::string key(buffer, colon);
         // response has white space after ':' and two excess characters \r\n 
         std::string cont(colon+2, buffer + nitems-2);
         (*new_header)[key] = cont;
@@ -130,6 +130,8 @@ namespace client {
             request->last_response = -1; // CURL ERRORS
             return false;
         }
+        // null terminant buffer for json parsing
+        content_buffer.push_back(0);
 
         curl_easy_getinfo(this->easy_handle, CURLINFO_RESPONSE_CODE, &(request->last_response));
 
