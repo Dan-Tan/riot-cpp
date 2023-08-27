@@ -125,7 +125,7 @@ namespace logging {
 
     Logger& Logger::operator<<(const int err_code) {
         if (this->_incoming && !err_code) {
-            this->_log_file << '\n';
+            this->_log_file << std::endl; // use std::endl as we want to flush the buffer on every log message
             this->_incoming = false;
             return *this;
         }
