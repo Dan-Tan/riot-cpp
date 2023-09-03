@@ -15,7 +15,7 @@ void update_time(std::shared_ptr<query::query> request) {
     const std::tm* current_time = std::gmtime(&c_time);
     char cur_time[std::size("Mon, 13 Jan 2023 18:48:45 GMT")];
     std::strftime(cur_time, std::size("Mon, 16 Jan 2023 08:48:45 GMT"), "%a, %d %b %Y %T GMT", current_time);
-    request->response_header["Date"] = cur_time;
+    strncpy(request->response_header.date, cur_time, 32);
 }
 
 TEST_CASE("SCOPE HISTORY TESTS") {
@@ -153,17 +153,14 @@ TEST_CASE("RATE TESTS") {
     logging::Logger logger("../test/log_file.txt", logging::LEVEL::INFO);
     struct RateHandler handler(&logger);
     std::string region = "na1";
-    Json::Reader reader;
-    std::string example_header_str = "{\n\"Date\": \"Mon, 16 Jan 2023 09:48:45 GMT\",\n\"X-App-Rate-Limit\": \"100:1,1000:10,60000:600,360000:3600\",\n\"X-App-Rate-Limit-Count\": \"1:1,2:10,2:600,2:3600\",\n\"X-Method-Rate-Limit\": \"1000:1\",\n\"X-Method-Rate-Limit-Count\": \"1:1\",\n}";
-    Json::Value example_header;
-    Json::StreamWriterBuilder builder;
+
+    query::RiotHeader example_header = {"Mon, 16 Jan 2023 09:48:45 GMT", "100:1,1000:10,60000:600,360000:3600", "1:1,2:10,2:600,2:3600", "1000:1", "1:1"};
     
-    bool parsed = reader.parse(example_header_str, example_header);
     std::string method = "SUMMONER-V4-by-puuid";
     std::time_t server_time = std::time(NULL);
     std::string urls = "fake_url";
 
-    std::shared_ptr<query::query> test_query = std::make_shared<query::query>(method, region, urls, 0, example_header, example_header);
+    std::shared_ptr<query::query> test_query = std::make_shared<query::query>(method, region, urls, 0, Json::Value(), example_header);
     update_time(test_query);
 
     handler.init_queues(test_query);

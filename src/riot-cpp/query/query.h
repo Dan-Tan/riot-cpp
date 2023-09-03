@@ -9,13 +9,22 @@
 
 namespace query {
 
+    typedef struct {
+        char date[32];
+        char app_limit[64];
+        char app_limit_count[64];
+        char method_limit[64];
+        char method_limit_count[64];
+        char retry_after[4];
+    } RiotHeader;
+
     typedef struct query {
         std::string method_key;
         std::string routing_value;
         std::string url;
         std::time_t send_time = 0;
         Json::Value response_content;
-        Json::Value response_header;
+        RiotHeader response_header;
         long last_response = -2;
         int server_errors = 0;
     } query;

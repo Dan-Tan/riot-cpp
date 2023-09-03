@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <functional>
+#include <iostream>
 
 #include <fstream>
 #include <stdio.h>
@@ -93,17 +94,35 @@ namespace client {
         if (*buffer == 'H') {
             return real_size;
         }
-        
-        Json::Value* new_header = static_cast<Json::Value *>(user_data);
-        
+
+        query::RiotHeader* new_header = static_cast<query::RiotHeader*>(user_data);
+        char* write_field;
+
+        switch (buffer[0]) {
+            case 'D':
+                write_field = &new_header->date[0]; break;
+            case 'X':
+                switch (buffer[2]) {
+                    case 'A':
+                        write_field = buffer[17] == 'C' ? &new_header->app_limit_count[0] : &new_header->app_limit[0]; break;
+                    case 'M':
+                        write_field = buffer[20] == 'C' ? &new_header->method_limit_count[0] : &new_header->method_limit[0]; break;
+                    default:
+                        return real_size;
+                } break;
+            case 'R':
+                write_field = &new_header->retry_after[0]; break;
+            default: // can't be bother parsing headers we dont need/use
+                return real_size;
+        }
+
         char* colon = std::find(buffer, buffer + nitems, ':');
         if (colon == buffer + nitems) {
             return real_size;
         }
-        std::string key(buffer, colon);
-        // response has white space after ':' and two excess characters \r\n 
-        std::string cont(colon+2, buffer + nitems-2);
-        (*new_header)[key] = cont;
+
+        strncpy(write_field, colon+2, nitems - (std::size_t)(colon - buffer) - 4);
+        write_field[nitems - (std::size_t)(colon - buffer) - 4] = 0;
         
         return real_size;
     }
@@ -132,6 +151,8 @@ namespace client {
         }
         // null terminant buffer for json parsing
         content_buffer.push_back(0);
+
+        this->logger << logging::LEVEL::DEBUG << request->response_header << 0;
 
         curl_easy_getinfo(this->easy_handle, CURLINFO_RESPONSE_CODE, &(request->last_response));
 

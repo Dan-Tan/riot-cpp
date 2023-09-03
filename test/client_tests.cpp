@@ -1,4 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
+#include <iostream>
 #include <ctime>
 #include <queue>
 #include <vector>
@@ -6,7 +7,7 @@
 #include "../src/riot-cpp/client/client.h"
 #include "../src/jsoncpp/include/json/json.h"
 
-#define CONFIG "../../.api_keys/riot_config.json", "../test/log_file.txt", logging::LEVEL::DEBUG
+#define CONFIG "../../.api_keys/riot_config.json", "../test/log_file.txt", logging::LEVEL::DEBUG, true
 
 using namespace client;
 
@@ -17,6 +18,7 @@ static std::string ACCOUNT_ID;
 
 
 TEST_CASE( "ACCOUNT_V1 QUERIES") {
+    std::cout << "TESTING ACCOUNT_V1 QUERIES" << '\n';
     RiotApiClient test_client(CONFIG);
 
     std::vector<std::string> region = {"AMERICAS", "ASIA", "EUROPE"};
@@ -44,6 +46,7 @@ TEST_CASE( "ACCOUNT_V1 QUERIES") {
 // League of Legend Queries
 
 TEST_CASE( "LEAGUE_V4 QUERIES") {
+    std::cout << "TESTING LEAGUE_V4 QUERIES" << '\n';
     RiotApiClient test_client(CONFIG);
     
     std::string region = "na1";
@@ -98,6 +101,7 @@ TEST_CASE( "LEAGUE_V4 QUERIES") {
 }
 
 TEST_CASE(" SUMMONER QUERIES ") {
+    std::cout << "TESTING  SUMMONER QUERIES " << '\n';
     RiotApiClient test_client(CONFIG);
     
     std::string region = "kr";
@@ -122,6 +126,7 @@ TEST_CASE(" SUMMONER QUERIES ") {
 }
 
 TEST_CASE( "MATCH QUERIES" ) {
+    std::cout << "TESTING MATCH QUERIES" << '\n';
     RiotApiClient test_client(CONFIG);
 
     std::string region = "ASIA";
@@ -138,6 +143,7 @@ TEST_CASE( "MATCH QUERIES" ) {
 }
 
 TEST_CASE("CHAMPION-MASTERY-V4 QUERIES") {
+    std::cout << "TESTING CHAMPION-MASTERY-V4 QUERIES" << '\n';
     RiotApiClient test_client(CONFIG);
     
     const int champion_id = 1;
@@ -157,6 +163,7 @@ TEST_CASE("CHAMPION-MASTERY-V4 QUERIES") {
 }
 
 TEST_CASE("CHAMPION-V3") {
+    std::cout << "TESTING CHAMPION-V3" << '\n';
     RiotApiClient test_client(CONFIG);
     
     Json::Value result;
@@ -167,6 +174,7 @@ TEST_CASE("CHAMPION-V3") {
 }
 
 TEST_CASE("LOL-CHALLENGES-V1") {
+    std::cout << "TESTING LOL-CHALLENGES-V1" << '\n';
     RiotApiClient test_client(CONFIG);
     
     const int challenge_id = 1;
@@ -192,6 +200,7 @@ TEST_CASE("LOL-CHALLENGES-V1") {
     REQUIRE(result.isMember("categoryPoints"));
 }
 TEST_CASE("LOL-STATUS") {
+    std::cout << "TESTING LOL-STATUS" << '\n';
     RiotApiClient test_client(CONFIG);
     
     Json::Value result;
@@ -205,6 +214,7 @@ TEST_CASE("LOL-STATUS") {
     REQUIRE(result.isMember("locales"));
 }
 //TEST_CASE("LOR-MATCH-V1") {
+//std::cout << "TESTING LOR-MATCH-V1" << '\n';
 //    RiotApiClient test_client(CONFIG);
 //
 //    Json::Value result;
@@ -220,6 +230,7 @@ TEST_CASE("LOL-STATUS") {
 //    REQUIRE(result["metadata"]["match_id"] == match_id);
 //}
 TEST_CASE("LOR-RANKED-V1") {
+    std::cout << "TESTING LOR-RANKED-V1" << '\n';
     RiotApiClient test_client(CONFIG);
 
     Json::Value result;
@@ -229,6 +240,7 @@ TEST_CASE("LOR-RANKED-V1") {
     REQUIRE(result["players"].isArray());
 }
 TEST_CASE("LOR-STATUS-V1") {
+    std::cout << "TESTING LOR-STATUS-V1" << '\n';
     RiotApiClient test_client(CONFIG);
 
     Json::Value result;
@@ -241,6 +253,7 @@ TEST_CASE("LOR-STATUS-V1") {
     REQUIRE(result.isMember("incidents"));
 }
 TEST_CASE("SPECTATOR-V4") {
+    std::cout << "TESTING SPECTATOR-V4" << '\n';
     RiotApiClient test_client(CONFIG);
 
     Json::Value result;
@@ -268,6 +281,7 @@ TEST_CASE("SPECTATOR-V4") {
     }
 }
 TEST_CASE("TFT-LEAGUE-V1") {
+    std::cout << "TESTING TFT-LEAGUE-V1" << '\n';
     RiotApiClient test_client(CONFIG);
 
     Json::Value result;
@@ -295,6 +309,7 @@ TEST_CASE("TFT-LEAGUE-V1") {
     REQUIRE(result[0]["rank"] == "II");
 }
 TEST_CASE("TFT-MATCH-V1") {
+    std::cout << "TESTING TFT-MATCH-V1" << '\n';
     RiotApiClient test_client(CONFIG);
 
     Json::Value result;
@@ -314,6 +329,7 @@ TEST_CASE("TFT-MATCH-V1") {
     REQUIRE(result["metadata"]["match_id"].asString() == match_id);
 }
 TEST_CASE("TFT-STATUS-V1") {
+    std::cout << "TESTING TFT-STATUS-V1" << '\n';
     RiotApiClient test_client(CONFIG);
 
     Json::Value result;
@@ -324,6 +340,7 @@ TEST_CASE("TFT-STATUS-V1") {
 
 }
 TEST_CASE("TFT-SUMMONER-V1") { 
+    std::cout << "TESTING TFT-SUMMONER-V1" << '\n';
     RiotApiClient test_client(CONFIG);
 
     Json::Value result;
@@ -348,6 +365,7 @@ TEST_CASE("TFT-SUMMONER-V1") {
     REQUIRE(result["id"] == summoner_id);
 }
 TEST_CASE("VAL-CONTENT-V1") {
+    std::cout << "TESTING VAL-CONTENT-V1" << '\n';
     RiotApiClient test_client(CONFIG);
 
     Json::Value result;

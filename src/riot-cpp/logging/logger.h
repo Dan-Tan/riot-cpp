@@ -36,6 +36,7 @@ namespace logging {
             Logger& operator<<(const char* message);
             Logger& operator<<(const int err_code);
             Logger& operator<<(const std::vector<handler_structs::ScopeHistory>& method_history);
+            Logger& operator<<(const query::RiotHeader& response);
             Logger& operator<<(const Json::Value& response);
     };
 }

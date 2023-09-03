@@ -149,6 +149,22 @@ namespace logging {
         return *this;
     }
 
+    Logger& Logger::operator<<(const query::RiotHeader& response) {
+        if (!this->_verbose) {
+            return *this;
+        }
+        if (this->_incoming) {
+            this->_log_file << "\n---- Response Header ----\n";
+            this->_log_file  << "    Date: " << response.date << "\n";
+            this->_log_file  << "    Application Rate Limit: " << response.app_limit << "\n";
+            this->_log_file  << "    Application Rate Count: " << response.app_limit_count << "\n";
+            this->_log_file  << "    Method Rate Limit: " << response.method_limit << "\n";
+            this->_log_file  << "    Method Rate Count: " << response.method_limit_count << "\n";
+            this->_log_file  << "    Retry After: " << response.retry_after << "\n";
+        }
+        return *this;
+    }
+
     Logger& Logger::operator<<(const Json::Value& response) {
         if (!this->_verbose) {
             return *this;
