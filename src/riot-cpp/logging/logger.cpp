@@ -1,6 +1,4 @@
 #include <ctime>
-#include "../../jsoncpp/include/json/json.h"
-#include "../../jsoncpp/include/json/writer.h"
 #include <stdexcept>
 #include "logger.h"
 
@@ -165,17 +163,6 @@ namespace logging {
         return *this;
     }
 
-    Logger& Logger::operator<<(const Json::Value& response) {
-        if (!this->_verbose) {
-            return *this;
-        }
-        if (this->_incoming) {
-            Json::StreamWriterBuilder builder;
-            this->_log_file << "\n ------header-------\n  " << Json::writeString(builder, response);
-        }
-        return *this;
-    }
-    
     Logger::Logger(std::string log_path, LEVEL log_level, bool verbose, bool log_q_time) {
         this->_log_path = log_path;
         this->_log_level = log_level;

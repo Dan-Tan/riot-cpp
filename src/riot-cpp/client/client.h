@@ -2,8 +2,8 @@
 
 #include <curl/curl.h>
 #include <string>
+#include <sstream>
 #include <string_view>
-#include "../../jsoncpp/include/json/json.h"
 #include <unordered_map>
 #include <memory>
 #include "../query/query.h"
@@ -12,6 +12,8 @@
 #include <functional>
 
 namespace client {
+
+    using json_text = std::vector<char>;
 
     using opt_args = std::pair<std::string, std::string>;
 
@@ -52,8 +54,8 @@ namespace client {
             logging::Logger logger;
 
         private:
-            Json::Value query(std::shared_ptr<query::query> request);
-            std::function<Json::Value(std::shared_ptr<query::query>)> endpoint_call;
+            std::unique_ptr<json_text> query(std::shared_ptr<query::query> request);
+            std::function<std::unique_ptr<json_text>(std::shared_ptr<query::query>)> endpoint_call;
             bool get(std::shared_ptr<query::query> request);
 
 

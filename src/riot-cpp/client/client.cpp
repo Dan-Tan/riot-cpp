@@ -10,11 +10,38 @@
 #include <fstream>
 #include <stdio.h>
 #include <queue>
+#include <regex>
+#include <cstring>
 #include "client.h"
 
 namespace client {
 
-    using func_type = std::function<Json::Value(std::shared_ptr<query::query>)>;
+    using func_type = std::function<std::unique_ptr<json_text>(std::shared_ptr<query::query>)>;
+
+    static std::string extract_key(const std::string& path_to_config) {
+
+        std::ifstream config(path_to_config);
+
+        if (!config.is_open()) {
+            throw std::runtime_error("Invalid path to file, or file does not exist");
+        }
+
+        const std::regex key_reg("RGAPI[-0123456789abcdefABCDEF]{0,38}\"");
+
+        std::stringstream file_cont;
+        file_cont << config.rdbuf();
+        std::string filestr = file_cont.str();
+        std::smatch base_match;
+
+        if (std::regex_search(filestr, base_match, key_reg)) {
+            config.close();
+            std::string match = base_match[0].str();
+            return match.substr(0, match.size()-1);
+        } else {
+            config.close();
+            throw std::runtime_error("Configuration file does not exist or has unexpected format");
+        };
+    }
 
     RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level, bool verbose_logging) : 
         logger(path_to_log, report_level, verbose_logging),
@@ -45,26 +72,8 @@ namespace client {
         curl_global_init(CURL_GLOBAL_ALL);
 
         // initialised libcurl handle and header
-        Json::Reader reader;
-
-        std::ifstream config(path_to_config);
-
-        if (!config.is_open()) {
-            std::string err_msg("Failed to open config file");
-            err_msg = err_msg + path_to_config;
-            throw std::invalid_argument(err_msg);
-        }
-        
-        Json::Value root;
-        bool retrieving_key = reader.parse(config, root);
-
-        if (!retrieving_key) {
-            throw Json::Exception("Unable to parse config file to Json format");
-        }
-        else {
-            std::string api_key = root["api-key"].asString();
-            this->header = curl_slist_append(header, (std::string("X-RIOT-TOKEN: ") + api_key).c_str());
-        }
+        std::string api_key = extract_key(path_to_config);
+        this->header = curl_slist_append(header, (std::string("X-RIOT-TOKEN: ") + api_key).c_str());
         
         this->easy_handle = curl_easy_init();
     }
@@ -129,15 +138,14 @@ namespace client {
 
     bool RiotApiClient::get(std::shared_ptr<query::query> request) {
 
-        Json::Reader reader;
-        std::vector<char> content_buffer = {};
+        request->response_content->clear();
 
         curl_easy_setopt(this->easy_handle, CURLOPT_URL, request->url.data());
         curl_easy_setopt(this->easy_handle, CURLOPT_HTTPGET, 1);
         curl_easy_setopt(this->easy_handle, CURLOPT_HTTPHEADER, this->header);
 
         curl_easy_setopt(this->easy_handle, CURLOPT_WRITEFUNCTION, WriteCallBack);
-        curl_easy_setopt(this->easy_handle, CURLOPT_WRITEDATA, &content_buffer);
+        curl_easy_setopt(this->easy_handle, CURLOPT_WRITEDATA, &(*request->response_content));
 
         curl_easy_setopt(this->easy_handle, CURLOPT_HEADERFUNCTION, WriteCallBack_header);
         curl_easy_setopt(this->easy_handle, CURLOPT_HEADERDATA, &request->response_header);
@@ -150,15 +158,11 @@ namespace client {
             return false;
         }
         // null terminant buffer for json parsing
-        content_buffer.push_back(0);
+        request->response_content->push_back(0);
 
         this->logger << logging::LEVEL::DEBUG << request->response_header << 0;
 
         curl_easy_getinfo(this->easy_handle, CURLINFO_RESPONSE_CODE, &(request->last_response));
-
-        if (!reader.parse(content_buffer.data(), request->response_content)) {
-            this->logger<< logging::LEVEL::ERRORS <<  "Failed to parse json content string";
-        }
         
         if (request->last_response == 200) { // only parse content to json if request was successful
             this->logger << logging::LEVEL::DEBUG << "Query Successful" << 0;
@@ -177,13 +181,13 @@ namespace client {
         }
     }
 
-    Json::Value RiotApiClient::query(std::shared_ptr<query::query> request) {
+    std::unique_ptr<json_text> RiotApiClient::query(std::shared_ptr<query::query> request) {
 
         this->logger << logging::LEVEL::DEBUG << "--Query Call--" << request->url << 0;
 
         while (this->request_handler.review_request(request)) {
             if (request->last_response == 200) {
-                return request->response_content;
+                return std::move(request->response_content);
             } 
             if (!this->request_handler.validate_request(request)) {
                 this->logger << logging::LEVEL::WARNING << "Request sent was invalid or the server is unavailable" << 0;
@@ -195,6 +199,6 @@ namespace client {
         }
 
         this->logger << logging::LEVEL::ERRORS << "Failed request" << request->method_key << request->last_response << 0; 
-        return request->response_content;
+        return std::move(request->response_content);
     }
 }

@@ -1,7 +1,5 @@
 #pragma once
-#include "../../jsoncpp/include/json/writer.h"
 #include <queue>
-#include "../../jsoncpp/include/json/json.h"
 #include <string>
 #include <fstream>
 #include "../query/query.h"
@@ -37,6 +35,5 @@ namespace logging {
             Logger& operator<<(const int err_code);
             Logger& operator<<(const std::vector<handler_structs::ScopeHistory>& method_history);
             Logger& operator<<(const query::RiotHeader& response);
-            Logger& operator<<(const Json::Value& response);
     };
 }

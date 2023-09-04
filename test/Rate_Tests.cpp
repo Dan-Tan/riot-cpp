@@ -4,7 +4,6 @@
 #include <ctime>
 #include <queue>
 #include <unordered_map>
-#include "../src/jsoncpp/include/json/json.h"
 #include <memory>
 #include "../src/riot-cpp/client/client.h"
 
@@ -160,7 +159,7 @@ TEST_CASE("RATE TESTS") {
     std::time_t server_time = std::time(NULL);
     std::string urls = "fake_url";
 
-    std::shared_ptr<query::query> test_query = std::make_shared<query::query>(method, region, urls, 0, Json::Value(), example_header);
+    std::shared_ptr<query::query> test_query = std::make_shared<query::query>(method, region, urls, 0, nullptr, example_header);
     update_time(test_query);
 
     handler.init_queues(test_query);
@@ -204,11 +203,10 @@ TEST_CASE("Test with server") {
     bool verbose = true;
     client::RiotApiClient test_client("../../.api_keys/riot_config.json", "../test/log_file.txt", logging::LEVEL::DEBUG, verbose);
 
-    Json::Value response;
     // we want to try trigger the server rate limiter and check if we stop our queries or get sent a 429 error
     int n_attempts = 500;
     for (int i = 0; i < n_attempts; i++) {
-        response = test_client.Summoner.by_name("oc1", "Monkeys R Us");
+        test_client.Summoner.by_name("oc1", "Monkeys R Us");
     }
 }
 

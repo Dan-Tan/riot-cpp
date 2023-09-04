@@ -6,7 +6,6 @@
 #include <stdexcept>
 #include <queue>
 #include <unordered_map>
-#include "../../jsoncpp/include/json/json.h"
 #include "handlers.h"
 
 namespace handler {
@@ -104,34 +103,29 @@ void get_limits_and_counts(std::string_view rep, std::vector<int>& count, std::v
 }
 
 void RateHandler::init_queues(std::shared_ptr<query::query> request) {
-    try {
-        this->initialised = true;
-        std::string limits_str = request->response_header.app_limit;
-        std::string counts_str = request->response_header.app_limit_count;
-        std::string method_str = request->response_header.method_limit;
-        std::string method_counts_str = request->response_header.method_limit_count;
-        std::vector<int> method_counts;
-        std::vector<int> counts;
-        std::vector<int> limits;
-        std::vector<int> durations;
-        std::vector<int> temp;
-        
-        get_limits_and_counts(limits_str, limits, durations);
-        get_limits_and_counts(counts_str, counts, temp);
-        get_limits_and_counts(method_counts_str, method_counts, temp);
+    this->initialised = true;
+    std::string limits_str = request->response_header.app_limit;
+    std::string counts_str = request->response_header.app_limit_count;
+    std::string method_str = request->response_header.method_limit;
+    std::string method_counts_str = request->response_header.method_limit_count;
+    std::vector<int> method_counts;
+    std::vector<int> counts;
+    std::vector<int> limits;
+    std::vector<int> durations;
+    std::vector<int> temp;
+    
+    get_limits_and_counts(limits_str, limits, durations);
+    get_limits_and_counts(counts_str, counts, temp);
+    get_limits_and_counts(method_counts_str, method_counts, temp);
 
-        for (auto& reg : this->routing_queues) {
-            reg = handler_structs::init_region(limits, durations);
-        }
-
-        const std::time_t server_time = request_time(request->response_header.date);
-
-        this->routing_queues.at(routing_to_int(request->routing_value)).insert_request(server_time, request->method_key, method_str);
-        this->init_counts(request->routing_value, request->method_key, counts, method_counts, server_time);
+    for (auto& reg : this->routing_queues) {
+        reg = handler_structs::init_region(limits, durations);
     }
-    catch (Json::Exception& exc ) {
-        throw Json::Exception("Response header key value not found");
-    }
+
+    const std::time_t server_time = request_time(request->response_header.date);
+
+    this->routing_queues.at(routing_to_int(request->routing_value)).insert_request(server_time, request->method_key, method_str);
+    this->init_counts(request->routing_value, request->method_key, counts, method_counts, server_time);
 }
 
 
