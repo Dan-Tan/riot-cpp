@@ -88,9 +88,7 @@ namespace client {
         
         size_t real_size = size * nmemb;
         char *new_chars = (char *)contents;
-        if (*new_chars == 'H') {
-            return real_size;
-        }
+        
         std::vector<char> *new_buffer = static_cast<std::vector<char>*>(buffer);
         new_buffer->insert(new_buffer->end(), &new_chars[0], &new_chars[nmemb]);
 

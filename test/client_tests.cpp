@@ -71,8 +71,6 @@ TEST_CASE( "LEAGUE_V4 QUERIES") {
     json_ptr result;
     simdjson::ondemand::parser parser;
     simdjson::ondemand::document doc;
-    simdjson::dom::parser domparser;
-    simdjson::dom::element domdoc;
 
     SECTION("CHALLENGER, GRANDMASTER AND MASTER QUEUE") {
         std::cout << "    CHALLENGER, GRANDMASTER AND MASTER" << '\n';
@@ -96,9 +94,9 @@ TEST_CASE( "LEAGUE_V4 QUERIES") {
     }
     result = test_client.League.master(region, queue.at(0));
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
-    domdoc = domparser.parse(result->data(), strlen(result->data()), sizeof(result->data()));
-    summoner_id = domdoc["entries"].at(0)["summonerId"].get_string().value();
-    league_id = domdoc["leagueId"].get_string().value();
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    summoner_id = doc["entries"].at(0)["summonerId"].get_string().value();
+    league_id = doc["leagueId"].get_string().value();
 
     SECTION("SPECIFIC QUEUE ") {
         std::cout << "    SPECIFIC QUEUE " << '\n';
@@ -107,10 +105,11 @@ TEST_CASE( "LEAGUE_V4 QUERIES") {
                 for (int div = 0; div < division.size(); div++) {
                     result = test_client.League.specific_league(region, queue.at(qu), tier.at(ti), division.at(div));
                     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
-                    domdoc = domparser.parse(result->data(), strlen(result->data()), sizeof(result->data()));
-                    REQUIRE(domdoc.at(0)["queueType"].get_string().value() == queue[qu]);
-                    REQUIRE(domdoc.at(0)["tier"].get_string().value() == tier[ti]);
-                    REQUIRE(domdoc.at(0)["rank"].get_string().value() == division[div]);
+                    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+                    auto ref = doc.at(0);
+                    REQUIRE(ref["queueType"].get_string().value() == queue[qu]);
+                    REQUIRE(ref["tier"].get_string().value() == tier[ti]);
+                    REQUIRE(ref["rank"].get_string().value() == division[div]);
                 }
             }
         }
@@ -120,15 +119,12 @@ TEST_CASE( "LEAGUE_V4 QUERIES") {
         std::cout << "    SUMMONER ID AND LEAGUE ID " << '\n';
         result = test_client.League.by_summoner_id(region, summoner_id);
         result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
-        std::cout << "    summoner " << '\n';
-        domdoc = domparser.parse(result->data(), strlen(result->data()), sizeof(result->data()));
-        REQUIRE(domdoc.at(0)["summonerId"].get_string().value() == summoner_id);
+        doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+        REQUIRE(doc.at(0)["summonerId"].get_string().value() == summoner_id);
         result = test_client.League.by_league_id(region, league_id);
         result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
-        std::cout << "    league" << '\n';
-        domdoc = domparser.parse(result->data(), strlen(result->data()), sizeof(result->data()));
+        doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
         REQUIRE(doc["leagueId"].get_string().value() == league_id);
-        std::cout << "    DONE" << '\n';
     }
 }
 
@@ -229,145 +225,200 @@ TEST_CASE("CHAMPION-V3") {
     result = test_client.Champion.rotations(ROUTING);
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
     doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
-    REQUIRE_FALSE(!doc["freeChampionIds"].get_int64());
-    REQUIRE_FALSE(!doc["freeChampionIdsForNewPlayers"].get_int64());
+    REQUIRE_NOTHROW(doc["freeChampionIds"]);
+    REQUIRE_NOTHROW(doc["freeChampionIdsForNewPlayers"].get_int64());
 }
 
-//TEST_CASE("LOL-CHALLENGES-V1") {
-//    std::cout << "TESTING LOL-CHALLENGES-V1" << '\n';
-//    RiotApiClient test_client(CONFIG);
-//    
-//    const int challenge_id = 1;
-//    std::string level = "HIGHEST";
-//    json_ptr result;
-//
-//    result = test_client.Lol_Challenges.config(ROUTING);
-//    REQUIRE(result[0].isMember("id"));
-//    REQUIRE(result[0].isMember("localizedNames"));
-//    result = test_client.Lol_Challenges.percentiles(ROUTING);
-//    REQUIRE(result.isMember("0"));
-//    REQUIRE(result.isMember("1"));
-//    result = test_client.Lol_Challenges.challenge_config(ROUTING, challenge_id);
-//    REQUIRE(result.isMember("id"));
-//    REQUIRE(result.isMember("localizedNames"));
-////    result = test_client.Lol_Challenges.challenge_leaderboard(ROUTING, challenge_id, level); failing on riotswebstire as well?!
-////    REQUIRE(result.isMember("BRONZE"));
-////    REQUIRE(result.isMember("CHALLENGER"));
-//    result = test_client.Lol_Challenges.by_puuid(ROUTING, PUUID);
-//    REQUIRE(result.isMember("challenges"));
-//    REQUIRE(result.isMember("preferences"));
-//    REQUIRE(result.isMember("totalPoints"));
-//    REQUIRE(result.isMember("categoryPoints"));
-//}
-//TEST_CASE("LOL-STATUS") {
-//    std::cout << "TESTING LOL-STATUS" << '\n';
-//    RiotApiClient test_client(CONFIG);
-//    
-//    json_ptr result;
-//    
-//    // not available for my development key
-//    // result = test_client.query(endpoint, std::string("v3"), std::vector<std::string>{ROUTING});
-//    result = test_client.Lol_Status.v4(ROUTING);
-//    REQUIRE(result["id"] == "KR");
-//    REQUIRE(result.isMember("maintenances"));
-//    REQUIRE(result.isMember("incidents"));
-//    REQUIRE(result.isMember("locales"));
-//}
-////TEST_CASE("LOR-MATCH-V1") {
-////std::cout << "TESTING LOR-MATCH-V1" << '\n';
-////    RiotApiClient test_client(CONFIG);
-////
-////    json_ptr result;
-////    std::string endpoint = "LOR-MATCH-V1";
-////    std::string match_id;
-////
-////    result = test_client.Summoner.by_name("oc1", "mtucks");
-////    std::string puuid = result["puuid"].asString();
-////    result = test_client.Lor_Match.by_puuid("AMERICAS", puuid);
-////    REQUIRE(result.isArray());
-////    match_id = result[result.size() - 1].asString();
-////    result = test_client.Lor_Match.by_match("AMERICAS", match_id);
-////    REQUIRE(result["metadata"]["match_id"] == match_id);
-////}
-//TEST_CASE("LOR-RANKED-V1") {
-//    std::cout << "TESTING LOR-RANKED-V1" << '\n';
+TEST_CASE("LOL-CHALLENGES-V1") {
+    std::cout << "TESTING LOL-CHALLENGES-V1" << '\n';
+    RiotApiClient test_client(CONFIG);
+    
+    const int challenge_id = 1;
+    std::string level = "HIGHEST";
+    json_ptr result;
+    simdjson::ondemand::parser parser;
+    simdjson::ondemand::document doc;
+
+    result = test_client.Lol_Challenges.config(ROUTING);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc.at(0)["id"]);
+    REQUIRE_NOTHROW(doc.at(0)["localizedNames"]);
+    result = test_client.Lol_Challenges.percentiles(ROUTING);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc["0"]);
+    REQUIRE_NOTHROW(doc["1"]);
+    result = test_client.Lol_Challenges.challenge_config(ROUTING, challenge_id);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc["id"]);
+    REQUIRE_NOTHROW(doc["localizedNames"]);
+//    result = test_client.Lol_Challenges.challenge_leaderboard(ROUTING, challenge_id, level); failing on riotswebstire as well?!
+//    REQUIRE(result.isMember("BRONZE"));
+//    REQUIRE(result.isMember("CHALLENGER"));
+    result = test_client.Lol_Challenges.by_puuid(ROUTING, PUUID);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc["challenges"]);
+    REQUIRE_NOTHROW(doc["preferences"]);
+    REQUIRE_NOTHROW(doc["totalPoints"]);
+    REQUIRE_NOTHROW(doc["categoryPoints"]);
+}
+TEST_CASE("LOL-STATUS") {
+    std::cout << "TESTING LOL-STATUS" << '\n';
+    RiotApiClient test_client(CONFIG);
+    
+    json_ptr result;
+    simdjson::ondemand::parser parser;
+    simdjson::ondemand::document doc;
+    
+    // not available for my development key
+    // result = test_client.query(endpoint, std::string("v3"), std::vector<std::string>{ROUTING});
+    result = test_client.Lol_Status.v4(ROUTING);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE(doc["id"].get_string().value() == "KR");
+    REQUIRE_NOTHROW(doc["maintenances"]);
+    REQUIRE_NOTHROW(doc["incidents"]);
+    REQUIRE_NOTHROW(doc["locales"]);
+}
+//TEST_CASE("LOR-MATCH-V1") {
+//std::cout << "TESTING LOR-MATCH-V1" << '\n';
 //    RiotApiClient test_client(CONFIG);
 //
 //    json_ptr result;
+//    std::string endpoint = "LOR-MATCH-V1";
+//    std::string match_id;
 //
-//    result = test_client.Lor_Ranked.leaderboards("AMERICAS");
-//    REQUIRE(result.isMember("players"));
-//    REQUIRE(result["players"].isArray());
-//}
-//TEST_CASE("LOR-STATUS-V1") {
-//    std::cout << "TESTING LOR-STATUS-V1" << '\n';
-//    RiotApiClient test_client(CONFIG);
-//
-//    json_ptr result;
-//
-//    result = test_client.Lor_Status.v1("AMERICAS");
-//    REQUIRE(result["id"].asString() == "Americas");
-//    REQUIRE(result["name"].asString() == "Americas");
-//    REQUIRE(result["locales"].isArray());
-//    REQUIRE(result.isMember("maintenances"));
-//    REQUIRE(result.isMember("incidents"));
-//}
-//TEST_CASE("SPECTATOR-V4") {
-//    std::cout << "TESTING SPECTATOR-V4" << '\n';
-//    RiotApiClient test_client(CONFIG);
-//
-//    json_ptr result;
-//    std::string endpoint = "SPECTATOR-V4";
-//
-//    result = test_client.Spectator.featured_games(ROUTING);
-//    REQUIRE(result.isMember("gameList"));
-//    REQUIRE(result["gameList"].isArray());
-//    REQUIRE(result["gameList"][0].isMember("participants"));
-//    std::string summoner_name = result["gameList"][0]["participants"][0]["summonerName"].asString();
-//    result = test_client.Summoner.by_name(ROUTING, summoner_name);
-//    std::string summoner_id = result["id"].asString();
-//    result = test_client.Spectator.by_summoner_id(ROUTING, summoner_id);
-//    REQUIRE(result.isMember("participants"));
-//    REQUIRE(result["participants"].isArray());
-//    REQUIRE(result["participants"][0].isMember("summonerId"));
-//    { // find participant in the game to see if the correct game was found
-//        bool participant_found = false;
-//        bool temp;
-//        for (json_ptr ::ArrayIndex i = 0; i != result["participants"].size(); i++) {
-//            temp = result["participants"][i]["summonerId"].asString() == summoner_id;
-//            participant_found = participant_found || temp;
-//        }
-//        REQUIRE(participant_found);
-//    }
-//}
-//TEST_CASE("TFT-LEAGUE-V1") {
-//    std::cout << "TESTING TFT-LEAGUE-V1" << '\n';
-//    RiotApiClient test_client(CONFIG);
-//
-//    json_ptr result;
-//    std::string endpoint = "TFT-LEAGUE-V1";
-//
-//    result = test_client.Tft_League.challenger(ROUTING);
-//    result = test_client.Tft_League.grandmaster(ROUTING);
-//    result = test_client.Tft_League.master(ROUTING);
-//    result = test_client.Tft_League.by_summoner_id(ROUTING, SUMMONER_ID);
+//    result = test_client.Summoner.by_name("oc1", "mtucks");
+//    std::string puuid = result["puuid"].asString();
+//    result = test_client.Lor_Match.by_puuid("AMERICAS", puuid);
 //    REQUIRE(result.isArray());
-//    REQUIRE(result[0].isMember("summonerId"));
-//    REQUIRE(result[0].isMember("leagueId"));
-//    REQUIRE(result[0]["summonerId"].asString() == SUMMONER_ID);
-//    std::string league_id = result[0]["leagueId"].asString();
-//    result = test_client.Tft_League.by_league_id(ROUTING, league_id);
-//    REQUIRE(result.isMember("leagueId"));
-//    REQUIRE(result["leagueId"] == league_id);
-//    result = test_client.Tft_League.queue_top(ROUTING, "RANKED_TFT_TURBO");
-//    REQUIRE(result.isArray());
-//    result = test_client.Tft_League.by_tier_division(ROUTING, "DIAMOND", "II", {"page", 2});
-//    REQUIRE(result.isArray());
-//    REQUIRE(result[0].isMember("tier"));
-//    REQUIRE(result[0].isMember("rank"));
-//    REQUIRE(result[0]["tier"] == "DIAMOND");
-//    REQUIRE(result[0]["rank"] == "II");
+//    match_id = result[result.size() - 1].asString();
+//    result = test_client.Lor_Match.by_match("AMERICAS", match_id);
+//    REQUIRE(result["metadata"]["match_id"] == match_id);
 //}
+TEST_CASE("LOR-RANKED-V1") {
+    std::cout << "TESTING LOR-RANKED-V1" << '\n';
+    RiotApiClient test_client(CONFIG);
+
+    json_ptr result;
+    simdjson::ondemand::parser parser;
+    simdjson::ondemand::document doc;
+
+    result = test_client.Lor_Ranked.leaderboards("AMERICAS");
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc["players"]);
+    REQUIRE_NOTHROW(doc["players"].get_array());
+}
+TEST_CASE("LOR-STATUS-V1") {
+    std::cout << "TESTING LOR-STATUS-V1" << '\n';
+    RiotApiClient test_client(CONFIG);
+
+    json_ptr result;
+    simdjson::ondemand::parser parser;
+    simdjson::ondemand::document doc;
+
+    result = test_client.Lor_Status.v1("AMERICAS");
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE(doc["id"].get_string().value() == "Americas");
+    REQUIRE(doc["name"].get_string().value() == "Americas");
+    REQUIRE_NOTHROW(doc["locales"].get_array());
+    REQUIRE_NOTHROW(doc["maintenances"]);
+    REQUIRE_NOTHROW(doc["incidents"]);
+}
+TEST_CASE("SPECTATOR-V4") {
+    std::cout << "TESTING SPECTATOR-V4" << '\n';
+    RiotApiClient test_client(CONFIG);
+
+    json_ptr result;
+    std::string endpoint = "SPECTATOR-V4";
+    simdjson::ondemand::parser parser;
+    simdjson::ondemand::document doc;
+
+    result = test_client.Spectator.featured_games(ROUTING);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc["gameList"]);
+    REQUIRE_NOTHROW(doc["gameList"].get_array());
+    auto ref = doc["gameList"].at(0);
+    REQUIRE_NOTHROW(ref["participants"]);
+    std::string summoner_name;
+    summoner_name = ref["summonerName"].get_string().value();
+    result = test_client.Summoner.by_name(ROUTING, summoner_name);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    std::string summoner_id;
+    summoner_id = doc["id"].get_string().value();
+    result = test_client.Spectator.by_summoner_id(ROUTING, summoner_id);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc["participants"]);
+    REQUIRE_NOTHROW(doc["participants"].get_array());
+    auto foriter = doc["participants"];
+    REQUIRE_NOTHROW(ref["summonerId"]);
+    { // find participant in the game to see if the correct game was found
+        bool participant_found = false;
+        bool temp;
+        for (auto objjs : foriter.get_array()) {
+            temp = objjs["summonerId"].get_string().value() == summoner_id;
+            participant_found = participant_found || temp;
+        }
+        REQUIRE(participant_found);
+    }
+}
+TEST_CASE("TFT-LEAGUE-V1") {
+    std::cout << "TESTING TFT-LEAGUE-V1" << '\n';
+    RiotApiClient test_client(CONFIG);
+
+    json_ptr result;
+    std::string endpoint = "TFT-LEAGUE-V1";
+    simdjson::ondemand::parser parser;
+    simdjson::ondemand::document doc;
+
+    result = test_client.Tft_League.challenger(ROUTING);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    result = test_client.Tft_League.grandmaster(ROUTING);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    result = test_client.Tft_League.master(ROUTING);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    result = test_client.Tft_League.by_summoner_id(ROUTING, SUMMONER_ID);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc.get_array());
+    auto arrobj = doc.at(0);
+    REQUIRE_NOTHROW(arrobj["summonerId"]);
+    REQUIRE_NOTHROW(arrobj["leagueId"]);
+    REQUIRE(arrobj["summonerId"].get_string().value() == SUMMONER_ID);
+    std::string league_id;
+    league_id = arrobj["leagueId"].get_string().value();
+    result = test_client.Tft_League.by_league_id(ROUTING, league_id);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc["leagueId"]);
+    REQUIRE(doc["leagueId"].get_string().value() == league_id);
+    result = test_client.Tft_League.queue_top(ROUTING, "RANKED_TFT_TURBO");
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc.get_array());
+    result = test_client.Tft_League.by_tier_division(ROUTING, "DIAMOND", "II", {"page", 2});
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc.get_array());
+    auto jsonref = doc.at(0);
+    REQUIRE_NOTHROW(jsonref["tier"]);
+    REQUIRE_NOTHROW(jsonref["rank"]);
+    REQUIRE(jsonref["tier"].get_string().value() == "DIAMOND");
+    REQUIRE(jsonref["rank"].get_string().value() == "II");
+}
 //TEST_CASE("TFT-MATCH-V1") {
 //    std::cout << "TESTING TFT-MATCH-V1" << '\n';
 //    RiotApiClient test_client(CONFIG);
