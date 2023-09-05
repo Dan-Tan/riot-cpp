@@ -13,8 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-      with: 
-        submodules: true
     - name: Install cURL
       run: sudo apt install libcurl4-openssl-dev
     - name: Clone Catch2
