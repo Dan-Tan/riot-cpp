@@ -7,7 +7,7 @@ Simple Api client for the Riot Games Resful API implemented in C++ 20.
 
 This library implements rate limiting to prevent api key blacklisting from exceeding Riot's rate limits. The library handles server response error's and will retry when a successful request is possible (429, 500, 503 errors). The client contains a logging class to help with debugging dependent code as well as providing information of the running of the client. Riot-cpp will adapt to the specific api key's rate limits after the first request and try to recover from errors.
 
-Riot-cpp uses [libcurl](https://curl.se/libcurl/) to send https get requests.
+Riot-cpp uses [libcurl](https://curl.se/libcurl/) to send https get requests. The Json parser [simdjson](https://github.com/simdjson/simdjson) is used as a dependency for testing but NOT in the library. Parsing is done by the user.
 
 Documentation is located at following page.
 
