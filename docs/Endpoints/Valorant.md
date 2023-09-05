@@ -5,9 +5,9 @@ View [Riot's](https://developer.riotgames.com/apis#val-content-v1) documentation
 **content**
 ```cpp
 // function call
-Json::Value response = client_obj.Val_Content.content("<routing>", {"locale", "<locale>"});
+std::unique_ptr<std::vector<char>> response = client_obj.Val_Content.content("<routing>", {"locale", "<locale>"});
 // declaration
-Json::Value content(std::string, std::pair<std::string, std::string>);
+std::unique_ptr<std::vector<char>> content(std::string, std::pair<std::string, std::string>);
 ```
 
 ### VAL-MATCH-V1
@@ -19,23 +19,23 @@ View [Riot's](https://developer.riotgames.com/apis#val-match-v1) documentation o
 **by-match**
 ```cpp
 // function call
-Json::Value response = client_obj.Val_Match.by_match("<routing>", "<match-id>");
+std::unique_ptr<std::vector<char>> response = client_obj.Val_Match.by_match("<routing>", "<match-id>");
 // declaration
-Json::Value by_match(std::string, std::string);
+std::unique_ptr<std::vector<char>> by_match(std::string, std::string);
 ```
 **by-puuid**
 ```cpp
 // function call
-Json::Value response = client_obj.Val_Match.by_puuid("<routing>", "<puuid>");
+std::unique_ptr<std::vector<char>> response = client_obj.Val_Match.by_puuid("<routing>", "<puuid>");
 // declaration
-Json::Value by_puuid(std::string, std::string);
+std::unique_ptr<std::vector<char>> by_puuid(std::string, std::string);
 ```
 **by-queue**
 ```cpp
 // function call
-Json::Value response = client_obj.Val_Match.by_queue("<routing>", "<queue>");
+std::unique_ptr<std::vector<char>> response = client_obj.Val_Match.by_queue("<routing>", "<queue>");
 // declaration
-Json::Value by_queue(std::string, std::string);
+std::unique_ptr<std::vector<char>> by_queue(std::string, std::string);
 ```
 
 ### VAL-RANKED-V1
@@ -45,9 +45,9 @@ View [Riot's](https://developer.riotgames.com/apis#val-ranked-v1) documentation 
 **by-act**
 ```cpp
 // function call
-Json::Value response = client_obj.Val_Ranked.by_act("<routing>", "<act>", {"locale", "<locale>"});
+std::unique_ptr<std::vector<char>> response = client_obj.Val_Ranked.by_act("<routing>", "<act>", {"locale", "<locale>"});
 // declaration
-Json::Value by_act(std::string, std::string, std::pair<std::string, std::string>);
+std::unique_ptr<std::vector<char>> by_act(std::string, std::string, std::pair<std::string, std::string>);
 ```
 
 ### VAL-STATUS-V1
@@ -57,7 +57,7 @@ View [Riot's](https://developer.riotgames.com/apis#val-status-v1) documentation 
 **platform_data**
 ```cpp
 // function call
-Json::Value response = client_obj.Val_Status.platform_data("<routing>");
+std::unique_ptr<std::vector<char>> response = client_obj.Val_Status.platform_data("<routing>");
 // declaration
-Json::Value platform_data(std::string);
+std::unique_ptr<std::vector<char>> platform_data(std::string);
 ```

@@ -8,15 +8,15 @@ View Riot's documentation of LOL-STATUS below,
 
 ```cpp
 // function call
-Json::Value response = client_obj.Lol_Status.v3("<routing>");
+std::unique_ptr<std::vector<char>> response = client_obj.Lol_Status.v3("<routing>");
 // declaration
-Json::Value v3(std::string);
+std::unique_ptr<std::vector<char>> v3(std::string);
 ```
 
 [**v4**](https://developer.riotgames.com/apis#lol-status-v4)
 ```cpp
 // function call
-Json::Value response = client_obj.Lol_Status.v4("<routing>");
+std::unique_ptr<std::vector<char>> response = client_obj.Lol_Status.v4("<routing>");
 // declaration
-Json::Value v4(std::string);
+std::unique_ptr<std::vector<char>> v4(std::string);
 ```

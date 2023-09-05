@@ -5,14 +5,14 @@ View [Riot's](https://developer.riotgames.com/apis#spectator-v4) documentation o
 **by-summoner-id**
 ```cpp
 // function call
-Json::Value response = client_obj.Spectator.by_summoner_id("<routing>", "<summoner-id>");
+std::unique_ptr<std::vector<char>> response = client_obj.Spectator.by_summoner_id("<routing>", "<summoner-id>");
 // declaration
-Json::Value by_summoner_id(std::string, std::string);
+std::unique_ptr<std::vector<char>> by_summoner_id(std::string, std::string);
 ```
 **featured-games**
 ```cpp
 // function call
-Json::Value response = client_obj.Spectator.featured_games("<routing>");
+std::unique_ptr<std::vector<char>> response = client_obj.Spectator.featured_games("<routing>");
 // declaration
-Json::Value featured_games(std::string);
+std::unique_ptr<std::vector<char>> featured_games(std::string);
 ```

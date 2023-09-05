@@ -5,7 +5,7 @@ View [Riot's](https://developer.riotgames.com/apis#tft-status-v1) documentation 
 **v1**
 ```cpp
 // function call
-Json::Value response = client_obj.Tft_Status.v1("<routing>");
+std::unique_ptr<std::vector<char>> response = client_obj.Tft_Status.v1("<routing>");
 // declaration
-Json::Value v1(std::string);
+std::unique_ptr<std::vector<char>> v1(std::string);
 ```

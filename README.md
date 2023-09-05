@@ -9,7 +9,7 @@ This library implements rate limiting to prevent api key blacklisting from excee
 
 Riot-cpp uses [libcurl](https://curl.se/libcurl/) to send https get requests.
 
-Documentation is located at following page. "CURRENTLY OUTDATED (TODO)"
+Documentation is located at following page.
 
 [![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](https://dan-tan.github.io/riot-cpp/)
 
@@ -75,3 +75,7 @@ The shared object file is located as "riot-cpp/build/src/riot-cpp/libriot-cpp.so
 ```
 
 See options for linking with gcc, [Options for Linking](https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html)
+
+## Disclaimer
+
+Riot-cpp is not developed by or affiliated with Riot Games. 

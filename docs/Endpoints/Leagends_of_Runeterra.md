@@ -5,16 +5,16 @@ View [Riot's](https://developer.riotgames.com/apis#lor-match-v1) documentation o
 **by-puuid**
 ```cpp
 // function call
-Json::Value response = client_obj.Lor_Match.by_puuid("<routing>", "<puuid>");
+std::unique_ptr<std::vector<char>> response = client_obj.Lor_Match.by_puuid("<routing>", "<puuid>");
 // declaration
-Json::Value by_puuid(std::string, std::string);
+std::unique_ptr<std::vector<char>> by_puuid(std::string, std::string);
 ```
 **by-match**
 ```cpp
 // function call
-Json::Value response = client_obj.Lor_Match.by_match("<routing>", "<match-id");
+std::unique_ptr<std::vector<char>> response = client_obj.Lor_Match.by_match("<routing>", "<match-id");
 // declaration
-Json::Value by_match(std::string, std::string);
+std::unique_ptr<std::vector<char>> by_match(std::string, std::string);
 ```
 ### LOR-RANKED-V1
 
@@ -23,9 +23,9 @@ View [Riot's](https://developer.riotgames.com/apis#lor-ranked-v1) documentation 
 **leaderboards**
 ```cpp
 // function call
-Json::Value response = client_obj.Lor_Ranked.leaderboards("<routing>");
+std::unique_ptr<std::vector<char>> response = client_obj.Lor_Ranked.leaderboards("<routing>");
 // declaration
-Json::Value leaderboards(std::string);
+std::unique_ptr<std::vector<char>> leaderboards(std::string);
 ```
 
 ### LOR-STATUS
@@ -35,6 +35,6 @@ View [Riot's](https://developer.riotgames.com/apis#lor-status-v1) documentation 
 **v1**
 ```cpp
 // function call
-Json::Value response = client_obj.Lor_Status.v1("<routing>");
+std::unique_ptr<std::vector<char>> response = client_obj.Lor_Status.v1("<routing>");
 // declaration
-Json::Value v1(std::string);
+std::unique_ptr<std::vector<char>> v1(std::string);

@@ -5,7 +5,7 @@ View [Riot's](https://developer.riotgames.com/apis#champion-v3) documentation of
 **rotations**
 ```cpp
 // function call
-Json::Value response = client_obj.Champion.rotations("<routing>");
+std::unique_ptr<std::vector<char>> response = client_obj.Champion.rotations("<routing>");
 // declaration
-Json::Value rotations(std::string);
+std::unique_ptr<std::vector<char>> rotations(std::string);
 ```
