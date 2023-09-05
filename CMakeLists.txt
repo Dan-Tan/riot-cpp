@@ -9,10 +9,8 @@ set(GCC_CXX_FLAGS ${GCC_CXX_FLAGS} "-static-libgcc -static-libstdc++ -static -gg
 
 find_package(Catch2 3 REQUIRED)
 
-add_subdirectory(src/jsoncpp)
 add_subdirectory(src/riot-cpp)
 
-target_link_libraries(riot-cpp jsoncpp_lib)
 
 target_compile_options(riot-cpp PRIVATE -fsanitize=address -static-libasan)
 target_link_options(riot-cpp PRIVATE -fsanitize=address -static-libasan)
