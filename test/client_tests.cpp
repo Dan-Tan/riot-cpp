@@ -342,12 +342,15 @@ TEST_CASE("SPECTATOR-V4") {
     result = test_client.Spectator.featured_games(ROUTING);
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
     doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    INFO("JSON EXISTENCE CHECK: \"gameList\"");
     REQUIRE_NOTHROW(doc["gameList"]);
+    INFO("JSON ARRAY CHECK");
     REQUIRE_NOTHROW(doc["gameList"].get_array());
     auto ref = doc["gameList"].at(0);
+    INFO("JSON EXISTENCE CHECK: \"participants\"");
     REQUIRE_NOTHROW(ref["participants"]);
     std::string summoner_name;
-    summoner_name = ref["summonerName"].get_string().value();
+    summoner_name = ref["participants"].at(0)["summonerName"].get_string().value();
     result = test_client.Summoner.by_name(ROUTING, summoner_name);
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
     doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
@@ -356,14 +359,15 @@ TEST_CASE("SPECTATOR-V4") {
     result = test_client.Spectator.by_summoner_id(ROUTING, summoner_id);
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
     doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    INFO("JSON EXISTENCE CHECK: \"participants\"");
     REQUIRE_NOTHROW(doc["participants"]);
+    INFO("JSON ARRAY CHECK");
     REQUIRE_NOTHROW(doc["participants"].get_array());
     auto foriter = doc["participants"];
-    REQUIRE_NOTHROW(ref["summonerId"]);
     { // find participant in the game to see if the correct game was found
         bool participant_found = false;
         bool temp;
-        for (auto objjs : foriter.get_array()) {
+        for (simdjson::ondemand::object objjs : foriter.get_array()) {
             temp = objjs["summonerId"].get_string().value() == summoner_id;
             participant_found = participant_found || temp;
         }
@@ -379,113 +383,168 @@ TEST_CASE("TFT-LEAGUE-V1") {
     simdjson::ondemand::parser parser;
     simdjson::ondemand::document doc;
 
+    std::string summonerid;
+
     result = test_client.Tft_League.challenger(ROUTING);
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
-    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    INFO("Validating JSON and padding from challenger");
+    REQUIRE_NOTHROW(doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data())));
+    REQUIRE(doc["tier"].get_string().value() == "CHALLENGER");
+    summonerid = doc["entries"].at(0)["summonerId"].get_string().value();
+
     result = test_client.Tft_League.grandmaster(ROUTING);
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
-    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    INFO("Validating JSON and padding from grandmaster");
+    REQUIRE_NOTHROW(doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data())));
+    REQUIRE(doc["tier"].get_string().value() == "GRANDMASTER");
+
     result = test_client.Tft_League.master(ROUTING);
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
-    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
-    result = test_client.Tft_League.by_summoner_id(ROUTING, SUMMONER_ID);
+    INFO("Validating JSON and padding from master");
+    REQUIRE_NOTHROW(doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data())));
+    REQUIRE(doc["tier"].get_string().value() == "MASTER");
+
+    result = test_client.Tft_League.by_summoner_id(ROUTING, summonerid);
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
-    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
-    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
-    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
-    REQUIRE_NOTHROW(doc.get_array());
+    INFO("Validating JSON and padding from by summoner");
+    REQUIRE_NOTHROW(doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data())));
+    
     auto arrobj = doc.at(0);
+    INFO("JSON KEY EXISTENCE: \"summonerId\"");
     REQUIRE_NOTHROW(arrobj["summonerId"]);
+    INFO("JSON KEY EXISTENCE: \"leagueId\"");
     REQUIRE_NOTHROW(arrobj["leagueId"]);
-    REQUIRE(arrobj["summonerId"].get_string().value() == SUMMONER_ID);
+    INFO("CHECKING CORRECT QUERY");
+    REQUIRE(arrobj["summonerId"].get_string().value() == summonerid);
     std::string league_id;
     league_id = arrobj["leagueId"].get_string().value();
+
     result = test_client.Tft_League.by_league_id(ROUTING, league_id);
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
     doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    INFO("JSON KEY EXISTENCE: \"leagueId\"");
     REQUIRE_NOTHROW(doc["leagueId"]);
     REQUIRE(doc["leagueId"].get_string().value() == league_id);
+
     result = test_client.Tft_League.queue_top(ROUTING, "RANKED_TFT_TURBO");
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
     doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    INFO("ASSERTING JSON RESPONSE IS ARRAY");
     REQUIRE_NOTHROW(doc.get_array());
+
     result = test_client.Tft_League.by_tier_division(ROUTING, "DIAMOND", "II", {"page", 2});
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
     doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
-    REQUIRE_NOTHROW(doc.get_array());
     auto jsonref = doc.at(0);
+    INFO("JSON KEY EXISTENCE: \"tier\"");
     REQUIRE_NOTHROW(jsonref["tier"]);
+    INFO("JSON KEY EXISTENCE: \"rank\"");
     REQUIRE_NOTHROW(jsonref["rank"]);
+    INFO("CHECKING CORRECT QUERY");
     REQUIRE(jsonref["tier"].get_string().value() == "DIAMOND");
     REQUIRE(jsonref["rank"].get_string().value() == "II");
 }
-//TEST_CASE("TFT-MATCH-V1") {
-//    std::cout << "TESTING TFT-MATCH-V1" << '\n';
-//    RiotApiClient test_client(CONFIG);
-//
-//    json_ptr result;
-//    std::string endpoint = "TFT-MATCH-V1";
-//
-//    result = test_client.Summoner.by_name("oc1", "Monkeys R Us");
-//    std::string puuid = result["puuid"].asString();
-//    
-//    result = test_client.Tft_Match.by_puuid("AMERICAS", puuid, {"start", 5}, {"startTime", 0}, {"count", 20});
-//    REQUIRE(result.isArray());
-//    REQUIRE(result.size() == 20);
-//    std::string match_id = result[0].asString();
-//    result = test_client.Tft_Match.by_match("AMERICAS", match_id);
-//    REQUIRE(result.isMember("metadata"));
-//    REQUIRE(result.isMember("info"));
-//    REQUIRE(result["metadata"].isMember("match_id"));
-//    REQUIRE(result["metadata"]["match_id"].asString() == match_id);
-//}
-//TEST_CASE("TFT-STATUS-V1") {
-//    std::cout << "TESTING TFT-STATUS-V1" << '\n';
-//    RiotApiClient test_client(CONFIG);
-//
-//    json_ptr result;
-//
-//    result = test_client.Tft_Status.v1(ROUTING);
-//    REQUIRE(result.isMember("id"));
-//    REQUIRE(result["id"].asString() == "KR");
-//
-//}
-//TEST_CASE("TFT-SUMMONER-V1") { 
-//    std::cout << "TESTING TFT-SUMMONER-V1" << '\n';
-//    RiotApiClient test_client(CONFIG);
-//
-//    json_ptr result;
-//
-//    std::string summoner_name = "Monkeys R US";
-//    std::string reg = "oc1";
-//
-//    result = test_client.Tft_Summoner.by_name(reg, summoner_name);
-//    REQUIRE(result.isMember("name"));
-//    REQUIRE(result["name"] == summoner_name);
-//    REQUIRE(result.isMember("id"));
-//    REQUIRE(result.isMember("puuid"));
-//    REQUIRE(result.isMember("accountId"));
-//    std::string puuid = result["puuid"].asString();
-//    std::string summoner_id = result["id"].asString();
-//    std::string account_id = result["accountId"].asString();
-//    result = test_client.Tft_Summoner.by_account(reg, account_id);
-//    REQUIRE(result["accountId"] == account_id);
-//    result = test_client.Tft_Summoner.by_puuid(reg, puuid);
-//    REQUIRE(result["puuid"] == puuid);
-//    result = test_client.Tft_Summoner.by_summoner_id(reg, summoner_id);
-//    REQUIRE(result["id"] == summoner_id);
-//}
-//TEST_CASE("VAL-CONTENT-V1") {
-//    std::cout << "TESTING VAL-CONTENT-V1" << '\n';
-//    RiotApiClient test_client(CONFIG);
-//
-//    json_ptr result;
-//
-//    result = test_client.Val_Content.content(ROUTING);
-//    REQUIRE(result.isMember("version"));
-//    REQUIRE(result.isMember("characters"));
-//    REQUIRE(result.isMember("maps"));
-//}
+TEST_CASE("TFT-MATCH-V1") {
+    std::cout << "TESTING TFT-MATCH-V1" << '\n';
+    RiotApiClient test_client(CONFIG);
+
+    json_ptr result;
+    simdjson::ondemand::parser parser;
+    simdjson::ondemand::document doc;
+
+    std::string endpoint = "TFT-MATCH-V1";
+
+    result = test_client.Summoner.by_name("oc1", "Monkeys R Us");
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    std::string puuid;
+    puuid = doc["puuid"].get_string().value();
+    
+    result = test_client.Tft_Match.by_puuid("AMERICAS", puuid, {"start", 5}, {"startTime", 0}, {"count", 20});
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE(doc.count_elements().value() == 20);
+    std::string match_id;
+    match_id = doc.at(0).get_string().value();
+
+    result = test_client.Tft_Match.by_match("AMERICAS", match_id);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    INFO("JSON KEY EXISTENCE: \"metadata\"");
+    REQUIRE_NOTHROW(doc["metadata"]);
+    INFO("JSON KEY EXISTENCE: \"info\"");
+    REQUIRE_NOTHROW(doc["info"]);
+    INFO("JSON KEY EXISTENCE: \"metadata|match_id\"");
+    REQUIRE_NOTHROW(doc["metadata"]["match_id"]);
+    INFO("CHECKING CORRECR QUERY");
+    REQUIRE(doc["metadata"]["match_id"].get_string().value() == match_id);
+}
+TEST_CASE("TFT-STATUS-V1") {
+    std::cout << "TESTING TFT-STATUS-V1" << '\n';
+    RiotApiClient test_client(CONFIG);
+
+    json_ptr result;
+    simdjson::ondemand::parser parser;
+    simdjson::ondemand::document doc;
+
+    result = test_client.Tft_Status.v1(ROUTING);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc["id"]);
+    REQUIRE(doc["id"].get_string().value() == "KR");
+
+}
+TEST_CASE("TFT-SUMMONER-V1") { 
+    std::cout << "TESTING TFT-SUMMONER-V1" << '\n';
+    RiotApiClient test_client(CONFIG);
+
+    json_ptr result;
+    simdjson::ondemand::parser parser;
+    simdjson::ondemand::document doc;
+
+    std::string summoner_name = "Monkeys R US";
+    std::string reg = "oc1";
+
+    result = test_client.Tft_Summoner.by_name(reg, summoner_name);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc["name"]);
+    REQUIRE(doc["name"].get_string().value() == summoner_name);
+    REQUIRE_NOTHROW(doc["id"]);
+    REQUIRE_NOTHROW(doc["puuid"]);
+    REQUIRE_NOTHROW(doc["accountId"]);
+    std::string puuid; puuid = doc["puuid"].get_string().value();
+    std::string summoner_id; summoner_id = doc["id"].get_string().value();
+    std::string account_id; account_id = doc["accountId"].get_string().value();
+
+    result = test_client.Tft_Summoner.by_account(reg, account_id);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE(doc["accountId"].value().get_string().value() == account_id);
+    result = test_client.Tft_Summoner.by_puuid(reg, puuid);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE(doc["puuid"].value().get_string().value() == puuid);
+    result = test_client.Tft_Summoner.by_summoner_id(reg, summoner_id);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE(doc["id"].get_string().value() == summoner_id);
+}
+TEST_CASE("VAL-CONTENT-V1") {
+    std::cout << "TESTING VAL-CONTENT-V1" << '\n';
+    RiotApiClient test_client(CONFIG);
+
+    json_ptr result;
+    simdjson::ondemand::parser parser;
+    simdjson::ondemand::document doc;
+
+    result = test_client.Val_Content.content(ROUTING);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    REQUIRE_NOTHROW(doc["version"]);
+    REQUIRE_NOTHROW(doc["characters"]);
+    REQUIRE_NOTHROW(doc["maps"]);
+}
 //// not available with my development
 ////TEST_CASE("VAL-MATCH-V1") {
 ////}
