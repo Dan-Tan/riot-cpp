@@ -8,13 +8,13 @@
 #include <curl/curl.h>
 
 namespace query {
-
-    typedef struct {
-        char date[32];
-        char app_limit[64];
-        char app_limit_count[64];
-        char method_limit[64];
-        char method_limit_count[64];
+    
+    typedef struct RiotHeader { // default to extremely slow rate limit successful requests will overwrite these
+        char date[32];          // users with invalid api keys will only be able to send a request every 2 minutes
+        char app_limit[64]          = "1:120";
+        char app_limit_count[64]    = "1:120";
+        char method_limit[64]       = "1:120";
+        char method_limit_count[64] = "1:120";
         char retry_after[4];
     } RiotHeader;
 
