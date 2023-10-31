@@ -198,20 +198,37 @@ TEST_CASE("CHAMPION-MASTERY-V4 QUERIES") {
     simdjson::ondemand::parser parser;
     simdjson::ondemand::document doc;
 
-    result = test_client.Champion_Mastery.by_summoner_id(ROUTING, SUMMONER_ID);
+    result = test_client.League.specific_league("KR", "RANKED_SOLO_5x5", "DIAMOND", "I");
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
     doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
-    REQUIRE(doc.at(0)["summonerId"].get_string().value() == SUMMONER_ID);
-    result = test_client.Champion_Mastery.by_summoner_by_champion(ROUTING, SUMMONER_ID, champion_id);
+    std::string summonerId; summonerId = doc.at(0)["summonerId"].get_string().value();
+
+    result = test_client.Champion_Mastery.by_summoner_id(ROUTING, summonerId);
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
     doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    INFO("SummonerId Used: " + summonerId);
+    std::string_view res = doc.at(0)["summonerId"].get_string();
+    REQUIRE(res == summonerId);
+    result = test_client.Champion_Mastery.by_summoner_by_champion(ROUTING, summonerId, champion_id);
+    result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
+    doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
+    INFO(result->data());
     REQUIRE(doc["championId"].get_int64().value() == champion_id);
-    REQUIRE(doc["summonerId"].get_string().value() == SUMMONER_ID);
-    result = test_client.Champion_Mastery.by_summoner_top(ROUTING, SUMMONER_ID, {"count", 1});
+    INFO(result->data());
+    res = doc["summonerId"].get_string();
+    REQUIRE(res == summonerId);
+    result = test_client.Champion_Mastery.by_summoner_top(ROUTING, summonerId, {"count", 1});
+    INFO(result->data());
     result->insert(result->end(),simdjson::SIMDJSON_PADDING, '\0');
     doc = parser.iterate(result->data(), strlen(result->data()), sizeof(result->data()));
-    REQUIRE(doc.at(0)["summonerId"].get_string().value() == SUMMONER_ID);
-    result = test_client.Champion_Mastery.scores_by_summoner(ROUTING, SUMMONER_ID);
+    auto posError = doc.get_object().find_field("status");
+    if (posError.error() == simdjson::SUCCESS) {
+        std::cout << "ABORTING Summoner by top request resulting from server error" << std::endl;
+    } else {
+        res = doc.at(0)["summonerId"].get_string();
+        REQUIRE(res == summonerId);
+    }
+    result = test_client.Champion_Mastery.scores_by_summoner(ROUTING, summonerId);
 }
 
 TEST_CASE("CHAMPION-V3") {
