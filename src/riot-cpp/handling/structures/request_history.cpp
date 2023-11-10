@@ -78,10 +78,10 @@ int ScopeHistory::validate_request() {
     if (history.size() < limit) {
         return 0;
     } else {
-        const std::time_t ct = std::time(NULL);
-        std::time_t c_time = std::mktime(std::gmtime(&ct));
-        int delay = duration - static_cast<int>(c_time - history.front()) + 1; // add one to catch rounding errors :(
-        return delay;
+        // const std::time_t ct = std::time(NULL); TEMP CHANGE BEFORE CONVERSION AWAY FROM QUEUE
+        // std::time_t c_time = std::mktime(std::gmtime(&ct));
+        // int delay = duration - static_cast<int>(c_time - history.front()) + 1;
+        return this->duration;
     }
 }
 
@@ -169,7 +169,7 @@ RegionHistory init_region(std::vector<int> limits, std::vector<int> durations) {
     return new_history;
 }
 
-const std::string ScopeHistory::queue_state() const {
+std::string ScopeHistory::queue_state() const {
     if (this->history.empty()) {
         return "Empty History";
     }
