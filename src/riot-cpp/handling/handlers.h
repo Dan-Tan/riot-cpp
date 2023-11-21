@@ -1,9 +1,10 @@
 #pragma once
-#include "structures/rate_structures.h"
+
+#include "region_count.h"
 #include "../query/query.h"
 #include "../logging/logger.h"
 
-namespace handler {
+namespace rate {
 
     struct ResponseHandler {
         ResponseHandler(logging::Logger *logger) {this->_logger = logger;};
@@ -23,11 +24,9 @@ namespace handler {
         void review_request(std::shared_ptr<query::query> request);
 
         void init_queues(std::shared_ptr<query::query> request);
-        void init_counts(std::string_view routing, std::string method_key, const std::vector<int>& app_counts, const std::vector<int>& method_counts, const std::time_t server_time);
-        void update_queues();
         logging::Logger *_logger;
 
-        std::array<handler_structs::RegionHistory, 20> routing_queues;
+        std::array<RegionCount, 20> routing_queues;
 
         bool initialised = false;
     };

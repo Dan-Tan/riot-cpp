@@ -11,7 +11,6 @@ find_package(Catch2 3 REQUIRED)
 
 add_subdirectory(src/riot-cpp)
 
-
 target_compile_options(riot-cpp PRIVATE -fsanitize=address -static-libasan)
 target_link_options(riot-cpp PRIVATE -fsanitize=address -static-libasan)
 
@@ -29,4 +28,11 @@ target_link_libraries(rate_tests Catch2::Catch2WithMain)
 
 target_compile_options(rate_tests PRIVATE -fsanitize=address -static-libasan)
 target_link_options(rate_tests PRIVATE -fsanitize=address -static-libasan)
+
+add_executable(util_tests test/routing_utils_test.cpp)
+target_link_libraries(util_tests riot-cpp)
+target_link_libraries(util_tests Catch2::Catch2WithMain)
+
+target_compile_options(util_tests PRIVATE -fsanitize=address -static-libasan)
+target_link_options(util_tests PRIVATE -fsanitize=address -static-libasan)
 

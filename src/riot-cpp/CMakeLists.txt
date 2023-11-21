@@ -3,7 +3,7 @@ set(CXX_STANDARD_REQUIRED TRUE)
 
 find_package(CURL REQUIRED)
 
-add_library(riot-cpp STATIC client/client.cpp query/query.cpp handling/structures/request_history.cpp handling/handlers.cpp logging/logger.cpp)
+add_library(riot-cpp STATIC client/client.cpp query/query.cpp handling/rate_hierachy.cpp handling/region_count.cpp handling/region_enums.cpp handling/handlers.cpp logging/logger.cpp)
 
 target_include_directories(riot-cpp PRIVATE ${CURL_INCLUDE_DIRS})
 

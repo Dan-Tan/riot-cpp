@@ -50,7 +50,7 @@ namespace client {
 
         protected:
 
-            handler::RequestHandler request_handler;
+            rate::RequestHandler request_handler;
             logging::Logger logger;
 
         private:

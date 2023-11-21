@@ -136,13 +136,10 @@ namespace logging {
         return *this;
     }
 
-    Logger& Logger::operator<<(const std::vector<handler_structs::ScopeHistory>& method_history) {
+    Logger& Logger::operator<<(const rate::RegionCount& region_count) {
         if (this->_incoming) {
-            this->_log_file << "\n  " << "Hierachy denial state ";
-            for (auto& method_scope : method_history) {
-                this->_log_file << "\n    (limit: " << method_scope.limit << ")  (duration: "<< method_scope.duration << ")  (count: " << method_scope.history.size() << ")";
-                this->_log_file << "\n    " << method_scope.queue_state();
-            }
+            this->_log_file << "\n  " << "Region Rate State";
+            this->_log_file << "\n  " << region_count.to_string(); 
         }
         return *this;
     }

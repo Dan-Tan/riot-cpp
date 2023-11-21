@@ -2,8 +2,10 @@
 #include <queue>
 #include <string>
 #include <fstream>
+
 #include "../query/query.h"
-#include "../handling/structures/rate_structures.h"
+#include "../handling/scope_count.h"
+#include "../handling/region_count.h"
 
 namespace logging {
 
@@ -33,7 +35,7 @@ namespace logging {
             Logger& operator<<(const std::string& message);
             Logger& operator<<(const char* message);
             Logger& operator<<(const int err_code);
-            Logger& operator<<(const std::vector<handler_structs::ScopeHistory>& method_history);
+            Logger& operator<<(const rate::RegionCount& region_count);
             Logger& operator<<(const query::RiotHeader& response);
     };
 }
