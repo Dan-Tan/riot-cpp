@@ -7,6 +7,12 @@
 #include <string_view>
 #include <unordered_map>
 
+#ifdef DEBUG_MODE
+#define rcp_assert(x, msg) if (!x) {std::cerr << "ASSERTION FAILED: " << msg << std::endl;}
+#else 
+#define rcp_assert(x, msg)
+#endif
+
 namespace rate {
     
     /**
@@ -45,7 +51,7 @@ namespace rate {
      * @return current time to avoid multiple time requests
      */
     inline unsigned ScopeCount::update_count(bool update_reset) {
-        unsigned current_time = std::chrono::utc_clock::now().time_since_epoch().count();
+        unsigned current_time = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::utc_clock::now().time_since_epoch()).count();
 
         if (current_time <= this->next_reset_) {
             return current_time;
@@ -59,14 +65,17 @@ namespace rate {
     }
 
     inline ScopeCount::ScopeCount(int duration, int limit, int count) {
+        rcp_assert(duration > 0, "Negative duration given");
+        rcp_assert(limit > 0, "Negative limit given");
+        rcp_assert(limit >= 0, "Negative count given");
         this->duration_ = duration;
         this->limit_ = limit;
         this->count_ = count;
     }
 
     inline void ScopeCount::insert_request(unsigned server_time) {
-        this->update_count();
-        this->count_ = this->count_ + 1 * (server_time < this->next_reset_); // only increment if occured within current window 
+        this->update_count(server_time >= this->next_reset_);  // conservative approach update if equals
+        this->count_++;
     }
 
     inline int ScopeCount::n_available() {
@@ -75,8 +84,8 @@ namespace rate {
     }
 
     inline int ScopeCount::get_wait_time() {
-        unsigned current_time = this->update_count(true);
-        return 0 + (this->next_reset_ - current_time) * (this->count_ >= this->limit_);
+        unsigned current_time = this->update_count();
+        return 0 + (this->next_reset_ - current_time) * (this->count_ >= this->limit_) * (current_time < this->next_reset_);
     }
 
     inline void ScopeCount::correct_count(int server_count, int server_limit, int server_duration) {
