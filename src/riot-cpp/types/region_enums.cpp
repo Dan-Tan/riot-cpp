@@ -2,7 +2,8 @@
 
 #include <array>
 
-namespace routing {
+namespace riotcpp {
+namespace args {
     
     /**
      * String equality but case insensitive for first string. For example
@@ -122,3 +123,4 @@ namespace routing {
         return reg.has_value();
     }
 } 
+}
