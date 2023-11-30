@@ -3,6 +3,14 @@
 #include <string>
 #include <optional>
 
+#ifdef DEBUG_MODE
+#define rcp_assert(x, msg) if (!x) {std::cerr << "ASSERTION FAILED: " << msg << std::endl;}
+#else 
+#define rcp_assert(x, msg)
+#endif
+
+#define NUM_CHAMPIONS 166
+
 /*
  * Header file for type definitions used as input arguments. 
  * Helps with input sanitisation, allows the client to abort a request before sending if the arguments are known to be invalid
@@ -36,6 +44,16 @@ namespace args {
         VN2
     };
 
+    enum class val_platform : int {
+        AP = 0, 
+        BR,
+        EU,
+        KR,
+        LATAM,
+        NA,
+        ESPORTS // 6
+    };
+
     enum class regional : int {
         AMERICAS = 0,
         ASIA,
@@ -43,40 +61,53 @@ namespace args {
         SEA
     };
 
-    std::string platform_to_str(const platform platfrm) noexcept;
+    regional platform_to_regional(platform) noexcept;
+
+    std::string platform_to_str(const platform) noexcept;
     std::optional<platform> str_to_platform(const std::string& platfrm) noexcept;
-    bool valid_platform(const std::string& platfrm) noexcept;
+    bool valid_platform(const std::string&) noexcept;
 
-    std::string regional_to_str(const regional regionl) noexcept;
-    std::optional<regional> str_to_regional(const std::string& regionl) noexcept;
-    bool valid_regional(const std::string& regionl) noexcept;
+    std::string regional_to_str(const regional) noexcept;
+    std::optional<regional> str_to_regional(const std::string&) noexcept;
+    bool valid_regional(const std::string&) noexcept;
 
-    template<typename T>
-    class ArgType {
-        protected:
-            T value_;
-            bool valid_;
+    std::string val_platform_to_str(const val_platform) noexcept;
+    std::optional<val_platform> str_to_val_platform(const std::string&) noexcept;
+    bool valid_val_platform(const std::string&) noexcept;
 
-        public:
-            ArgType<T>(T value, bool valid) {
-                this->value_ = value;
-                this->valid_ = valid;
-            };
-            ArgType<T>(T value) {
-                this->value_ = value;
-                this->valid_ = true;
-            };
-            virtual ~ArgType<T>() = 0;
-            
-            bool is_valid() const {return this->valid;}
+    enum class division : int {
+        I = 0,
+        II,
+        III,
+        IV
     };
 
-    class puuid : public ArgType<std::string> {
-        private:  
-            std::string puuid_;
-            bool valid_;
-        public:
-            puuid(const std::string& p_uuid) : ArgType<std::string>(p_uuid, p_uuid.length() == 78) {}
+    std::string division_to_str(const division) noexcept;
+    std::optional<division> str_to_division(const std::string&) noexcept;
+    bool valid_division(const std::string&) noexcept;
+
+    enum class tier : int {
+        IRON = 0,
+        BRONZE,
+        SILVER,
+        GOLD,
+        PLATINUM,
+        EMERALD,
+        DIAMOND
     };
+
+    std::string tier_to_str(const tier) noexcept;
+    std::optional<tier> str_to_tier(const std::string&) noexcept;
+    bool valid_tier(const std::string&) noexcept;
+
+    enum class queue : int {
+        RANKED_SOLO_5x5 = 0,
+        RANKED_FLEX_SR,
+        RANKED_FLEX_TT
+    };
+
+    std::string queue_to_str(const queue) noexcept;
+    std::optional<queue> str_to_queue(const std::string&) noexcept;
+    bool valid_queue(const std::string&) noexcept;
 }
 }

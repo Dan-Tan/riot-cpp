@@ -1,9 +1,36 @@
-#include "region_enums.h"
+#include "args.h"
 
 #include <array>
 
 namespace riotcpp {
 namespace args {
+
+    regional platform_to_regional(platform pform) noexcept {
+        switch (pform) {
+            case platform::NA1:
+            case platform::BR1:
+            case platform::LA1:
+            case platform::LA2:
+                return regional::AMERICAS;
+            case platform::KR:
+            case platform::JP1:
+                return regional::ASIA;
+            case platform::EUN1:
+            case platform::EUW1:
+            case platform::TR1:
+            case platform::RU:
+                return regional::EUROPE;
+            case platform::OC1:
+            case platform::PH2:
+            case platform::SG2:
+            case platform::TH2:
+            case platform::TW2:
+            case platform::VN2:
+                return regional::SEA;
+        }
+        rcp_assert(false, "Non-exhaustive switch. Check if function if upto date with enum class platform");
+        return regional::AMERICAS;
+    }
     
     /**
      * String equality but case insensitive for first string. For example
@@ -62,7 +89,8 @@ namespace args {
             case platform::VN2:
                 return "VN2";
         }
-        return NULL; // not possible 
+        rcp_assert(false, "Non-exhaustive switch. Check if function if upto date with enum class platform");
+        return NULL;
     }
 
     std::optional<platform> str_to_platform(const std::string& platfrm) noexcept {
@@ -98,6 +126,7 @@ namespace args {
             case regional::SEA:
                 return "SEA";
         }
+        rcp_assert(false, "Non-exhaustive switch. Check if function if upto date with enum class regional");
         return NULL; // not possible 
     }
 
@@ -121,6 +150,155 @@ namespace args {
     bool valid_regional(const std::string& regionl) noexcept {
         std::optional<regional> reg = str_to_regional(regionl);
         return reg.has_value();
+    }
+
+    std::string val_platform_to_str(const val_platform vplatform) noexcept {
+        switch (vplatform) {
+            case val_platform::AP:
+                return "AP";
+            case val_platform::BR:
+                return "BR";
+            case val_platform::EU:
+                return "EU";
+            case val_platform::KR:
+                return "KR";
+            case val_platform::LATAM:
+                return "LATAM";
+            case val_platform::NA:
+                return "NA";
+            case val_platform::ESPORTS:
+                return "ESPORTS";
+        }
+        rcp_assert(false, "Non-exhaustive switch. Check if function if upto date with enum class val_platform");
+        return NULL;
+    }
+
+    std::optional<val_platform> str_to_val_platform(const std::string& vpform) noexcept {
+        constexpr std::array<char[8], 7> val_platforms {"AP", "BR", "EU", "KR", "LATAM", "NA", "ESPORTS"};
+        int pform_index = 0;
+        for (auto& vform : val_platforms) {
+            if (str_equals_upper(vpform, vform)) {
+                return std::optional<val_platform>(static_cast<val_platform>(pform_index));
+            }
+            pform_index++;
+        }
+        return std::nullopt;
+    }
+
+    std::string division_to_str(const division divi) noexcept {
+        switch (divi) {
+            case division::I:
+                return "I";
+            case division::II:
+                return "II";
+            case division::III:
+                return "III";
+            case division::IV:
+                return "IV";
+        }
+        rcp_assert(false, "Non-exhaustive switch. Check if function if upto date with enum class division");
+        return NULL;
+    }
+
+    std::optional<division> str_to_division(const std::string& divi) noexcept {
+        constexpr std::array<char[4], 4> divisions {"I", "II", "III", "IV"};
+        int division_index = 0;
+        for (auto& divisin : divisions) {
+            if (str_equals_upper(divi, divisin)) {
+                return std::optional<division>{static_cast<division>(division_index)};
+            }
+            division_index++;
+        }
+        return std::nullopt;
+
+    }
+
+    /**
+     * wrapper of str_to_division
+     * @param string to check if valid division
+     * @return true if valid division string false otherwise
+     */
+    bool valid_division(const std::string& divi) noexcept {
+        std::optional<division> div = str_to_division(divi);
+        return div.has_value();
+    }
+
+    std::string tier_to_str(const tier tir) noexcept {
+        switch (tir) {
+            case tier::IRON:
+                return "IRON";
+            case tier::BRONZE:
+                return "BRONZE";
+            case tier::SILVER:
+                return "SILVER";
+            case tier::GOLD:
+                return "GOLD";
+            case tier::PLATINUM:
+                return "PLATINUM";
+            case tier::EMERALD:
+                return "EMERALD";
+            case tier::DIAMOND:
+                return "DIAMOND";
+        }
+        rcp_assert(false, "Non-exhaustive switch. Check if function if upto date with enum class tier");
+        return NULL;
+    }
+
+    std::optional<tier> str_to_tier(const std::string& tir) noexcept {
+        constexpr std::array<char[9], 7> tiers {"IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "EMERALD", "DIAMOND"};
+        int tier_index = 0;
+        for (auto& tirs : tiers) {
+            if (str_equals_upper(tir, tirs)) {
+                return std::optional<tier>{static_cast<tier>(tier_index)};
+            }
+            tier_index++;
+        }
+        return std::nullopt;
+    }
+
+    /**
+     * wrapper of str_to_tier
+     * @param string to check if valid tier
+     * @return true if valid tier string false otherwise
+     */
+    bool valid_tier(const std::string& tir) noexcept {
+        std::optional<division> ti = str_to_division(tir);
+        return ti.has_value();
+    }
+
+    std::string queue_to_str(const queue que) noexcept {
+        switch (que) {
+            case queue::RANKED_SOLO_5x5:
+                return "RANKED_SOLO_5x5";
+            case queue::RANKED_FLEX_SR:
+                return "RANKED_FLEX_SR";
+            case queue::RANKED_FLEX_TT:
+                return "RANKED_FLEX_TT";
+        }
+        rcp_assert(false, "Non-exhaustive switch. Check if function if upto date with enum class queue");
+        return NULL;
+    }
+
+    std::optional<queue> str_to_queue(const std::string& que) noexcept {
+        constexpr std::array<char[16], 3> queues {"RANKED_SOLO_5x5", "RANKED_FLEX_SR", "RANKED_FLEX_TT"};
+        int queue_index = 0;
+        for (auto& ques : queues) {
+            if (str_equals_upper(que, ques)) {
+                return std::optional<queue>{static_cast<queue>(queue_index)};
+            }
+            queue_index++;
+        }
+        return std::nullopt;
+    }
+
+    /**
+     * wrapper of str_to_tier
+     * @param string to check if valid tier
+     * @return true if valid tier string false otherwise
+     */
+    bool valid_queue(const std::string& queu) noexcept {
+        std::optional<queue> que = str_to_queue(queu);
+        return que.has_value();
     }
 } 
 }
