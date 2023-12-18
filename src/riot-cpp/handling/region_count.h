@@ -5,7 +5,7 @@
 #include <string>
 
 #include "rate_hierachy.h"
-
+namespace riotcpp {
 namespace rate {
 
     class RegionCount {
@@ -18,7 +18,14 @@ namespace rate {
             RegionCount() = default;
             ~RegionCount() = default;
             
+            /**
+             * Initialise Application Limits, simple wrapper of rate hierachy limits
+             */
             void init_limits(const std::vector<int>& durations, const std::vector<int>& limits, const std::vector<int>& counts);
+            /**
+             * Initialise Application Limits, simple wrapper of rate hierachy limits using string
+             */
+            void init_limits(const std::string& description);
             int get_wait_time(const std::string& method_key);
             void insert_request(unsigned server_time, 
                                 const std::string& method_key, 
@@ -27,4 +34,5 @@ namespace rate {
             std::string to_string() const;
 
     };
+}
 }

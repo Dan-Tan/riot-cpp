@@ -2,8 +2,10 @@
 
 #include "region_count.h"
 #include "../query/query.h"
+#include "../types/args.h"
 #include "../logging/logger.h"
 
+namespace riotcpp {
 namespace rate {
 
     struct ResponseHandler {
@@ -18,18 +20,6 @@ namespace rate {
         int MAX_SERVICE_UNAVAILABLE = 2; // 503
     };
 
-    struct RateHandler {
-        RateHandler(logging::Logger *logger) {this->_logger = logger;};
-        bool validate_request(std::shared_ptr<query::query> request);
-        void review_request(std::shared_ptr<query::query> request);
-
-        void init_queues(std::shared_ptr<query::query> request);
-        logging::Logger *_logger;
-
-        std::array<RegionCount, 20> routing_queues;
-
-        bool initialised = false;
-    };
 
     class RequestHandler {
         public:
@@ -48,3 +38,4 @@ namespace rate {
             struct ResponseHandler response_handler;
     };
 };
+}

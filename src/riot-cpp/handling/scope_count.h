@@ -12,7 +12,7 @@
 #else 
 #define rcp_assert(x, msg)
 #endif
-
+namespace riotcpp {
 namespace rate {
     
     /**
@@ -101,3 +101,4 @@ namespace rate {
     }
 }
 
+}

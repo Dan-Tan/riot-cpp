@@ -10,7 +10,7 @@
 #include "../handling/handlers.h"
 #include "../logging/logger.h"
 #include <functional>
-
+namespace riotcpp {
 namespace client {
 
     using json_text = std::vector<char>;
@@ -62,4 +62,5 @@ namespace client {
             CURL* easy_handle = nullptr;
             struct curl_slist *header = nullptr;
     }; 
+}
 }

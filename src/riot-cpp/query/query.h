@@ -1,4 +1,5 @@
 #pragma once
+
 #include <concepts>
 #include <ctime>
 #include <string>
@@ -7,7 +8,18 @@
 #include <memory>
 #include <curl/curl.h>
 
+#include "../types/args.h"
+
+namespace riotcpp {
 namespace query {
+
+    enum class QueryStatus {
+        kNotSent,
+        kCurlError,
+        kSuccess,
+        kClientError,
+        kServerError
+    };
     
     typedef struct RiotHeader { // default to extremely slow rate limit successful requests will overwrite these
         char date[32];          // users with invalid api keys will only be able to send a request every 2 minutes
@@ -20,13 +32,13 @@ namespace query {
 
     typedef struct query {
         std::string method_key;
-        std::string routing_value;
+        args::routing route;
         std::string url;
         std::time_t send_time = 0;
         std::unique_ptr<std::vector<char>> response_content;
         RiotHeader response_header;
-        long last_response = -2;
-        int server_errors = 0;
+        QueryStatus last_response = QueryStatus::kNotSent;
+        int server_error_count;
     } query;
 
     using json_text = std::vector<char>;
@@ -70,7 +82,6 @@ namespace query {
         std::unique_ptr<json_text> by_puuid(const_str_r routing, const_str_r puuid);
         std::unique_ptr<json_text> by_riot_id(const_str_r routing, const_str_r gameName, const_str_r tagline);
         std::unique_ptr<json_text> by_game(const_str_r routing, const_str_r game, const_str_r puuid);
-
     } ACCOUNT_V1;
 
     typedef struct CHAMPION_MASTERY_V4 : public Endpoint {
@@ -222,4 +233,5 @@ namespace query {
 
     } VAL_STATUS_V1;
 
+}
 }

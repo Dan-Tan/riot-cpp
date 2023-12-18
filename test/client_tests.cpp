@@ -8,7 +8,7 @@
 #include "simdjson.h"
 
 #define CONFIG "../../.api_keys/riot_config.json", "../test/log_file.txt", logging::LEVEL::DEBUG, true
-
+namespace riotcpp {
 using namespace client;
 
 static std::string ROUTING = "kr";
@@ -562,6 +562,7 @@ TEST_CASE("VAL-CONTENT-V1") {
     REQUIRE_NOTHROW(doc["characters"]);
     REQUIRE_NOTHROW(doc["maps"]);
 }
+}
 //// not available with my development
 ////TEST_CASE("VAL-MATCH-V1") {
 ////}
@@ -571,3 +572,4 @@ TEST_CASE("VAL-CONTENT-V1") {
 ////}
 ////TEST_CASE("VAL-STATUS-V1") {
 ////}
+///

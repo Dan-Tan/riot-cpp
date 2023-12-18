@@ -9,7 +9,7 @@
 #else 
 #define rcp_assert(x, msg)
 #endif
-
+namespace riotcpp {
 namespace rate {
 
     class RateHierachy {
@@ -30,4 +30,5 @@ namespace rate {
             std::string to_string() const;
     };
 
+}
 }

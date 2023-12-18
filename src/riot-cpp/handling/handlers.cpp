@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include "handlers.h"
 
+namespace riotcpp {
 namespace rate {
 
 static std::size_t routing_to_int(std::string_view routing_value);
@@ -192,4 +193,5 @@ static std::size_t routing_to_int(std::string_view routing_value) { //name a mor
     }
 }
 
+}
 }

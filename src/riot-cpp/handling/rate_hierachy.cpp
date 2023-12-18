@@ -4,6 +4,7 @@
 
 #include "rate_hierachy.h"
 
+namespace riotcpp {
 namespace rate {
 
     static inline int chars_to_int(char nums[10], int num_digits) {
@@ -89,4 +90,5 @@ namespace rate {
         }
         return ss.str();
     }
+}
 }

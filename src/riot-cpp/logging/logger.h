@@ -7,6 +7,7 @@
 #include "../handling/scope_count.h"
 #include "../handling/region_count.h"
 
+namespace riotcpp {
 namespace logging {
 
     enum LEVEL : int {
@@ -38,4 +39,5 @@ namespace logging {
             Logger& operator<<(const rate::RegionCount& region_count);
             Logger& operator<<(const query::RiotHeader& response);
     };
+}
 }

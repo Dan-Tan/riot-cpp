@@ -7,7 +7,7 @@
 #include <memory>
 #include <thread>
 #include "../src/riot-cpp/client/client.h"
-
+namespace riotcpp {
 namespace rate {
 
     static inline unsigned current_time_secs() {
@@ -80,3 +80,4 @@ namespace rate {
 }
 
 
+}

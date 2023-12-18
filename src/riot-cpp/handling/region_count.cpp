@@ -1,6 +1,6 @@
 
 #include "region_count.h"
-
+namespace riotcpp {
 namespace rate {
 
     int RegionCount::get_wait_time(const std::string& method_key) {
@@ -45,5 +45,10 @@ namespace rate {
         this->app_limits_ = RateHierachy(durations, limits, counts);
     }
 
+    void RegionCount::init_limits(const std::string& description) {
+        this->app_limits_ = RateHierachy(description);
+    }
 
+
+}
 }

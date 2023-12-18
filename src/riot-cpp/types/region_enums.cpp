@@ -185,6 +185,16 @@ namespace args {
         return std::nullopt;
     }
 
+    /**
+     * wrapper of str_to_val_platform
+     * @param string to check if valid val platform
+     * @return true if valid val platform string false otherwise
+     */
+    bool valid_val_platform(const std::string& vform) noexcept {
+        std::optional<val_platform> pform = str_to_val_platform(vform);
+        return pform.has_value();
+    }
+
     std::string division_to_str(const division divi) noexcept {
         switch (divi) {
             case division::I:

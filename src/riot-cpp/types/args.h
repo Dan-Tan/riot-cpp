@@ -11,6 +11,14 @@
 
 #define NUM_CHAMPIONS 166
 
+#define NUM_PLATFORMS     16
+#define NUM_VAL_PLATFORMS 5
+#define NUM_REGIONS       4
+
+#define REGIONAL_INDICATOR     0
+#define PLATFORM_INDICATOR     1
+#define VAL_PLATFORM_INDICATOR 2
+
 /*
  * Header file for type definitions used as input arguments. 
  * Helps with input sanitisation, allows the client to abort a request before sending if the arguments are known to be invalid
@@ -60,6 +68,20 @@ namespace args {
         EUROPE,
         SEA
     };
+
+    typedef union routing_union {
+        regional reg;
+        platform pltform;
+        val_platform vpltform;
+    }routing_union;
+
+    typedef struct routing {
+        routing_union routng;
+        int indicator;
+        routing(regional     r) { routng.reg      = r; indicator = 0;}
+        routing(platform     p) { routng.pltform  = p; indicator = 1;}
+        routing(val_platform v) { routng.vpltform = v; indicator = 2;}
+    } routing;
 
     regional platform_to_regional(platform) noexcept;
 
