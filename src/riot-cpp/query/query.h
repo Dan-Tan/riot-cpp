@@ -37,7 +37,7 @@ namespace query {
         std::time_t send_time = 0;
         std::unique_ptr<std::vector<char>> response_content;
         RiotHeader response_header;
-        QueryStatus last_response = QueryStatus::kNotSent;
+        int last_response = -1;
         int server_error_count;
     } query;
 

@@ -53,11 +53,14 @@ namespace rate {
     inline unsigned ScopeCount::update_count(bool update_reset) {
         unsigned current_time = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::utc_clock::now().time_since_epoch()).count();
 
+        // if we have not passed the next reset there is nothing to reset
         if (current_time <= this->next_reset_) {
             return current_time;
         }
+    
         this->count_ = 0;
 
+        // If we have made a request and want to upate the count we must also update the new reset time
         if (update_reset) {
             this->next_reset_ = current_time + this->duration_;
         }

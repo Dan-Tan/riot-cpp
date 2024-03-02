@@ -1,6 +1,7 @@
 #include "args.h"
 
 #include <array>
+#include <stdexcept>
 
 namespace riotcpp {
 namespace args {
@@ -309,6 +310,31 @@ namespace args {
     bool valid_queue(const std::string& queu) noexcept {
         std::optional<queue> que = str_to_queue(queu);
         return que.has_value();
+    }
+
+    /**
+     * Converts a string to a routing struct. 
+     * Importantly this function throws an invalid arguement error if the arguement is invalid. 
+     * Users should never be able to send a request to an invalid routing value as this could compromise
+     * their api key.
+     * @param string to convert to toute.
+     * @returns routing
+     */
+    routing str_to_routing(const std::string& route) {
+        std::optional<platform> pform = str_to_platform(route);
+        if (pform.has_value()) {
+            return routing(pform.value());
+        }
+        std::optional<regional> region = str_to_regional(route);
+        if (region.has_value()) {
+            return routing(region.value());
+        }
+        std::optional<val_platform> vform = str_to_val_platform(route);
+        if (vform.has_value()) {
+            return routing(vform.value());
+        }
+        // Sending get requests to an unexpected routing address is dangerous.
+        throw std::invalid_argument("Invalid routing value given: " + route);
     }
 } 
 }

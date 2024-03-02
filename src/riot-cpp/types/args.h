@@ -78,10 +78,12 @@ namespace args {
     typedef struct routing {
         routing_union routng;
         int indicator;
-        routing(regional     r) { routng.reg      = r; indicator = 0;}
-        routing(platform     p) { routng.pltform  = p; indicator = 1;}
-        routing(val_platform v) { routng.vpltform = v; indicator = 2;}
+        constexpr routing(regional     r) { routng.reg      = r; indicator = 0;}
+        constexpr routing(platform     p) { routng.pltform  = p; indicator = 1;}
+        constexpr routing(val_platform v) { routng.vpltform = v; indicator = 2;}
     } routing;
+
+    routing str_to_routing(const std::string&);
 
     regional platform_to_regional(platform) noexcept;
 

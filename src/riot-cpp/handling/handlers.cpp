@@ -43,29 +43,6 @@ static void limitDurationExtraction(std::string_view header_strings, int iters, 
     durations.push_back(duration);
 }
 
-bool RateHandler::validate_request(std::shared_ptr<query::query> request) {
-    if (request->last_response == 429 || request->last_response == 500 || request->last_response == 503) { // send time already calculated
-        (*this->_logger) << logging::LEVEL::DEBUG << request->method_key << "Retrying" << request->last_response << 0;
-        return true;
-    }
-    if (request->last_response == -2) {
-        int wait_time = this->routing_queues.at(routing_to_int(request->routing_value)).get_wait_time(request->method_key);
-        (*this->_logger) << logging::LEVEL::DEBUG << this->routing_queues.at(routing_to_int(request->routing_value)) << 0; // continuing log
-        if (wait_time == 0) {
-            (*this->_logger) << logging::LEVEL::DEBUG << request->method_key << "No wait time" << 0;
-            return true;
-        } else {
-            const std::time_t c_time = std::time(NULL);
-            (*this->_logger) << logging::LEVEL::INFO << request->method_key << std::string("Self Rate Limiting, Waiting ") + std::to_string(wait_time) + " seconds" << request->response_header << 0; // continuing log
-            (*this->_logger) << logging::LEVEL::DEBUG << this->routing_queues.at(routing_to_int(request->routing_value)) << 0; // continuing log
-            request->send_time = std::mktime(std::gmtime(&c_time)) + wait_time + 1;
-            return true;
-        }
-    }
-    (*this->_logger) << logging::LEVEL::DEBUG << this->routing_queues.at(routing_to_int(request->routing_value)) << 0; // continuing log
-    return false;
-}
-
 void get_limits_and_counts(std::string_view rep, std::vector<int>& count, std::vector<int>& duration) {
 
     int comma_index = 0;
@@ -78,71 +55,20 @@ void get_limits_and_counts(std::string_view rep, std::vector<int>& count, std::v
     }
 }
 
-void RateHandler::init_queues(std::shared_ptr<query::query> request) {
-    this->initialised = true;
-    std::string limits_str = request->response_header.app_limit;
-    std::string counts_str = request->response_header.app_limit_count;
-    std::string method_str = request->response_header.method_limit;
-    std::string method_counts_str = request->response_header.method_limit_count;
-    std::vector<int> method_counts;
-    std::vector<int> counts;
-    std::vector<int> limits;
-    std::vector<int> durations;
-    std::vector<int> temp;
-    
-    get_limits_and_counts(limits_str, limits, durations);
-    get_limits_and_counts(counts_str, counts, temp);
-    get_limits_and_counts(method_counts_str, method_counts, temp);
-
-    for (auto& reg : this->routing_queues) {
-        reg.init_limits(durations, limits, counts);
-    }
-
-    const std::time_t server_time = request_time(request->response_header.date);
-
-    this->routing_queues.at(routing_to_int(request->routing_value)).insert_request(server_time, request->method_key, method_str);
-}
-
-
-void RateHandler::review_request(std::shared_ptr<query::query> request) {
-    if (!this->initialised && request->last_response != -2) {
-        this->init_queues(request);
-        (*this->_logger) << logging::LEVEL::DEBUG << "Queues Initialised" << 0;
-        return;
-    }
-    if (request->last_response == 429) {
-        const std::time_t c_time = std::time(NULL);
-        request->send_time = std::mktime(std::gmtime(&c_time)) + static_cast<std::time_t>(fast_atoi(request->response_header.retry_after));
-        (*this->_logger) << logging::LEVEL::ERRORS << this->routing_queues.at(routing_to_int(request->routing_value)) << 0;
-        (*this->_logger) << logging::LEVEL::ERRORS << request->response_header << 0;
-    }
-    if (request->last_response == -2) {
-        (*this->_logger) << logging::LEVEL::DEBUG << "Ignoring... request not sent yet" << 0;
-    }
-    else if (request->last_response != 200) {
-        (*this->_logger) << logging::LEVEL::INFO << "Unsuccussful Request" << 0;
-        return;
-    } else {
-        (*this->_logger) << logging::LEVEL::DEBUG << "Successful Request" << 0;
-        this->routing_queues.at(routing_to_int(request->routing_value)).insert_request(request_time(request->response_header.date), request->method_key, request->response_header.method_limit);
-        return;
-    }
-}
-
 bool ResponseHandler::review_request(std::shared_ptr<query::query> request) {
     long last_response = request->last_response;
     if (last_response == 200 || last_response == -2 || last_response == 429) {
-        auto& errs = this->response_errors.at(routing_to_int(request->routing_value));
+        auto& errs = this->response_errors.at(routing_to_int(request->route));
         errs[0] = 0; errs[1] = 0;
         return true;
     } else if (last_response == 500) {
-        this->response_errors.at(routing_to_int(request->routing_value))[0] += 1;
-        if (this->response_errors.at(routing_to_int(request->routing_value))[0] >= this->MAX_INTERNAL_DENIALS) {
+        this->response_errors.at(routing_to_int(request->route))[0] += 1;
+        if (this->response_errors.at(routing_to_int(request->route))[0] >= this->MAX_INTERNAL_DENIALS) {
             return false;
         };
     } else if (last_response == 503) {
-        this->response_errors.at(routing_to_int(request->routing_value))[1] += 1;
-        if (this->response_errors.at(routing_to_int(request->routing_value))[1] >= this->MAX_SERVICE_UNAVAILABLE) {
+        this->response_errors.at(routing_to_int(request->route))[1] += 1;
+        if (this->response_errors.at(routing_to_int(request->route))[1] >= this->MAX_SERVICE_UNAVAILABLE) {
             return false;
         };
     } else {

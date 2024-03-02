@@ -4,6 +4,7 @@
 #include "../query/query.h"
 #include "../types/args.h"
 #include "../logging/logger.h"
+#include "rate_handler.h"
 
 namespace riotcpp {
 namespace rate {
@@ -23,19 +24,20 @@ namespace rate {
 
     class RequestHandler {
         public:
-            RequestHandler(logging::Logger *logger) : rate_handler(logger), response_handler(logger) {};
+            RequestHandler(logging::Logger *logger) : rate_handler(), response_handler(logger) {};
             ~RequestHandler() = default;
 
             inline bool review_request(std::shared_ptr<query::query> request) {
-                this->rate_handler.review_request(request); // insert_request only 200
+                this->rate_handler.check_rate_limits(request); // insert_request only 200
                 return this->response_handler.review_request(request);
             };
             inline bool validate_request(std::shared_ptr<query::query> request) {
-                return this->rate_handler.validate_request(request);
+                this->rate_handler.insert_request(request);
+                return true;
             };
         private:
-            struct RateHandler rate_handler;
-            struct ResponseHandler response_handler;
+            RateHandler rate_handler;
+            ResponseHandler response_handler;
     };
 };
 }

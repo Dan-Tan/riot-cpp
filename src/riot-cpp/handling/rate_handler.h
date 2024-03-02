@@ -12,7 +12,7 @@ namespace rate {
     
     /**
      * All request sent by this client need to be approved by the rate limiter.
-     * Rate Counts are instantiated on the first request
+     * Rate Counts are instantiated after the first request
      */
     class RateHandler {
         private:

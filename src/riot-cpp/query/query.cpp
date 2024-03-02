@@ -78,7 +78,7 @@ std::string Endpoint::full_query(const std::array<std::string, N>& method_urls, 
 template <std::size_t N, param Routing, param ... Params>
 std::shared_ptr<query> Endpoint::request(const std::string& key, const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params) {
     std::string final_url = this->full_query(method_urls, routing, params...);
-    std::shared_ptr<query> new_request = std::make_shared<query>(key, routing, final_url);
+    std::shared_ptr<query> new_request = std::make_shared<query>(key, args::str_to_routing(routing), final_url);
     new_request->response_content = std::make_unique<json_text>();
     return new_request;
 }

@@ -6,8 +6,8 @@ find_package(CURL REQUIRED)
 add_library(riot-cpp STATIC client/client.cpp 
                             query/query.cpp 
                             handling/rate_hierachy.cpp 
+                            handling/rate_handler.cpp
                             handling/region_count.cpp  
-                            handling/handlers.cpp 
                             logging/logger.cpp
                             types/region_enums.cpp)
 
