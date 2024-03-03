@@ -39,10 +39,13 @@ namespace rate {
         switch (route.indicator) {
             case REGIONAL_INDICATOR:
                 this->region_errors[static_cast<int>(route.routng.reg)] ={0, 0};
+                break;
             case PLATFORM_INDICATOR:
                 this->platform_errors[static_cast<int>(route.routng.pltform)] ={0, 0};
+                break;
             case VAL_PLATFORM_INDICATOR:
                 this->val_platform_errors[static_cast<int>(route.routng.vpltform)] ={0, 0};
+                break;
             default:
                 throw std::invalid_argument("Invalid route indicator: " + std::to_string(route.indicator));
         }
