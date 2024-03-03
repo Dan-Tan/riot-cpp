@@ -9,7 +9,7 @@
 #else 
 #define rcp_assert(x, msg)
 #endif
-
+namespace riotcpp {
 namespace rate {
 
     class RateHierachy {
@@ -22,6 +22,7 @@ namespace rate {
 
             RateHierachy(const int durations[], const int limits[], const int counts[], const unsigned size);
             RateHierachy(const std::vector<int>& durations, const std::vector<int>& limits, const std::vector<int> counts);
+            // TODO: There shouldn't be a string constructor as the arguments may be invalid
             RateHierachy(const std::string& description);
 
             int get_wait_time();
@@ -30,4 +31,5 @@ namespace rate {
             std::string to_string() const;
     };
 
+}
 }

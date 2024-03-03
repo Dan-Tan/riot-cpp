@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include "logger.h"
 
+namespace riotcpp {
 namespace logging {
     static std::string Err_Codes(const int code) { // official message
         switch (code) {
@@ -177,4 +178,5 @@ namespace logging {
     Logger::~Logger() {
         this->_log_file.close();
     }
+}
 }

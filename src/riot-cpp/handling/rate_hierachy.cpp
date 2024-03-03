@@ -4,6 +4,7 @@
 
 #include "rate_hierachy.h"
 
+namespace riotcpp {
 namespace rate {
 
     static inline int chars_to_int(char nums[10], int num_digits) {
@@ -42,7 +43,7 @@ namespace rate {
     RateHierachy::RateHierachy(const int durations[], const int limits[], const int counts[], const unsigned size) {
         this->hierachy_.reserve(size);
         for (int i = 0; i < size; i++) {
-            this->hierachy_[i] = ScopeCount(durations[i], limits[i], counts[i]);
+            this->hierachy_.push_back(ScopeCount(durations[i], limits[i], counts[i]));
         }
     }
 
@@ -51,7 +52,7 @@ namespace rate {
         rcp_assert(counts.size() == limits.size(), "Mismatched Count and Limit sized given");
         this->hierachy_.reserve(durations.size());
         for (int i = 0; i < durations.size(); i++) {
-            this->hierachy_[i] = ScopeCount(durations[i], limits[i], counts[i]);
+            this->hierachy_.push_back(ScopeCount(durations[i], limits[i], counts[i]));
         }
     }
 
@@ -63,7 +64,7 @@ namespace rate {
         this->hierachy_.reserve(size);
 
         for (int i = 0; i < size; i++) {
-            this->hierachy_[i] = ScopeCount(description_limit.first[i], description_limit.second[i], 0);
+            this->hierachy_.push_back(ScopeCount(description_limit.first[i], description_limit.second[i], 0));
         }
     }
 
@@ -85,8 +86,9 @@ namespace rate {
     std::string RateHierachy::to_string() const {
         std::stringstream ss;
         for (auto& scope_count : this->hierachy_) {
-            ss << scope_count.to_string();
+            ss << scope_count.to_string() << '\n';
         }
         return ss.str();
     }
+}
 }

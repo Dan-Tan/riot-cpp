@@ -13,7 +13,7 @@
 #include <regex>
 #include <cstring>
 #include "client.h"
-
+namespace riotcpp {
 namespace client {
 
     using func_type = std::function<std::unique_ptr<json_text>(std::shared_ptr<query::query>)>;
@@ -199,4 +199,5 @@ namespace client {
         this->logger << logging::LEVEL::ERRORS << "Failed request" << request->method_key << request->last_response << 0; 
         return std::move(request->response_content);
     }
+}
 }
