@@ -14,11 +14,17 @@ namespace rate {
         bool review_request(std::shared_ptr<query::query> request);
         bool validate_request(std::shared_ptr<query::query> request) {return true;};
 
-        std::array<std::array<int, 2>, 20> response_errors;
+        std::array<std::array<int, 2>, NUM_PLATFORMS>     platform_errors;
+        std::array<std::array<int, 2>, NUM_REGIONS>       region_errors;
+        std::array<std::array<int, 2>, NUM_VAL_PLATFORMS> val_platform_errors;
         logging::Logger *_logger;
 
         int MAX_INTERNAL_DENIALS = 2; // 500
         int MAX_SERVICE_UNAVAILABLE = 2; // 503
+
+        private:
+            bool handle_server_error(const long code, const args::routing);
+            void reset_server_error_count(const args::routing&);
     };
 
 
