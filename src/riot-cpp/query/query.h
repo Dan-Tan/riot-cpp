@@ -9,6 +9,7 @@
 #include <curl/curl.h>
 
 #include "../types/args.h"
+#include "endpoints.h"
 
 namespace riotcpp {
 namespace query {
@@ -20,28 +21,7 @@ namespace query {
         kClientError,
         kServerError
     };
-    
-    typedef struct RiotHeader { // default to extremely slow rate limit successful requests will overwrite these
-        char date[32];          // users with invalid api keys will only be able to send a request every 2 minutes
-        char app_limit[64]          = "1:120";
-        char app_limit_count[64]    = "1:120";
-        char method_limit[64]       = "1:120";
-        char method_limit_count[64] = "1:120";
-        char retry_after[4];
-    } RiotHeader;
 
-    typedef struct query {
-        std::string method_key;
-        args::routing route;
-        std::string url;
-        std::time_t send_time = 0;
-        std::unique_ptr<std::vector<char>> response_content;
-        RiotHeader response_header;
-        int last_response = -2;
-        int server_error_count;
-    } query;
-
-    using json_text = std::vector<char>;
 
     template <typename T>
     concept param = requires(std::ostream& os, T a){os << a;};
