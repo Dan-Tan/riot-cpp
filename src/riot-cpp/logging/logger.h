@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 
-#include "../query/query.h"
+#include "../query/endpoints.h"
 #include "../handling/scope_count.h"
 #include "../handling/region_count.h"
 

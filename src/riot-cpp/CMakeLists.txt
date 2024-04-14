@@ -4,7 +4,6 @@ set(CXX_STANDARD_REQUIRED TRUE)
 find_package(CURL REQUIRED)
 
 add_library(riot-cpp STATIC client/client.cpp 
-                            query/query.cpp 
                             handling/rate_hierachy.cpp 
                             handling/handlers.cpp
                             handling/rate_handler.cpp

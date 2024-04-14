@@ -22,17 +22,20 @@ target_link_libraries(client_tests Catch2::Catch2WithMain)
 target_compile_options(client_tests PRIVATE -fsanitize=address -static-libasan)
 target_link_options(client_tests PRIVATE -fsanitize=address -static-libasan)
 
-add_executable(rate_tests test/Rate_Tests.cpp)
-target_link_libraries(rate_tests riot-cpp)
-target_link_libraries(rate_tests Catch2::Catch2WithMain)
+IF(BUILD_TESTING)
+    add_executable(rate_tests test/Rate_Tests.cpp)
+    target_link_libraries(rate_tests riot-cpp)
+    target_link_libraries(rate_tests Catch2::Catch2WithMain)
 
-target_compile_options(rate_tests PRIVATE -fsanitize=address -static-libasan)
-target_link_options(rate_tests PRIVATE -fsanitize=address -static-libasan)
+    target_compile_options(rate_tests PRIVATE -fsanitize=address -static-libasan)
+    target_link_options(rate_tests PRIVATE -fsanitize=address -static-libasan)
 
-add_executable(util_tests test/type_tests.cpp)
-target_link_libraries(util_tests riot-cpp)
-target_link_libraries(util_tests Catch2::Catch2WithMain)
+    add_executable(util_tests test/type_tests.cpp)
+    target_link_libraries(util_tests riot-cpp)
+    target_link_libraries(util_tests Catch2::Catch2WithMain)
 
-target_compile_options(util_tests PRIVATE -fsanitize=address -static-libasan)
-target_link_options(util_tests PRIVATE -fsanitize=address -static-libasan)
+    target_compile_options(util_tests PRIVATE -fsanitize=address -static-libasan)
+    target_link_options(util_tests PRIVATE -fsanitize=address -static-libasan)
+ENDIF(BUILD_TESTING)
+
 

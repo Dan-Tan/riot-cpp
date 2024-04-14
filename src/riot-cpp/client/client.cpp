@@ -47,28 +47,7 @@ namespace client {
         logger(path_to_log, report_level, verbose_logging),
         request_handler(&(this->logger)),
         endpoint_call(std::bind_front(&RiotApiClient::query, this)),
-        Account(&this->endpoint_call), 
-        Champion_Mastery(&this->endpoint_call), 
-        Champion(&this->endpoint_call), 
-        Clash(&this->endpoint_call), 
-        League_Exp(&this->endpoint_call),
-        League(&this->endpoint_call),
-        Lol_Challenges(&this->endpoint_call),
-        Lol_Status(&this->endpoint_call),
-        Lor_Match(&this->endpoint_call),
-        Lor_Ranked(&this->endpoint_call),
-        Lor_Status(&this->endpoint_call),
-        Match(&this->endpoint_call),
-        Summoner(&this->endpoint_call),
-        Spectator(&this->endpoint_call),
-        Tft_League(&this->endpoint_call),
-        Tft_Match(&this->endpoint_call),
-        Tft_Status(&this->endpoint_call),
-        Tft_Summoner(&this->endpoint_call),
-        Val_Content(&this->endpoint_call),
-        Val_Match(&this->endpoint_call),
-        Val_Ranked(&this->endpoint_call),
-        Val_Status(&this->endpoint_call){
+        Account(&this->endpoint_call) {
         curl_global_init(CURL_GLOBAL_ALL);
 
         // initialised libcurl handle and header

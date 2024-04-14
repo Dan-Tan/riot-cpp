@@ -22,41 +22,6 @@ namespace query {
         kServerError
     };
 
-
-    template <typename T>
-    concept param = requires(std::ostream& os, T a){os << a;};
-    using query_fp = std::function<std::unique_ptr<json_text>(std::shared_ptr<query>)>*;
-    using const_str_r = const std::string&;
-    
-    typedef struct {} OPTS;
-
-    typedef struct Endpoint {
-        
-        public:
-            const query_fp _query;
-            const std::string _url;
-        
-        private: 
-            template <param R>
-            std::stringstream construct_base(const R& routing) const; 
-
-            template <std::size_t N, param Routing, param ... Params>
-            std::string full_query(const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params) const;
-        
-            template <std::size_t N, param Routing, param ... Params, param ... Opts>
-            std::string full_query(const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params, OPTS, const std::pair<std::string, Opts>& ... optional_args) const;
-            
-        public:
-            Endpoint(const std::string& url, query_fp client_query) : _query(client_query), _url(url) {};
-
-            template <std::size_t N, param Routing, param ... Params>
-            std::shared_ptr<query> request(const_str_r key, const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params);
-
-            template <std::size_t N, param Routing, param ... Params, param ... Opts>
-            std::shared_ptr<query> request(const_str_r key, const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params, OPTS, const std::pair<std::string, Opts>& ... optional_args);
-
-    } Endpoint;
-
     typedef struct ACCOUNT_V1 : public Endpoint {
         ACCOUNT_V1(query_fp client_query) : Endpoint("riot/account/v1/", client_query) {};
         std::unique_ptr<json_text> by_puuid(const_str_r routing, const_str_r puuid);

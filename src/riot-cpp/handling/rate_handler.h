@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "region_count.h"
-#include "../query/query.h"
+#include "../query/endpoints.h"
 #include "../types/args.h"
 
 namespace riotcpp {

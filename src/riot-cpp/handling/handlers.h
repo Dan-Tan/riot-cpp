@@ -1,7 +1,7 @@
 #pragma once
 
 #include "region_count.h"
-#include "../query/query.h"
+#include "../query/endpoints.h"
 #include "../types/args.h"
 #include "../logging/logger.h"
 #include "rate_handler.h"
