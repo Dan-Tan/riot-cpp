@@ -1,4 +1,5 @@
 #pragma once
+
 #include <concepts>
 #include <ctime>
 #include <string>
@@ -7,70 +8,25 @@
 #include <memory>
 #include <curl/curl.h>
 
+#include "../types/args.h"
+#include "endpoints.h"
+
+namespace riotcpp {
 namespace query {
-    
-    typedef struct RiotHeader { // default to extremely slow rate limit successful requests will overwrite these
-        char date[32];          // users with invalid api keys will only be able to send a request every 2 minutes
-        char app_limit[64]          = "1:120";
-        char app_limit_count[64]    = "1:120";
-        char method_limit[64]       = "1:120";
-        char method_limit_count[64] = "1:120";
-        char retry_after[4];
-    } RiotHeader;
 
-    typedef struct query {
-        std::string method_key;
-        std::string routing_value;
-        std::string url;
-        std::time_t send_time = 0;
-        std::unique_ptr<std::vector<char>> response_content;
-        RiotHeader response_header;
-        long last_response = -2;
-        int server_errors = 0;
-    } query;
-
-    using json_text = std::vector<char>;
-
-    template <typename T>
-    concept param = requires(std::ostream& os, T a){os << a;};
-    using query_fp = std::function<std::unique_ptr<json_text>(std::shared_ptr<query>)>*;
-    using const_str_r = const std::string&;
-    
-    typedef struct {} OPTS;
-
-    typedef struct Endpoint {
-        
-        public:
-            const query_fp _query;
-            const std::string _url;
-        
-        private: 
-            template <param R>
-            std::stringstream construct_base(const R& routing) const; 
-
-            template <std::size_t N, param Routing, param ... Params>
-            std::string full_query(const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params) const;
-        
-            template <std::size_t N, param Routing, param ... Params, param ... Opts>
-            std::string full_query(const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params, OPTS, const std::pair<std::string, Opts>& ... optional_args) const;
-            
-        public:
-            Endpoint(const std::string& url, query_fp client_query) : _query(client_query), _url(url) {};
-
-            template <std::size_t N, param Routing, param ... Params>
-            std::shared_ptr<query> request(const_str_r key, const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params);
-
-            template <std::size_t N, param Routing, param ... Params, param ... Opts>
-            std::shared_ptr<query> request(const_str_r key, const std::array<std::string, N>& method_urls, const Routing& routing, const Params& ... params, OPTS, const std::pair<std::string, Opts>& ... optional_args);
-
-    } Endpoint;
+    enum class QueryStatus {
+        kNotSent,
+        kCurlError,
+        kSuccess,
+        kClientError,
+        kServerError
+    };
 
     typedef struct ACCOUNT_V1 : public Endpoint {
         ACCOUNT_V1(query_fp client_query) : Endpoint("riot/account/v1/", client_query) {};
         std::unique_ptr<json_text> by_puuid(const_str_r routing, const_str_r puuid);
         std::unique_ptr<json_text> by_riot_id(const_str_r routing, const_str_r gameName, const_str_r tagline);
         std::unique_ptr<json_text> by_game(const_str_r routing, const_str_r game, const_str_r puuid);
-
     } ACCOUNT_V1;
 
     typedef struct CHAMPION_MASTERY_V4 : public Endpoint {
@@ -222,4 +178,5 @@ namespace query {
 
     } VAL_STATUS_V1;
 
+}
 }

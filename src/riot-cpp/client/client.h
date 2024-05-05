@@ -6,11 +6,11 @@
 #include <string_view>
 #include <unordered_map>
 #include <memory>
-#include "../query/query.h"
+#include "../query/endpoints.h"
 #include "../handling/handlers.h"
 #include "../logging/logger.h"
 #include <functional>
-
+namespace riotcpp {
 namespace client {
 
     using json_text = std::vector<char>;
@@ -18,39 +18,38 @@ namespace client {
     using opt_args = std::pair<std::string, std::string>;
 
     class RiotApiClient {
-        private: 
-;
-
         public:
             RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level = logging::LEVEL::INFO, bool verbose_logging = false);
             ~RiotApiClient();
+            
+            const query::Account_v1 Account;
+            const query::Champion_Mastery_v4 Champion_Mastery;
+            const query::Champion_v3 Champion;
+            const query::Clash_v1 Clash;
+            const query::League_exp_v4 League_exp;
+            const query::League_v4 League;
+            const query::Lol_Challenges_v1 Lol_Challenges;
+            const query::Lol_Status_v4 Lol_Status;
+            const query::Lor_Match_v1 Lor_Match;
+            const query::Lor_Ranked_v1 Lor_Ranked;
+            const query::Lor_Status_v1 Lor_Status;
+            const query::Match_v5 Match;
+            const query::Spectator_Tft_v5 Spectator_Tft;
+            const query::Spectator_v5 Spectator;
+            const query::Summoner_v4 Summoner;
+            const query::Tft_League_v1 Tft_League;
+            const query::Tft_Match_v1 Tft_Match;
+            const query::Tft_Status_v1 Tft_Status;
+            const query::Tft_Summoner_v1 Tft_Summoner;
+            const query::Val_Content_v1 Val_Content;
+            const query::Val_Match_v1 Val_Match;
+            const query::Val_Ranked_v1 Val_Ranked;
+            const query::Val_Status_v1 Val_Status;
 
-            query::ACCOUNT_V1 Account;
-            query::CHAMPION_MASTERY_V4 Champion_Mastery;
-            query::CHAMPION_V3 Champion;
-            query::CLASH_V1 Clash;
-            query::LEAGUE_EXP_V4 League_Exp;
-            query::LEAGUE_V4 League;
-            query::LOL_CHALLENGES_V1 Lol_Challenges; 
-            query::LOL_STATUS Lol_Status;
-            query::LOR_MATCH_V1 Lor_Match;
-            query::LOR_RANKED_V1 Lor_Ranked;
-            query::LOR_STATUS_V1 Lor_Status;
-            query::MATCH_V5 Match;
-            query::SUMMONER_V4 Summoner;
-            query::SPECTATOR_V4 Spectator;
-            query::TFT_LEAGUE_V1 Tft_League;
-            query::TFT_MATCH_V1 Tft_Match;
-            query::TFT_STATUS_V1 Tft_Status;
-            query::TFT_SUMMONER_V1 Tft_Summoner;
-            query::VAL_CONTENT_V1 Val_Content;
-            query::VAL_MATCH_V1 Val_Match;
-            query::VAL_RANKED_V1 Val_Ranked;
-            query::VAL_STATUS_V1 Val_Status;
 
         protected:
 
-            handler::RequestHandler request_handler;
+            rate::RequestHandler request_handler;
             logging::Logger logger;
 
         private:
@@ -62,4 +61,5 @@ namespace client {
             CURL* easy_handle = nullptr;
             struct curl_slist *header = nullptr;
     }; 
+}
 }

@@ -13,7 +13,7 @@
 #include <regex>
 #include <cstring>
 #include "client.h"
-
+namespace riotcpp {
 namespace client {
 
     using func_type = std::function<std::unique_ptr<json_text>(std::shared_ptr<query::query>)>;
@@ -47,11 +47,11 @@ namespace client {
         logger(path_to_log, report_level, verbose_logging),
         request_handler(&(this->logger)),
         endpoint_call(std::bind_front(&RiotApiClient::query, this)),
-        Account(&this->endpoint_call), 
-        Champion_Mastery(&this->endpoint_call), 
-        Champion(&this->endpoint_call), 
-        Clash(&this->endpoint_call), 
-        League_Exp(&this->endpoint_call),
+        Account(&this->endpoint_call),
+        Champion_Mastery(&this->endpoint_call),
+        Champion(&this->endpoint_call),
+        Clash(&this->endpoint_call),
+        League_exp(&this->endpoint_call),
         League(&this->endpoint_call),
         Lol_Challenges(&this->endpoint_call),
         Lol_Status(&this->endpoint_call),
@@ -59,8 +59,9 @@ namespace client {
         Lor_Ranked(&this->endpoint_call),
         Lor_Status(&this->endpoint_call),
         Match(&this->endpoint_call),
-        Summoner(&this->endpoint_call),
+        Spectator_Tft(&this->endpoint_call),
         Spectator(&this->endpoint_call),
+        Summoner(&this->endpoint_call),
         Tft_League(&this->endpoint_call),
         Tft_Match(&this->endpoint_call),
         Tft_Status(&this->endpoint_call),
@@ -68,7 +69,7 @@ namespace client {
         Val_Content(&this->endpoint_call),
         Val_Match(&this->endpoint_call),
         Val_Ranked(&this->endpoint_call),
-        Val_Status(&this->endpoint_call){
+        Val_Status(&this->endpoint_call) {
         curl_global_init(CURL_GLOBAL_ALL);
 
         // initialised libcurl handle and header
@@ -138,7 +139,7 @@ namespace client {
 
         request->response_content->clear();
 
-        curl_easy_setopt(this->easy_handle, CURLOPT_URL, request->url.data());
+        curl_easy_setopt(this->easy_handle, CURLOPT_URL, request->url.get());
         curl_easy_setopt(this->easy_handle, CURLOPT_HTTPGET, 1);
         curl_easy_setopt(this->easy_handle, CURLOPT_HTTPHEADER, this->header);
 
@@ -181,7 +182,7 @@ namespace client {
 
     std::unique_ptr<json_text> RiotApiClient::query(std::shared_ptr<query::query> request) {
 
-        this->logger << logging::LEVEL::DEBUG << "--Query Call--" << request->url << 0;
+        this->logger << logging::LEVEL::DEBUG << "--Query Call--" << std::string(request->url.get()) << 0;
 
         while (this->request_handler.review_request(request)) {
             if (request->last_response == 200) {
@@ -199,4 +200,5 @@ namespace client {
         this->logger << logging::LEVEL::ERRORS << "Failed request" << request->method_key << request->last_response << 0; 
         return std::move(request->response_content);
     }
+}
 }
