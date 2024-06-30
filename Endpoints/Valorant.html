@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>Valorant - Riot-cpp</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="generator" content="mkdocs-1.6.0, mkdocs-gitbook-1.0.7">
+
+<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+<meta name="HandheldFriendly" content="true"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta rel="next" href="" />
+<link href="../css/style.min.css" rel="stylesheet"> 
+</head>
+
+<body>
+<div class="book">
+<div class="book-summary">
+
+<nav role="navigation">
+<ul class="summary">
+<li>
+<a href="../index.html" target="_blank" class="custom-link">Riot-cpp</a>
+</li>
+<li class="divider"></li>
+<li class="chapter" data-path="index.html">
+<a href="../index.html">Home</a>
+<li class="header">Getting Started</li>
+
+<li>
+<a href="../Getting%20Started/installation.html" class="">Installation</a>
+</li>
+
+<li>
+<a href="../Getting%20Started/usage.html" class="">Basic Usage</a>
+</li>
+
+<li class="header">Endpoints</li>
+
+<li>
+<a href="Account.html" class="">Account</a>
+</li>
+
+<li>
+<a href="Leagends_of_Runeterra.html" class="">Legends of Runeterra</a>
+</li>
+
+<li>
+<a href="Valorant.html" class="active">Valorant</a>
+</li>
+
+<li>
+<a href="#">League of Legends</a>
+<ul>
+
+<li>
+<a href="League_of_Legends/Challenges.html" class="">Challenges</a>
+</li>
+
+<li>
+<a href="League_of_Legends/Champion.html" class="">Champion</a>
+</li>
+
+<li>
+<a href="League_of_Legends/Champion_Mastery.html" class="">Champion Mastery</a>
+</li>
+
+<li>
+<a href="League_of_Legends/Clash.html" class="">Clash</a>
+</li>
+
+<li>
+<a href="League_of_Legends/League.html" class="">League</a>
+</li>
+
+<li>
+<a href="League_of_Legends/Match.html" class="">Match</a>
+</li>
+
+<li>
+<a href="League_of_Legends/Spectator.html" class="">Spectator</a>
+</li>
+
+<li>
+<a href="League_of_Legends/Status.html" class="">Status</a>
+</li>
+
+<li>
+<a href="League_of_Legends/Summoner.html" class="">Summoner</a>
+</li>
+</ul>
+</li>
+
+<li>
+<a href="#">Teamfight Tactics</a>
+<ul>
+
+<li>
+<a href="Teamfight_Tactics/League.html" class="">League</a>
+</li>
+
+<li>
+<a href="Teamfight_Tactics/Match.html" class="">Match</a>
+</li>
+
+<li>
+<a href="Teamfight_Tactics/Status.html" class="">Status</a>
+</li>
+
+<li>
+<a href="Teamfight_Tactics/Summoner.html" class="">Summoner</a>
+</li>
+</ul>
+</li>
+
+<li class="header">Implementation</li>
+
+<li>
+<a href="../Implementation/endpoints.html" class="">Endpoint Structure</a>
+</li>
+
+<li>
+<a href="../Implementation/handlers.html" class="">Handlers</a>
+</li>
+
+<li>
+<a href="../Implementation/logging.html" class="">Logging</a>
+</li>
+
+<li class="header">Contributing</li>
+
+<li>
+<a href="../Contributing/contributing.html" class="">How to Contribute</a>
+</li>
+
+<li>
+<a href="../Contributing/contributing.html" class="">How to Contribute</a>
+</li>
+
+<li class="divider"></li>
+
+
+
+<li><a href="http://www.mkdocs.org">
+Published with MkDocs
+</a></li>
+
+<li><a href="https://github.com/GitbookIO/theme-default">
+Theme by GitBook
+</a></li>
+</ul>
+
+</nav>
+
+</div> <!-- end of book-summary -->
+
+<div class="book-body">
+<div class="body-inner">
+<div class="book-header" role="navigation">
+
+<!-- Title -->
+<h1>
+<i class="fa fa-circle-o-notch fa-spin"></i>
+<a href="." ></a>
+</h1>
+
+</div> <!-- end of book-header -->
+
+<div class="page-wrapper" tabindex="-1" role="main">
+<div class="page-inner">
+
+<section class="normal markdown-section">
+
+
+
+<h3 id="val-content-v1">VAL-CONTENT-V1</h3>
+<p>View <a href="https://developer.riotgames.com/apis#val-content-v1">Riot's</a> documentation of VAL-CONTENT-V1</p>
+<p><strong>content</strong></p>
+<pre><code class="language-cpp">// function call
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; response = client_obj.Val_Content.content(&quot;&lt;routing&gt;&quot;, {&quot;locale&quot;, &quot;&lt;locale&gt;&quot;});
+// declaration
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; content(std::string, std::pair&lt;std::string, std::string&gt;);
+</code></pre>
+<h3 id="val-match-v1">VAL-MATCH-V1</h3>
+<p>View <a href="https://developer.riotgames.com/apis#val-match-v1">Riot's</a> documentation of VAL-MATCH-V1</p>
+<p><strong>by-match</strong></p>
+<pre><code class="language-cpp">// function call
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; response = client_obj.Val_Match.by_match(&quot;&lt;routing&gt;&quot;, &quot;&lt;match-id&gt;&quot;);
+// declaration
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; by_match(std::string, std::string);
+</code></pre>
+<p><strong>by-puuid</strong></p>
+<pre><code class="language-cpp">// function call
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; response = client_obj.Val_Match.by_puuid(&quot;&lt;routing&gt;&quot;, &quot;&lt;puuid&gt;&quot;);
+// declaration
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; by_puuid(std::string, std::string);
+</code></pre>
+<p><strong>by-queue</strong></p>
+<pre><code class="language-cpp">// function call
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; response = client_obj.Val_Match.by_queue(&quot;&lt;routing&gt;&quot;, &quot;&lt;queue&gt;&quot;);
+// declaration
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; by_queue(std::string, std::string);
+</code></pre>
+<h3 id="val-ranked-v1">VAL-RANKED-V1</h3>
+<p>View <a href="https://developer.riotgames.com/apis#val-ranked-v1">Riot's</a> documentation of VAL-RANKED-V1</p>
+<p><strong>by-act</strong></p>
+<pre><code class="language-cpp">// function call
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; response = client_obj.Val_Ranked.by_act(&quot;&lt;routing&gt;&quot;, &quot;&lt;act&gt;&quot;, {&quot;locale&quot;, &quot;&lt;locale&gt;&quot;});
+// declaration
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; by_act(std::string, std::string, std::pair&lt;std::string, std::string&gt;);
+</code></pre>
+<h3 id="val-status-v1">VAL-STATUS-V1</h3>
+<p>View <a href="https://developer.riotgames.com/apis#val-status-v1">Riot's</a> documentation of VAL-STATUS-V1</p>
+<p><strong>platform_data</strong></p>
+<pre><code class="language-cpp">// function call
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; response = client_obj.Val_Status.platform_data(&quot;&lt;routing&gt;&quot;);
+// declaration
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; platform_data(std::string);
+</code></pre>
+
+
+</section>
+
+</div> <!-- end of page-inner -->
+</div> <!-- end of page-wrapper -->
+
+</div> <!-- end of body-inner -->
+
+</div> <!-- end of book-body -->
+<script src="../js/main.js"></script>
+<script src="../js/gitbook.min.js"></script>
+<script src="../js/theme.min.js"></script>
+</body>
+</html>

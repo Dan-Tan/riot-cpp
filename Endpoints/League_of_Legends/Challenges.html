@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>Challenges - Riot-cpp</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="generator" content="mkdocs-1.6.0, mkdocs-gitbook-1.0.7">
+
+<link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon">
+<meta name="HandheldFriendly" content="true"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta rel="next" href="" />
+<link href="../../css/style.min.css" rel="stylesheet"> 
+</head>
+
+<body>
+<div class="book">
+<div class="book-summary">
+
+<nav role="navigation">
+<ul class="summary">
+<li>
+<a href="../../index.html" target="_blank" class="custom-link">Riot-cpp</a>
+</li>
+<li class="divider"></li>
+<li class="chapter" data-path="index.html">
+<a href="../../index.html">Home</a>
+<li class="header">Getting Started</li>
+
+<li>
+<a href="../../Getting%20Started/installation.html" class="">Installation</a>
+</li>
+
+<li>
+<a href="../../Getting%20Started/usage.html" class="">Basic Usage</a>
+</li>
+
+<li class="header">Endpoints</li>
+
+<li>
+<a href="../Account.html" class="">Account</a>
+</li>
+
+<li>
+<a href="../Leagends_of_Runeterra.html" class="">Legends of Runeterra</a>
+</li>
+
+<li>
+<a href="../Valorant.html" class="">Valorant</a>
+</li>
+
+<li>
+<a href="#">League of Legends</a>
+<ul>
+
+<li>
+<a href="Challenges.html" class="active">Challenges</a>
+</li>
+
+<li>
+<a href="Champion.html" class="">Champion</a>
+</li>
+
+<li>
+<a href="Champion_Mastery.html" class="">Champion Mastery</a>
+</li>
+
+<li>
+<a href="Clash.html" class="">Clash</a>
+</li>
+
+<li>
+<a href="League.html" class="">League</a>
+</li>
+
+<li>
+<a href="Match.html" class="">Match</a>
+</li>
+
+<li>
+<a href="Spectator.html" class="">Spectator</a>
+</li>
+
+<li>
+<a href="Status.html" class="">Status</a>
+</li>
+
+<li>
+<a href="Summoner.html" class="">Summoner</a>
+</li>
+</ul>
+</li>
+
+<li>
+<a href="#">Teamfight Tactics</a>
+<ul>
+
+<li>
+<a href="../Teamfight_Tactics/League.html" class="">League</a>
+</li>
+
+<li>
+<a href="../Teamfight_Tactics/Match.html" class="">Match</a>
+</li>
+
+<li>
+<a href="../Teamfight_Tactics/Status.html" class="">Status</a>
+</li>
+
+<li>
+<a href="../Teamfight_Tactics/Summoner.html" class="">Summoner</a>
+</li>
+</ul>
+</li>
+
+<li class="header">Implementation</li>
+
+<li>
+<a href="../../Implementation/endpoints.html" class="">Endpoint Structure</a>
+</li>
+
+<li>
+<a href="../../Implementation/handlers.html" class="">Handlers</a>
+</li>
+
+<li>
+<a href="../../Implementation/logging.html" class="">Logging</a>
+</li>
+
+<li class="header">Contributing</li>
+
+<li>
+<a href="../../Contributing/contributing.html" class="">How to Contribute</a>
+</li>
+
+<li>
+<a href="../../Contributing/contributing.html" class="">How to Contribute</a>
+</li>
+
+<li class="divider"></li>
+
+
+
+<li><a href="http://www.mkdocs.org">
+Published with MkDocs
+</a></li>
+
+<li><a href="https://github.com/GitbookIO/theme-default">
+Theme by GitBook
+</a></li>
+</ul>
+
+</nav>
+
+</div> <!-- end of book-summary -->
+
+<div class="book-body">
+<div class="body-inner">
+<div class="book-header" role="navigation">
+
+<!-- Title -->
+<h1>
+<i class="fa fa-circle-o-notch fa-spin"></i>
+<a href="." ></a>
+</h1>
+
+</div> <!-- end of book-header -->
+
+<div class="page-wrapper" tabindex="-1" role="main">
+<div class="page-inner">
+
+<section class="normal markdown-section">
+
+
+
+<h3 id="lol-challenges-v1">LOL-CHALLENGES-V1</h3>
+<p>View <a href="https://developer.riotgames.com/apis#lol-challenges-v1">Riot's</a> documentation of LOL-CHALLENGES-V1.</p>
+<p><strong>config</strong></p>
+<pre><code class="language-cpp">// function call
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; response = client_obj.Lol_Challenges.config(&quot;&lt;routing&gt;&quot;);
+// declaration
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; config(std::string);
+</code></pre>
+<p><strong>percentiles</strong></p>
+<pre><code class="language-cpp">// function call
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; response = client_obj.Lol_Challenges.percentiles(&quot;&lt;routing&gt;&quot;);
+// declaration
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; percentiles(std::string);
+</code></pre>
+<p><strong>challenge-config</strong></p>
+<pre><code class="language-cpp">// function call
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; response = client_obj.Lol_Challenges.challenge_config(&quot;&lt;routing&gt;&quot;, &lt;challenge_id&gt;);
+// declaration
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; config(std::string, int);
+</code></pre>
+<p><strong>challenge-leaderboard</strong></p>
+<pre><code class="language-cpp">// function call
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; response = client_obj.Lol_Challenges.challenge_leaderboard(&quot;&lt;routing&gt;&quot;, &lt;challenge_id&gt;, &quot;&lt;level&gt;&quot;, {&quot;limit&quot;, &lt;limit&gt;});
+// declaration
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; challenge_leaderboard(std::string, int, std::string, std::pair&lt;std::string, int&gt;);
+</code></pre>
+<p><strong>challenge-percentiles</strong></p>
+<pre><code class="language-cpp">std::unique_ptr&lt;std::vector&lt;char&gt;&gt; client_obj.Lol_Challenges.challenge_percentiles(&quot;&lt;routing&gt;&quot;, &lt;challenge_id&gt;) 
+// declaration
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; challenge_percentiles(std::string, int);
+</code></pre>
+<p><strong>by-puuid</strong></p>
+<pre><code class="language-cpp">// function call
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; response = client_obj.Lol_Challenges.by_puuid(&quot;&lt;routing&gt;&quot;, &quot;&lt;puuid&gt;&quot;);
+// declaration
+std::unique_ptr&lt;std::vector&lt;char&gt;&gt; config(std::string, std::string);
+</code></pre>
+
+
+</section>
+
+</div> <!-- end of page-inner -->
+</div> <!-- end of page-wrapper -->
+
+</div> <!-- end of body-inner -->
+
+</div> <!-- end of book-body -->
+<script src="../../js/main.js"></script>
+<script src="../../js/gitbook.min.js"></script>
+<script src="../../js/theme.min.js"></script>
+</body>
+</html>
