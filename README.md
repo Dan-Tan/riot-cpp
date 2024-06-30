@@ -1,4 +1,6 @@
 # Welcome to Riot-cpp
+**The documentation is wildly out of date. See endpoints.h or client_tests.cpp to view available endpoints.**
+
 
 [![ci](https://github.com/Dan-Tan/riot-cpp/workflows/ci/badge.svg)](https://github.com/Dan-Tan/riot-cpp/actions?query=workflow:"ci")
 [![build](https://github.com/Dan-Tan/riot-cpp/workflows/build/badge.svg)](https://github.com/Dan-Tan/riot-cpp/actions?query=workflow:"build")
