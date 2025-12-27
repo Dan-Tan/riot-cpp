@@ -1,3 +1,5 @@
+#define CATCH_CONFIG_RUNNER
+#include <catch2/catch_session.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
 #include <ctime>
@@ -7,8 +9,29 @@
 #include "../src/riot-cpp/client/client.h"
 #include "json.hpp"
 
-#define CONFIG "../../.api_keys/riot_config.json", "../test/log_file.txt", logging::LEVEL::DEBUG, true
+static std::string api_key_path;
+
+int main(int argc, char* argv[]) {
+    Catch::Session session;
+
+    using namespace Catch::Clara;
+    auto cli = session.cli() | Opt(api_key_path, "api_key_path")["-p"]["--path"]("Path to riot_config.json");
+    session.cli(cli);
+
+    int returnCode = session.applyCommandLine(argc, argv);
+    if (returnCode != 0)
+        return returnCode;
+
+    if (api_key_path.empty()) {
+        api_key_path = "../../.api_keys/riot_config.json";
+    }
+
+    return session.run();
+}
+
 namespace riotcpp {
+using namespace client;
+
 using namespace client;
 
 static std::string ROUTING = "KR";
@@ -21,7 +44,7 @@ using json = nlohmann::json;
 
 TEST_CASE( "ACCOUNT_V1 QUERIES") {
     std::cout << "TESTING ACCOUNT_V1 QUERIES" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     std::vector<std::string> region = {"AMERICAS", "ASIA", "EUROPE"};
     std::string puuid; // puuid is key specific
@@ -59,7 +82,7 @@ TEST_CASE( "ACCOUNT_V1 QUERIES") {
 
 TEST_CASE( "LEAGUE_V4 QUERIES") {
     std::cout << "TESTING LEAGUE_V4 QUERIES" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     std::string region = "na1";
     std::vector<std::string> queue = {"RANKED_SOLO_5x5", "RANKED_FLEX_SR"};
@@ -131,7 +154,7 @@ TEST_CASE( "LEAGUE_V4 QUERIES") {
 
 TEST_CASE(" SUMMONER QUERIES ") {
     std::cout << "TESTING  SUMMONER QUERIES " << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     std::string region = "kr";
     std::string summoner_name = "Hide on bush";
@@ -160,7 +183,7 @@ TEST_CASE(" SUMMONER QUERIES ") {
 
 TEST_CASE( "MATCH QUERIES" ) {
     std::cout << "TESTING MATCH QUERIES" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     std::string region = "ASIA";
     std::string match_id = "KR_6279823690";
@@ -181,7 +204,7 @@ TEST_CASE( "MATCH QUERIES" ) {
 
 TEST_CASE("CHAMPION-MASTERY-V4 QUERIES") {
     std::cout << "TESTING CHAMPION-MASTERY-V4 QUERIES" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     const int champion_id = 1;
     std::string endpoint = "CHAMPION-MASTERY-V4";
@@ -217,7 +240,7 @@ TEST_CASE("CHAMPION-MASTERY-V4 QUERIES") {
 
 TEST_CASE("CHAMPION-V3") {
     std::cout << "TESTING CHAMPION-V3" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     json_ptr result;
     json doc;
@@ -230,7 +253,7 @@ TEST_CASE("CHAMPION-V3") {
 
 TEST_CASE("LOL-CHALLENGES-V1") {
     std::cout << "TESTING LOL-CHALLENGES-V1" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
     
     const int challenge_id = 1;
     std::string level = "HIGHEST";
@@ -263,7 +286,7 @@ TEST_CASE("LOL-CHALLENGES-V1") {
 }
 TEST_CASE("LOL-STATUS") {
     std::cout << "TESTING LOL-STATUS" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
     
     json_ptr result;
     json doc;
@@ -279,7 +302,7 @@ TEST_CASE("LOL-STATUS") {
 }
 TEST_CASE("LOR-MATCH-V1") {
 std::cout << "TESTING LOR-MATCH-V1" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     json_ptr result;
     std::string endpoint = "LOR-MATCH-V1";
@@ -300,7 +323,7 @@ std::cout << "TESTING LOR-MATCH-V1" << '\n';
 }
 TEST_CASE("LOR-RANKED-V1") {
     std::cout << "TESTING LOR-RANKED-V1" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     json_ptr result;
     json doc;
@@ -312,7 +335,7 @@ TEST_CASE("LOR-RANKED-V1") {
 }
 TEST_CASE("LOR-STATUS-V1") {
     std::cout << "TESTING LOR-STATUS-V1" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     json_ptr result;
     json doc;
@@ -327,7 +350,7 @@ TEST_CASE("LOR-STATUS-V1") {
 }
 TEST_CASE("SPECTATOR-V4") {
     std::cout << "TESTING SPECTATOR-V4" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     json_ptr result;
     std::string endpoint = "SPECTATOR-V4";
@@ -365,7 +388,7 @@ TEST_CASE("SPECTATOR-V4") {
 }
 TEST_CASE("TFT-LEAGUE-V1") {
     std::cout << "TESTING TFT-LEAGUE-V1" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     json_ptr result;
     std::string endpoint = "TFT-LEAGUE-V1";
@@ -423,7 +446,7 @@ TEST_CASE("TFT-LEAGUE-V1") {
 }
 TEST_CASE("TFT-MATCH-V1") {
     std::cout << "TESTING TFT-MATCH-V1" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     json_ptr result;
     json doc;
@@ -459,7 +482,7 @@ TEST_CASE("TFT-MATCH-V1") {
 }
 TEST_CASE("TFT-STATUS-V1") {
     std::cout << "TESTING TFT-STATUS-V1" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     json_ptr result;
     json doc;
@@ -472,7 +495,7 @@ TEST_CASE("TFT-STATUS-V1") {
 }
 TEST_CASE("TFT-SUMMONER-V1") { 
     std::cout << "TESTING TFT-SUMMONER-V1" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     json_ptr result;
     json doc;
@@ -503,7 +526,7 @@ TEST_CASE("TFT-SUMMONER-V1") {
 }
 TEST_CASE("VAL-CONTENT-V1") {
     std::cout << "TESTING VAL-CONTENT-V1" << '\n';
-    RiotApiClient test_client(CONFIG);
+    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     json_ptr result;
     json doc;

@@ -25,7 +25,7 @@ target_link_options(riot-cpp PRIVATE -fsanitize=address -static-libasan)
 
 add_executable(client_tests test/client_tests.cpp test/simdjson.cpp)
 target_link_libraries(client_tests riot-cpp)
-target_link_libraries(client_tests Catch2::Catch2WithMain)
+target_link_libraries(client_tests Catch2::Catch2)
 
 target_compile_options(client_tests PRIVATE -fsanitize=address -static-libasan)
 target_link_options(client_tests PRIVATE -fsanitize=address -static-libasan)
