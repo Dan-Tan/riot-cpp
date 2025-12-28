@@ -1,6 +1,7 @@
 *.json
 build
 Debug/
+debug/
 docs/
 site/
 Release/
