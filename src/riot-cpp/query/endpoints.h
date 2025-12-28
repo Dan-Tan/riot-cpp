@@ -167,14 +167,14 @@ namespace query {
         League_v4(query_fp get)
             : Endpoint("/lol/league/v4"),
               challenger    (get, url_base_, "League-v4-challenger", {"/challengerleagues/by-queue/"}),
-              by_summoner_id(get, url_base_, "League-v4-by-summoner-id", {"/entries/by-summoner/"}),
+              by_puuid(get, url_base_, "League-v4-by-puuid", {"/entries/by-puuid/"}),
               entries       (get, url_base_, "League-v4-entries", {"/entries/", "/", "/"}),
               grandmaster   (get, url_base_, "League-v4-grandmaster", {"/grandmasterleagues/by-queue/"}),
               by_league_id  (get, url_base_, "League-v4-by-league-id", {"/leagues/"}),
               master        (get, url_base_, "League-v4-master",      {"/masterleagues/by-queue/"}) {}
 
         const EndpointMethod<url::no_opt, std::string> challenger;
-        const EndpointMethod<url::no_opt, std::string> by_summoner_id;
+        const EndpointMethod<url::no_opt, std::string> by_puuid;
         const EndpointMethod<url::opt_page, std::string, std::string, std::string> entries;
         const EndpointMethod<url::no_opt, std::string> grandmaster;
         const EndpointMethod<url::no_opt, std::string> by_league_id;
@@ -258,30 +258,24 @@ namespace query {
     typedef struct Spectator_v5 : public Endpoint {
         Spectator_v5(query_fp get)
             : Endpoint("/lol/spectator/v5"),
-              by_summoner(get, url_base_, "Spectator-v5-by-summoner-id", {"/active-games/by-summoner/"}),
-              featured   (get, url_base_, "Spectator-v5-featured",       {}, "/featured-games") {};
+              by_summoner(get, url_base_, "Spectator-v5-by-summoner-id", {"/active-games/by-summoner/"}) {};
 
         const EndpointMethod<url::no_opt, std::string> by_summoner;
-        const EndpointMethod<url::no_opt> featured;
     } Spectator_v5;
 
     typedef struct Summoner_v4 : public Endpoint {
         Summoner_v4(query_fp get)
             : Endpoint("/lol/summoner/v4"),
-              by_account_id (get, url_base_, "Summoner-v4-by-account-id",  {"/summoners/by-account/"}),
-              by_puuid      (get, url_base_, "Summoner-v4-by-puuid",       {"/summoners/by-puuid/"}),
-              by_summoner_id(get, url_base_, "Summoner-v4-by-summoner-id", {"/summoners/"}) {};
+              by_puuid (get, url_base_, "Summoner-v4-by-puuid", {"/summoners/by-puuid/"}) {};
 
-        const EndpointMethod<url::no_opt, std::string> by_account_id;
         const EndpointMethod<url::no_opt, std::string> by_puuid;
-        const EndpointMethod<url::no_opt, std::string> by_summoner_id;
     } Summoner_v4;
 
     typedef struct Tft_League_v1 : public Endpoint {
         Tft_League_v1(query_fp get)
             : Endpoint("/tft/league/v1"),
               challenger  (get, url_base_, "Tft-League-v1-challenger",   {}, "/challenger"),
-              by_summoner (get, url_base_, "Tft-League-v1-by-summoner",  {"/entries/by-summoner/"}),
+              by_puuid    (get, url_base_, "Tft-League-v1-by-puuid",     {"/by-puuid/"}),
               entries     (get, url_base_, "Tft-League-v1-entries",      {"/entries/", "/"}),
               grandmaster (get, url_base_, "Tft-League-v1-grandmaster",  {}, "/grandmaster"),
               by_league_id(get, url_base_, "Tft-League-v1-by-league-id", {"/leagues/"}),
@@ -289,7 +283,7 @@ namespace query {
               top_by_queue(get, url_base_, "Tft-League-v1-top-by-queue", {"/rated-ladders/"}, "/top") {}
 
         const EndpointMethod<url::opt_queue> challenger;
-        const EndpointMethod<url::no_opt, std::string> by_summoner;
+        const EndpointMethod<url::no_opt, std::string> by_puuid;
         const EndpointMethod<url::opt_queue_page, std::string, std::string> entries;
         const EndpointMethod<url::opt_queue> grandmaster;
         const EndpointMethod<url::no_opt, std::string> by_league_id;
@@ -318,13 +312,9 @@ namespace query {
     typedef struct Tft_Summoner_v1 : public Endpoint {
         Tft_Summoner_v1(query_fp get)
             : Endpoint("/tft/summoner/v1"),
-              by_account_id (get, url_base_, "Tft-Summoner-v1-by-account-id",  {"/summoners/by-account/"}),
-              by_puuid      (get, url_base_, "Tft-Summoner-v1-by-puuid",       {"/summoners/by-puuid/"}),
-              by_summoner_id(get, url_base_, "Tft-Summoner-v1-by-summoner-id", {"/summoners/"}) {};
+              by_puuid      (get, url_base_, "Tft-Summoner-v1-by-puuid",       {"/summoners/by-puuid/"}) {};
 
-        const EndpointMethod<url::no_opt, std::string> by_account_id;
         const EndpointMethod<url::no_opt, std::string> by_puuid;
-        const EndpointMethod<url::no_opt, std::string> by_summoner_id;
     } Tft_Summoner_v1;
 
     typedef struct Val_Content_v1 : public Endpoint {

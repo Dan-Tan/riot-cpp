@@ -23,7 +23,7 @@ add_subdirectory(src/riot-cpp)
 target_compile_options(riot-cpp PRIVATE -fsanitize=address -static-libasan)
 target_link_options(riot-cpp PRIVATE -fsanitize=address -static-libasan)
 
-add_executable(client_tests test/client_tests.cpp test/simdjson.cpp)
+add_executable(client_tests test/client_tests.cpp)
 target_link_libraries(client_tests riot-cpp)
 target_link_libraries(client_tests Catch2::Catch2)
 

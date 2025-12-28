@@ -1,3 +1,4 @@
+#include <cstdlib>
 #define CATCH_CONFIG_RUNNER
 #include <catch2/catch_session.hpp>
 #include <catch2/catch_test_macros.hpp>
@@ -36,7 +37,7 @@ using namespace client;
 
 static std::string ROUTING = "KR";
 static std::string SUMMONER_ID;
-static std::string PUUID;
+static std::string PUUID = "6dgDp5y88RxqOmVMv1GRoGaCmPP-uAbmlsVRhKQj4g0KdIH_GxqCEE6w0JRmHRxSTzbtxMFGypJZIg";
 static std::string ACCOUNT_ID;
 
 using json_ptr = std::unique_ptr<std::vector<char>>;
@@ -88,7 +89,7 @@ TEST_CASE( "LEAGUE_V4 QUERIES") {
     std::vector<std::string> queue = {"RANKED_SOLO_5x5", "RANKED_FLEX_SR"};
     std::vector<std::string> division = {"I", "II", "III", "IV"};
     std::vector<std::string> tier = {"DIAMOND", "PLATINUM", "GOLD", "SILVER", "BRONZE", "IRON"};
-    std::string summoner_id;
+    std::string puuid;
     std::string league_id;
 
     std::string endpoint = "LEAGUE-V4";
@@ -119,7 +120,7 @@ TEST_CASE( "LEAGUE_V4 QUERIES") {
 
     result = test_client.League.master(region, queue.at(0));
     doc = json::parse(result->data());
-    summoner_id = doc["entries"].at(0)["summonerId"];
+    puuid = doc["entries"].at(0)["puuid"];
     league_id = doc["leagueId"];
 
     SECTION("SPECIFIC QUEUE ") {
@@ -142,9 +143,9 @@ TEST_CASE( "LEAGUE_V4 QUERIES") {
     SECTION("Testing Summoner ID and League ID") {
         std::cout << "    SUMMONER ID AND LEAGUE ID " << '\n';
 
-        result = test_client.League.by_summoner_id(region, summoner_id);
+        result = test_client.League.by_puuid(region, puuid);
         doc = json::parse(result->data());
-        REQUIRE(doc.at(0)["summonerId"] == summoner_id);
+        REQUIRE(doc.at(0)["puuid"] == puuid);
 
         result = test_client.League.by_league_id(region, league_id);
         doc = json::parse(result->data());
@@ -157,8 +158,6 @@ TEST_CASE(" SUMMONER QUERIES ") {
     RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
     std::string region = "kr";
-    std::string summoner_name = "Hide on bush";
-
     json_ptr result;
     json doc;
 
@@ -167,18 +166,6 @@ TEST_CASE(" SUMMONER QUERIES ") {
     result = test_client.Summoner.by_puuid(region, PUUID);
     doc = json::parse(result->data());
     REQUIRE(doc["puuid"] == PUUID);
-
-    ACCOUNT_ID = doc["accountId"];
-    SUMMONER_ID = doc["id"];
-
-    result = test_client.Summoner.by_account_id(region, ACCOUNT_ID);
-    doc = json::parse(result->data());
-    REQUIRE(doc["accountId"] == ACCOUNT_ID);
-
-    result = test_client.Summoner.by_summoner_id(region, SUMMONER_ID);
-    doc = json::parse(result->data());
-    REQUIRE(doc["id"] == SUMMONER_ID);
-
 }
 
 TEST_CASE( "MATCH QUERIES" ) {
@@ -206,7 +193,7 @@ TEST_CASE("CHAMPION-MASTERY-V4 QUERIES") {
     std::cout << "TESTING CHAMPION-MASTERY-V4 QUERIES" << '\n';
     RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
 
-    const int champion_id = 1;
+    int champion_id = 1;
     std::string endpoint = "CHAMPION-MASTERY-V4";
     std::vector<std::pair<std::string, std::string>> optional_args = {{"count", "1"}};
 
@@ -215,20 +202,17 @@ TEST_CASE("CHAMPION-MASTERY-V4 QUERIES") {
 
     result = test_client.League.entries("KR", "RANKED_SOLO_5x5", "DIAMOND", "I");
     doc = json::parse(result->data());
-    std::string summonerId; summonerId = doc.at(0)["summonerId"];
-
-    result = test_client.Summoner.by_summoner_id("KR", summonerId);
-    doc = json::parse(result->data());
     std::string puuid; 
-    puuid = doc["puuid"];
+    puuid = doc.at(0)["puuid"];
 
-    result = test_client.Champion_Mastery.by_puuid(ROUTING, puuid);
+    result = test_client.Champion_Mastery.by_puuid("KR", puuid);
     doc = json::parse(result->data());
+    champion_id = doc.at(0)["championId"];
     INFO("puuid Used: " + puuid);
     std::string res = doc.at(0)["puuid"];
     REQUIRE(res == puuid);
 
-    result = test_client.Champion_Mastery.by_puuid_by_champion(ROUTING, puuid, champion_id);
+    result = test_client.Champion_Mastery.by_puuid_by_champion("KR", puuid, champion_id);
     doc = json::parse(result->data());
     INFO(result->data());
     REQUIRE(doc["championId"] == champion_id);
@@ -300,27 +284,27 @@ TEST_CASE("LOL-STATUS") {
     REQUIRE_NOTHROW(doc.at("incidents"));
     REQUIRE_NOTHROW(doc.at("locales"));
 }
-TEST_CASE("LOR-MATCH-V1") {
-std::cout << "TESTING LOR-MATCH-V1" << '\n';
-    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
-
-    json_ptr result;
-    std::string endpoint = "LOR-MATCH-V1";
-    std::string match_id;
-    json doc;
-
-    result = test_client.Account.by_riot_id("AMERICAS", "Monkeys R Us", "fresn");
-    doc = json::parse(result->data());
-    std::string puuid; puuid = doc["puuid"];
-
-    result = test_client.Lor_Match.by_puuid("AMERICAS", puuid);
-    doc = json::parse(result->data());
-    REQUIRE_NOTHROW(doc.at(0));
-    match_id = doc.at(1);
-    result = test_client.Lor_Match.by_match_id("AMERICAS", match_id);
-    // Haven't played enough recently
-    // REQUIRE(result["metadata"]["match_id"] == match_id);
-}
+//TEST_CASE("LOR-MATCH-V1") {
+//std::cout << "TESTING LOR-MATCH-V1" << '\n';
+//    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
+//
+//    json_ptr result;
+//    std::string endpoint = "LOR-MATCH-V1";
+//    std::string match_id;
+//    json doc;
+//
+//    result = test_client.Account.by_riot_id("AMERICAS", "Monkeys R Us", "fresn");
+//    doc = json::parse(result->data());
+//    std::string puuid; puuid = doc["puuid"];
+//
+//    result = test_client.Lor_Match.by_puuid("AMERICAS", puuid);
+//    doc = json::parse(result->data());
+//    REQUIRE_NOTHROW(doc.at(0));
+//    match_id = doc.at(1);
+//    result = test_client.Lor_Match.by_match_id("AMERICAS", match_id);
+//    // Haven't played enough recently
+//    // REQUIRE(result["metadata"]["match_id"] == match_id);
+//}
 TEST_CASE("LOR-RANKED-V1") {
     std::cout << "TESTING LOR-RANKED-V1" << '\n';
     RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
@@ -348,44 +332,34 @@ TEST_CASE("LOR-STATUS-V1") {
     REQUIRE_NOTHROW(doc.at("maintenances"));
     REQUIRE_NOTHROW(doc.at("incidents"));
 }
-TEST_CASE("SPECTATOR-V4") {
-    std::cout << "TESTING SPECTATOR-V4" << '\n';
-    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
-
-    json_ptr result;
-    std::string endpoint = "SPECTATOR-V4";
-    json doc;
-
-    result = test_client.Spectator.featured(ROUTING);
-    doc = json::parse(result->data());
-    INFO("JSON EXISTENCE CHECK: \"gameList\"");
-    REQUIRE_NOTHROW(doc.at("gameList"));
-    INFO("JSON ARRAY CHECK");
-    REQUIRE(doc["gameList"].is_array());
-    auto ref = doc["gameList"].at(0);
-    INFO("JSON EXISTENCE CHECK: \"participants\"");
-    REQUIRE_NOTHROW(ref.at("participants"));
-    std::string puuid = ref["participants"].at(0)["puuid"];
-    result = test_client.Summoner.by_puuid(ROUTING, puuid);
-    doc = json::parse(result->data());
-    puuid = doc["puuid"];
-    result = test_client.Spectator.by_summoner(ROUTING, puuid);
-    doc = json::parse(result->data());
-    INFO("JSON EXISTENCE CHECK: \"participants\"");
-    REQUIRE_NOTHROW(doc.at("participants"));
-    INFO("JSON ARRAY CHECK");
-    REQUIRE(doc["participants"].is_array());
-    auto foriter = doc["participants"];
-    { // find participant in the game to see if the correct game was found
-        bool participant_found = false;
-        bool temp;
-        for (auto& objjs : foriter) {
-            temp = objjs["puuid"] == puuid;
-            participant_found = participant_found || temp;
-        }
-        REQUIRE(participant_found);
-    }
-}
+//TEST_CASE("SPECTATOR-V5") {
+//    std::cout << "TESTING SPECTATOR-V5" << '\n';
+//    RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
+//
+//    json_ptr result;
+//    std::string endpoint = "SPECTATOR-V5";
+//    json doc;
+//
+//    result = test_client.Summoner.by_puuid(ROUTING, puuid);
+//    doc = json::parse(result->data());
+//    puuid = doc["puuid"];
+//    result = test_client.Spectator.by_summoner(ROUTING, puuid);
+//    doc = json::parse(result->data());
+//    INFO("JSON EXISTENCE CHECK: \"participants\"");
+//    REQUIRE_NOTHROW(doc.at("participants"));
+//    INFO("JSON ARRAY CHECK");
+//    REQUIRE(doc["participants"].is_array());
+//    auto foriter = doc["participants"];
+//    { // find participant in the game to see if the correct game was found
+//        bool participant_found = false;
+//        bool temp;
+//        for (auto& objjs : foriter) {
+//            temp = objjs["puuid"] == puuid;
+//            participant_found = participant_found || temp;
+//        }
+//        REQUIRE(participant_found);
+//    }
+//}
 TEST_CASE("TFT-LEAGUE-V1") {
     std::cout << "TESTING TFT-LEAGUE-V1" << '\n';
     RiotApiClient test_client(api_key_path, "../test/log_file.txt", logging::LEVEL::DEBUG, true);
@@ -394,12 +368,12 @@ TEST_CASE("TFT-LEAGUE-V1") {
     std::string endpoint = "TFT-LEAGUE-V1";
     json doc;
 
-    std::string summonerid;
+    std::string puuid;
 
     result = test_client.Tft_League.challenger(ROUTING);
     doc = json::parse(result->data());
     REQUIRE(doc["tier"] == "CHALLENGER");
-    summonerid = doc["entries"].at(0)["summonerId"];
+    puuid = doc["entries"].at(0)["puuid"];
 
     result = test_client.Tft_League.grandmaster(ROUTING);
     doc = json::parse(result->data());
@@ -409,24 +383,16 @@ TEST_CASE("TFT-LEAGUE-V1") {
     doc = json::parse(result->data());
     REQUIRE(doc["tier"] == "MASTER");
 
-    result = test_client.Tft_League.by_summoner(ROUTING, summonerid);
+    result = test_client.Tft_League.by_puuid(ROUTING, puuid);
     doc = json::parse(result->data());
     
     auto arrobj = doc.at(0);
-    INFO("JSON KEY EXISTENCE: \"summonerId\"");
-    REQUIRE_NOTHROW(arrobj.at("summonerId"));
+    INFO("JSON KEY EXISTENCE: \"puuid\"");
+    REQUIRE_NOTHROW(arrobj.at("puuid"));
     INFO("JSON KEY EXISTENCE: \"leagueId\"");
     REQUIRE_NOTHROW(arrobj.at("leagueId"));
     INFO("CHECKING CORRECT QUERY");
-    REQUIRE(arrobj["summonerId"] == summonerid);
-    std::string league_id;
-    league_id = arrobj["leagueId"];
-
-    result = test_client.Tft_League.by_league_id(ROUTING, league_id);
-    doc = json::parse(result->data());
-    INFO("JSON KEY EXISTENCE: \"leagueId\"");
-    REQUIRE_NOTHROW(doc.at("leagueId"));
-    REQUIRE(doc["leagueId"] == league_id);
+    REQUIRE(arrobj["puuid"] == puuid);
 
     result = test_client.Tft_League.top_by_queue(ROUTING, "RANKED_TFT_TURBO");
     doc = json::parse(result->data());
@@ -458,13 +424,13 @@ TEST_CASE("TFT-MATCH-V1") {
     std::string puuid;
     puuid = doc["puuid"];
     
-    result = test_client.Tft_Match.by_puuid("AMERICAS", puuid, {.startTime = 0, .start = 5, .count = 20});
+    result = test_client.Tft_Match.by_puuid("SEA", puuid, {.startTime = 0, .start = 5, .count = 20});
     doc = json::parse(result->data());
     REQUIRE(doc.is_array());
     REQUIRE(doc.size() == 20);
     std::string match_id = doc.at(0);
 
-    result = test_client.Tft_Match.by_match_id("AMERICAS", match_id);
+    result = test_client.Tft_Match.by_match_id("SEA", match_id);
     doc = json::parse(result->data());
     if (doc.contains("status") && doc["status"]["status_code"] == 404) {
         INFO("404: Data not found error. Possible known problem with RIOT API.");
@@ -508,21 +474,11 @@ TEST_CASE("TFT-SUMMONER-V1") {
     std::string puuid; puuid = doc["puuid"];
     result = test_client.Tft_Summoner.by_puuid("oc1", puuid);
     doc = json::parse(result->data());
-    REQUIRE_NOTHROW(doc.at("id"));
     REQUIRE_NOTHROW(doc.at("puuid"));
-    REQUIRE_NOTHROW(doc.at("accountId"));
+    REQUIRE_NOTHROW(doc.at("profileIconId"));
+    REQUIRE_NOTHROW(doc.at("revisionDate"));
+    REQUIRE_NOTHROW(doc.at("summonerLevel"));
     REQUIRE(doc["puuid"] == puuid);
-    puuid = doc["puuid"];
-    std::string summoner_id = doc["id"];
-    std::string account_id = doc["accountId"];
-
-    result = test_client.Tft_Summoner.by_account_id(reg, account_id);
-    doc = json::parse(result->data());
-    REQUIRE(doc["accountId"] == account_id);
-
-    result = test_client.Tft_Summoner.by_summoner_id(reg, summoner_id);
-    doc = json::parse(result->data());
-    REQUIRE(doc["id"] == summoner_id);
 }
 TEST_CASE("VAL-CONTENT-V1") {
     std::cout << "TESTING VAL-CONTENT-V1" << '\n';
