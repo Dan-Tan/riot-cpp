@@ -24,6 +24,8 @@
 
 
 
+#include <cpr/util.h>
+
 namespace riotcpp {
 namespace url {
     
@@ -79,33 +81,9 @@ namespace url {
             inline bool initialised() const {return initialised_;};
     };
 
-    inline bool need_percent_encode(const char chr) {
-        if ('@' < chr && chr < '[') {
-            return false;
-        } 
-        if ('`' < chr && chr < '{') {
-            return false;
-        }
-        if ('/' < chr && chr < ':') {
-            return false;
-        }
-        return true;
-    }
-
+    // Replaced with cpr::util::urlEncode
     inline int length_url_frag(const std::string& param) {
-        int n = param.size();
-        for (const char& chr : param) {
-            n += need_percent_encode(chr) * 2;
-        }
-        return n;
-    }
-
-    inline void to_hex(const char chr, char* encoded) {
-        static constexpr char tab[17] = "0123456789ABCDEF";
-        encoded[0] = '%';
-        encoded[1] = tab[(unsigned char) chr >> 4];
-        encoded[2] = tab[(unsigned char) chr & 0b00001111];
-        return;
+        return cpr::util::urlEncode(param).length();
     }
 
     inline int ndigits(u_int n) {
@@ -129,22 +107,13 @@ namespace url {
         return buff + len_n;
     }
     
-
+    // Replaced with cpr::util::urlEncode
     inline char* encode_write(const std::string& to_encode, char* to_write) {
-        int ind = 0;
-        const char* srt = to_encode.data();
-        const std::size_t l = to_encode.size();
-        for (int i = 0; i < l; i++) {
-            if (need_percent_encode(srt[i])) {
-                to_hex(srt[i], to_write + ind);
-                ind += 3;
-            }
-            else {
-                to_write[ind] = srt[i];
-                ind += 1;
-            }
-        }
-        return to_write + ind;
+        // Explicitly construct std::string from cpr's secure_string
+        const auto secure_encoded = cpr::util::urlEncode(to_encode);
+        const std::string encoded(secure_encoded.begin(), secure_encoded.end());
+        memcpy(to_write, encoded.c_str(), encoded.length());
+        return to_write + encoded.length();
     }
 
     typedef struct opt_count {

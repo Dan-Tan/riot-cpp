@@ -42,8 +42,8 @@ namespace riotcpp::rate {
     }
 
     bool RateHandler::initialise_counts(const query::RiotHeader& response_header) {
-        std::pair<std::vector<int>, std::vector<int>> duration_limits = extract_duration_limits_counts(response_header.app_limit);
-        std::pair<std::vector<int>, std::vector<int>> duration_counts = extract_duration_limits_counts(response_header.app_limit_count);
+        std::pair<std::vector<int>, std::vector<int>> duration_limits = extract_duration_limits(response_header.app_limit);
+        std::pair<std::vector<int>, std::vector<int>> duration_counts = extract_duration_limits(response_header.app_limit_count);
         std::vector<int> default_counts (duration_limits.first.size());
         for (int& count : default_counts) {
             count = 0;

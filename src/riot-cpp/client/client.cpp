@@ -79,7 +79,7 @@ namespace riotcpp::client {
 
         request->response_content->clear();
 
-        cpr::Response resp = cpr::Get(cpr::Url{request->url.get()}, this->header);
+        cpr::Response resp = cpr::Get(cpr::Url(request->url.get()), this->header);
 
         request->response_content->assign(resp.text.begin(), resp.text.end());
         request->last_response = resp.status_code;

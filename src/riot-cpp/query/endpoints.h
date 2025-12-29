@@ -30,7 +30,7 @@ namespace riotcpp::query {
     struct query {
         std::string method_key;
         args::routing route;
-        std::unique_ptr<char*> url;
+        std::unique_ptr<char[]> url;
         std::time_t send_time = 0;
         std::unique_ptr<std::vector<char>> response_content;
         RiotHeader response_header;
@@ -65,7 +65,7 @@ namespace riotcpp::query {
 
             bool validate_keywords(const std::pair<std::string, std::string>& opt_args...);
 
-            [[nodiscard]] std::unique_ptr<json_text> send_(const std::string& routing, std::unique_ptr<char*> url) const;
+            [[nodiscard]] std::unique_ptr<json_text> send_(const std::string& routing, std::unique_ptr<char[]> url) const;
 
         public:
             EndpointMethod(
@@ -93,7 +93,7 @@ namespace riotcpp::query {
     };
 
     template<url::OptArg T, typename...Args>
-    std::unique_ptr<json_text> EndpointMethod<T, Args...>::send_(const std::string& routing, std::unique_ptr<char*> url) const {
+    std::unique_ptr<json_text> EndpointMethod<T, Args...>::send_(const std::string& routing, std::unique_ptr<char[]> url) const {
         std::shared_ptr<query> new_request = std::make_shared<query>(this->method_key_,args::str_to_routing(routing), std::move(url)); 
         new_request->response_content = std::make_unique<json_text>();
         return (*this->get_)(new_request);
