@@ -6,44 +6,41 @@
 
 namespace riotcpp::rate {
 
-    static inline int chars_to_int(char nums[10], int num_digits) {
-        int to_return = 0;
-        for (int i = 0; i < num_digits; i++) {
-            to_return += ((int) (nums[i] - '0')) * (10^(num_digits - i - 1));  
-        }
-        return to_return;
-    }
-
     static std::pair<std::vector<int>, std::vector<int>> extract_duration_limits(const std::string& description) {
-        // this function assumes valid format of descriptor "20:1, 100:120"...
-        int num_digits = 0;
-        char nums[10];
-        bool limit_add = true;
-        std::vector<int> limit;
         std::vector<int> duration;
+        std::vector<int> limit;
 
-        for (const char& pos_digit : description) {
-            if (std::isdigit(pos_digit)) {
-                nums[num_digits] = pos_digit;
-            } else {
-                if (limit_add) {
-                    limit.push_back(chars_to_int(nums, num_digits));
-                } else {
-                    duration.push_back(chars_to_int(nums, num_digits));
-                }
-                limit_add = !limit_add;
-                num_digits = 0;
+        std::string::size_type current_pos = 0;
+
+        while (current_pos < description.length()) {
+            const std::string::size_type col_pos = description.find(':', current_pos);
+            if (col_pos == std::string::npos) {
+                break;
             }
+
+            const std::string::size_type com_pos = description.find(',', current_pos);
+
+            const std::string limit_str = description.substr(current_pos, col_pos - current_pos);
+
+            const std::string duration_str = (com_pos == std::string::npos) ?
+                description.substr(col_pos + 1) :
+                description.substr(col_pos + 1, com_pos - (col_pos + 1));
+
+            if (!limit_str.empty()) {
+                limit.push_back(std::stoi(limit_str));
+            }
+            if (!duration_str.empty()) {
+                limit.push_back(std::stoi(limit_str));
+            }
+
+            if (com_pos == std::string::npos) {
+                break;
+            }
+
+            current_pos = com_pos + 1;
         }
 
         return {duration, limit};
-    }
-
-    RateHierachy::RateHierachy(const int durations[], const int limits[], const int counts[], const unsigned size) {
-        this->hierachy_.reserve(size);
-        for (int i = 0; i < size; i++) {
-            this->hierachy_.push_back(ScopeCount(durations[i], limits[i], counts[i]));
-        }
     }
 
     RateHierachy::RateHierachy(const std::vector<int>& durations, const std::vector<int>& limits, const std::vector<int>& counts) {
@@ -51,7 +48,7 @@ namespace riotcpp::rate {
         rcp_assert(counts.size() == limits.size(), "Mismatched Count and Limit sized given");
         this->hierachy_.reserve(durations.size());
         for (int i = 0; i < durations.size(); i++) {
-            this->hierachy_.push_back(ScopeCount(durations[i], limits[i], counts[i]));
+            this->hierachy_.emplace_back(durations[i], limits[i], counts[i]);
         }
     }
 
@@ -63,7 +60,7 @@ namespace riotcpp::rate {
         this->hierachy_.reserve(size);
 
         for (int i = 0; i < size; i++) {
-            this->hierachy_.push_back(ScopeCount(description_limit.first[i], description_limit.second[i], 0));
+            this->hierachy_.emplace_back(description_limit.first[i], description_limit.second[i], 0);
         }
     }
 
@@ -71,7 +68,7 @@ namespace riotcpp::rate {
         rcp_assert(this->hierachy_.size() > 0, "Empty scope hierachy, check if initialised properly");
         const auto find_longest = [](int current_max, ScopeCount& next_scope){
             int next_wait = next_scope.get_wait_time();
-            return next_wait * (next_wait > current_max) + current_max * (next_wait <= current_max);
+            return (next_wait * (next_wait > current_max)) + (current_max * (next_wait <= current_max));
         };
         return std::accumulate(this->hierachy_.begin(), this->hierachy_.end(), 0, find_longest);
     }
@@ -83,10 +80,10 @@ namespace riotcpp::rate {
     }
 
     std::string RateHierachy::to_string() const {
-        std::stringstream ss;
-        for (auto& scope_count : this->hierachy_) {
-            ss << scope_count.to_string() << '\n';
+        std::stringstream rh_stream;
+        for (const auto& scope_count : this->hierachy_) {
+            rh_stream << scope_count.to_string() << '\n';
         }
-        return ss.str();
+        return rh_stream.str();
     }
 } // namespace riotcpp::rate

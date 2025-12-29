@@ -19,15 +19,13 @@ namespace riotcpp::rate {
 
         public:
 
-            RateHierachy(const int durations[], const int limits[], const int counts[], const unsigned size);
             RateHierachy(const std::vector<int>& durations, const std::vector<int>& limits, const std::vector<int>& counts);
-            // TODO: There shouldn't be a string constructor as the arguments may be invalid
             explicit RateHierachy(const std::string& description);
 
             int get_wait_time();
             void insert_request(unsigned server_time);
 
-            std::string to_string() const;
+            [[nodiscard]] std::string to_string() const;
     };
 
 } // namespace riotcpp::rate
