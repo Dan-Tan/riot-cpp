@@ -1,7 +1,6 @@
-
 #include "region_count.h"
-namespace riotcpp {
-namespace rate {
+
+namespace riotcpp::rate {
 
     int RegionCount::get_wait_time(const std::string& method_key) {
         int app_wait_time = this->app_limits_.get_wait_time();
@@ -32,13 +31,13 @@ namespace rate {
     }
 
     std::string RegionCount::to_string() const {
-        std::stringstream ss;
-        ss << "Application Limit\n " << this->app_limits_.to_string() << "Method Limits\n";
-        for (auto& key_pair : this->method_limits_) {
-            ss << key_pair.first;
-            ss << key_pair.second.to_string();
+        std::stringstream reg_stream;
+        reg_stream << "Application Limit\n " << this->app_limits_.to_string() << "Method Limits\n";
+        for (const auto& key_pair : this->method_limits_) {
+            reg_stream << key_pair.first;
+            reg_stream << key_pair.second.to_string();
         }
-        return ss.str();
+        return reg_stream.str();
     }
 
     void RegionCount::init_limits(const std::vector<int>& durations, const std::vector<int>& limits, const std::vector<int>& counts) {
@@ -50,5 +49,4 @@ namespace rate {
     }
 
 
-}
-}
+} // namespace riotcpp::rate

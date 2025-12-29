@@ -4,8 +4,7 @@
 
 #include "rate_hierachy.h"
 
-namespace riotcpp {
-namespace rate {
+namespace riotcpp::rate {
 
     static inline int chars_to_int(char nums[10], int num_digits) {
         int to_return = 0;
@@ -47,7 +46,7 @@ namespace rate {
         }
     }
 
-    RateHierachy::RateHierachy(const std::vector<int>& durations, const std::vector<int>& limits, const std::vector<int> counts) {
+    RateHierachy::RateHierachy(const std::vector<int>& durations, const std::vector<int>& limits, const std::vector<int>& counts) {
         rcp_assert(durations.size() == limits.size(), "Mismatched Duration and Limit sized given");
         rcp_assert(counts.size() == limits.size(), "Mismatched Count and Limit sized given");
         this->hierachy_.reserve(durations.size());
@@ -90,5 +89,4 @@ namespace rate {
         }
         return ss.str();
     }
-}
-}
+} // namespace riotcpp::rate

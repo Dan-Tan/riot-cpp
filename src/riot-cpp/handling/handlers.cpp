@@ -1,23 +1,28 @@
-#include <chrono>
-#include <iomanip>
-#include <thread>
-#include <vector>
 #include <ctime>
 #include <stdexcept>
-#include <queue>
-#include <unordered_map>
 #include "handlers.h"
 
-namespace riotcpp {
-namespace rate {
+#define SUCCESS                   200
+
+#define BAD_REQUEST               400
+#define UNAUTHORIZED              401
+#define FORBIDDEN                 403
+#define NOT_FOUND                 404
+#define UNSUPPORTED               415
+#define RATE_LIMIT_EXCEEDED       429
+
+#define INTERNAL_SERVER_ERROR     500
+#define SERVICE_UNAVAILABLE       503
+
+namespace riotcpp::rate {
 
     /**
      * Update server error tracker and indicate whether or not a request should be resent.
      * Return false to not resent and true to resend.
      */
     bool ResponseHandler::handle_server_error(const long response_code, const args::routing route) {
-        std::size_t ind = response_code == 500 ? 0 : 1; 
-        int limit = response_code == 500 ? this->MAX_INTERNAL_DENIALS : this->MAX_SERVICE_UNAVAILABLE;
+        std::size_t ind = response_code == INTERNAL_SERVER_ERROR ? 0 : 1; 
+        int limit = response_code == INTERNAL_SERVER_ERROR ? this->MAX_INTERNAL_DENIALS : this->MAX_SERVICE_UNAVAILABLE;
         switch (route.indicator) {
             case REGIONAL_INDICATOR:
                 this->region_errors[static_cast<int>(route.routng.reg)][ind] += 1;
@@ -51,17 +56,15 @@ namespace rate {
         }
     }
 
-    bool ResponseHandler::review_request(std::shared_ptr<query::query> request) {
+    bool ResponseHandler::review_request(const std::shared_ptr<query::query>& request) {
         long response_code = request->last_response;
-        if (response_code == 200 || response_code == -2 || response_code == 429) {
+        if (response_code == SUCCESS || response_code == -2 || response_code == RATE_LIMIT_EXCEEDED) {
             this->reset_server_error_count(request->route);
             return true;
-        } else if (response_code == 500) {
+        } 
+        if (response_code == INTERNAL_SERVER_ERROR) {
             return this->handle_server_error(response_code, request->route);
-        } else {
-            return false;
-        }
-        return true;
+        } 
+        return false;
     }
-}
-}
+} // namespace riotcpp::rate

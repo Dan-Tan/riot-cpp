@@ -7,8 +7,7 @@
 #include "../query/endpoints.h"
 #include "../types/args.h"
 
-namespace riotcpp {
-namespace rate {
+namespace riotcpp::rate {
     
     /**
      * All request sent by this client need to be approved by the rate limiter.
@@ -32,13 +31,12 @@ namespace rate {
              * @param (out) request if a wait is required the send_time field will be update the earliest time the request can be sent
              * @return true if request can be sent immediately, false the client should wait at least until send_time to send
              */
-            bool check_rate_limits(std::shared_ptr<query::query>);
+            bool check_rate_limits(const std::shared_ptr<query::query>&);
 
             /**
              * update the rate counts with a request. Counts are only incremented upon successful request
              * @param request that was sent 
              */
-            void insert_request(std::shared_ptr<query::query>);
+            void insert_request(const std::shared_ptr<query::query>&);
     };
-}
-}
+} // namespace riotcpp::rate

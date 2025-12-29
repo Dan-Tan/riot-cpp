@@ -1,19 +1,15 @@
 #pragma once
 
 #include <string>
-#include <vector>
-#include <queue>
 #include <chrono>
-#include <string_view>
-#include <unordered_map>
 
 #ifdef DEBUG_MODE
 #define rcp_assert(x, msg) if (!x) {std::cerr << "ASSERTION FAILED: " << msg << std::endl;}
 #else 
 #define rcp_assert(x, msg)
 #endif
-namespace riotcpp {
-namespace rate {
+
+namespace riotcpp::rate {
     
     /**
      * ScopeCount attempts to track the state of Riot's rate limiter to avoid breaching limits
@@ -41,7 +37,7 @@ namespace rate {
             inline int  get_wait_time();
             inline int  n_available();
 
-            std::string to_string() const;
+            [[nodiscard]] std::string to_string() const;
 
     };
   
@@ -102,6 +98,4 @@ namespace rate {
         ss << "Next Reset: " << this->next_reset_ << " Duration: " << this->duration_ << " Limit: " << this->limit_ << " Count: " << this->count_;
         return ss.str();
     }
-}
-
-}
+} // namespace riotcpp::rate

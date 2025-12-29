@@ -5,14 +5,13 @@
 #include <string>
 
 #include "rate_hierachy.h"
-namespace riotcpp {
-namespace rate {
+namespace riotcpp::rate {
 
     class RegionCount {
       
         private:
             RateHierachy app_limits_ = {{0}, {0}, {0}};
-            std::unordered_map<std::string, RateHierachy> method_limits_ {};
+            std::unordered_map<std::string, RateHierachy> method_limits_;
 
         public:
             RegionCount() = default;
@@ -34,5 +33,4 @@ namespace rate {
             std::string to_string() const;
 
     };
-}
-}
+} // namespace riotcpp::rate

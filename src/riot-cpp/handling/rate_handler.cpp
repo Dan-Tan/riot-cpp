@@ -2,12 +2,11 @@
 
 #include "rate_handler.h"
 
-namespace riotcpp {
-namespace rate {
+namespace riotcpp::rate {
 
     // STRING PARSING HELPERS
 
-    static inline int chars_to_int(char nums[10], int num_digits) {
+    static inline int chars_to_int(const char nums[10], int num_digits) {
         int to_return = 0;
         for (int i = 0; i < num_digits; i++) {
             to_return += ((int) (nums[i] - '0')) * (10^(num_digits - i - 1));  
@@ -24,7 +23,7 @@ namespace rate {
         std::vector<int> duration;
 
         for (const char& pos_digit : description) {
-            if (std::isdigit(pos_digit)) {
+            if (std::isdigit(pos_digit) != 0) {
                 nums[num_digits] = pos_digit;
             } else {
                 if (limit_add) {
@@ -46,8 +45,8 @@ namespace rate {
         std::pair<std::vector<int>, std::vector<int>> duration_limits = extract_duration_limits_counts(response_header.app_limit);
         std::pair<std::vector<int>, std::vector<int>> duration_counts = extract_duration_limits_counts(response_header.app_limit_count);
         std::vector<int> default_counts (duration_limits.first.size());
-        for (int i = 0; i < default_counts.size(); i++) {
-            default_counts[i] = 0;
+        for (int& count : default_counts) {
+            count = 0;
         }
         for (int i = 0; i < NUM_PLATFORMS; i++) {
             this->platform_counts[i].init_limits(duration_limits.first, duration_limits.second, default_counts);
@@ -61,7 +60,7 @@ namespace rate {
         return true;
     }
     
-    bool RateHandler::check_rate_limits(std::shared_ptr<query::query> request) {
+    bool RateHandler::check_rate_limits(const std::shared_ptr<query::query>& request) {
         if (!this->initialised) {
             return true; // we can only get information about the rate limit by making requests
         }
@@ -85,11 +84,9 @@ namespace rate {
         return false; 
     }
 
-    void RateHandler::insert_request(std::shared_ptr<query::query> request) {
+    void RateHandler::insert_request(const std::shared_ptr<query::query>& request) {
         if (!this->initialised) {
             this->initialised = this->initialise_counts(request->response_header);
         }
-        return;
     }
-}
-}
+} // namespace riotcpp::rate
