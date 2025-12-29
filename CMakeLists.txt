@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.18.4)
 project(RIOTAPICLIENT)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 IF (DEBUG_MODE)
     set(GCC_CXX_FLAGS ${GCC_CXX_FLAGS} "-static-libgcc -static-libstdc++ -static -ggdb3 -O0")
 ELSE(DEBUG_MODE)
@@ -17,8 +17,6 @@ IF (URL_TESTS)
     add_executable(url_tests test/url_tests.cpp)
     target_link_libraries(url_tests Catch2::Catch2WithMain)
 ENDIF(URL_TESTS)
-
-find_package(CURL)
 
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)

@@ -1,0 +1,8 @@
+Checks: >
+  -*,
+  google-*,
+  performance-*,
+  readability-*,
+  portability-*,
+  modernize-*
+HeaderFilterRegex: 'src/riot-cpp/.*'

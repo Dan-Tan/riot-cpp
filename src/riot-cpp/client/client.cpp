@@ -9,13 +9,13 @@
 #include <cpr/cpr.h>
 
 #include <fstream>
-#include <stdio.h>
+#include <cstdio>
 #include <queue>
 #include <regex>
 #include <cstring>
 #include "client.h"
-namespace riotcpp {
-namespace client {
+
+namespace riotcpp::client {
 
     using func_type = std::function<std::unique_ptr<json_text>(std::shared_ptr<query::query>)>;
 
@@ -38,14 +38,13 @@ namespace client {
             config.close();
             std::string match = base_match[0].str();
             return match.substr(0, match.size()-1);
-        } else {
-            config.close();
-            throw std::runtime_error("Configuration file does not exist or has unexpected format");
-        };
+        }
+        config.close();
+        throw std::runtime_error("Configuration file does not exist or has unexpected format");
     }
 
-    RiotApiClient::RiotApiClient(std::string path_to_config, std::string path_to_log, logging::LEVEL report_level, bool verbose_logging) : 
-        logger(path_to_log, report_level, verbose_logging),
+    RiotApiClient::RiotApiClient(const std::string& path_to_config, std::string&& path_to_log, logging::LEVEL report_level, bool verbose_logging) :
+        logger(std::move(path_to_log), report_level, verbose_logging),
         request_handler(&(this->logger)),
         endpoint_call(std::bind_front(&RiotApiClient::query, this)),
         Account(&this->endpoint_call),
@@ -71,15 +70,14 @@ namespace client {
         Val_Match(&this->endpoint_call),
         Val_Ranked(&this->endpoint_call),
         Val_Status(&this->endpoint_call) {
-        
+
         std::string api_key = extract_key(path_to_config);
         this->header = cpr::Header{{"X-RIOT-TOKEN", api_key}};
     }
 
-    RiotApiClient::~RiotApiClient() {
-    }
+    RiotApiClient::~RiotApiClient() = default;
 
-    bool RiotApiClient::get(std::shared_ptr<query::query> request) {
+    bool RiotApiClient::get(const std::shared_ptr<query::query>& request) {
 
         request->response_content->clear();
 
@@ -124,24 +122,22 @@ namespace client {
         return true;
     }
     static inline void wait_until(std::time_t send_time) {
-        const std::time_t c_time = std::time(NULL);
+        const std::time_t c_time = std::time(nullptr);
         std::time_t current_time = std::mktime(std::gmtime(&c_time));
         if (current_time >= send_time) {
             return;
-        } else {
-            std::this_thread::sleep_for(std::chrono::seconds(send_time - current_time));
-            return;
         }
+        std::this_thread::sleep_for(std::chrono::seconds(send_time - current_time));
     }
 
-    std::unique_ptr<json_text> RiotApiClient::query(std::shared_ptr<query::query> request) {
+    std::unique_ptr<json_text> RiotApiClient::query(const std::shared_ptr<query::query>& request) {
 
         this->logger << logging::LEVEL::DEBUG << "--Query Call--" << std::string(request->url.get()) << 0;
 
         while (this->request_handler.review_request(request)) {
             if (request->last_response == 200) {
                 return std::move(request->response_content);
-            } 
+            }
             if (!this->request_handler.validate_request(request)) {
                 this->logger << logging::LEVEL::WARNING << "Request sent was invalid or the server is unavailable" << 0;
                 throw std::runtime_error("Request sent was invalid or the server is unavailable");
@@ -151,8 +147,8 @@ namespace client {
             this->get(request);
         }
 
-        this->logger << logging::LEVEL::ERRORS << "Failed request" << request->method_key << request->last_response << 0; 
+        this->logger << logging::LEVEL::ERRORS << "Failed request" << request->method_key << request->last_response << 0;
         return std::move(request->response_content);
     }
 }
-}
+
