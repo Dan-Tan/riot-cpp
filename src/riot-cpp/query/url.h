@@ -11,7 +11,6 @@
 #include <ctime>
 #include <variant>
 #include <sstream>
-#include <curl/curl.h>
 
 #ifdef DEBUG_MODE
 #ifndef rcp_assert
@@ -480,14 +479,6 @@ namespace url {
     template<typename Arg, typename...Args>
     inline u_int length(const Arg& arg, const Args&...args) {
         return length_(arg) + length(args...);
-    }
-
-    // Replace with an implementation to avoid allocations
-    inline const std::string encode_params(const std::string& to_encode) {
-        char* encoded = curl_easy_escape(NULL, to_encode.c_str(), to_encode.length());
-        const std::string encoded_str(encoded);
-        curl_free(encoded);
-        return encoded_str;
     }
 
     template<std::size_t N, typename Arg>

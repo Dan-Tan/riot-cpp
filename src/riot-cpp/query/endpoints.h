@@ -12,7 +12,6 @@
 #include <ctime>
 #include <variant>
 #include <sstream>
-#include <curl/curl.h>
 
 #include "../types/args.h"
 #include "url.h"

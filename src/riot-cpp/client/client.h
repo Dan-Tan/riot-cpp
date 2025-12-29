@@ -1,6 +1,6 @@
 #pragma once
 
-#include <curl/curl.h>
+#include <cpr/cpr.h>
 #include <string>
 #include <sstream>
 #include <string_view>
@@ -58,8 +58,7 @@ namespace client {
             bool get(std::shared_ptr<query::query> request);
 
 
-            CURL* easy_handle = nullptr;
-            struct curl_slist *header = nullptr;
+            cpr::Header header;
     }; 
 }
 }

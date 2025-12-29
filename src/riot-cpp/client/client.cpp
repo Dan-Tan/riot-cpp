@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <functional>
 #include <iostream>
+#include <cpr/cpr.h>
 
 #include <fstream>
 #include <stdio.h>
@@ -70,99 +71,52 @@ namespace client {
         Val_Match(&this->endpoint_call),
         Val_Ranked(&this->endpoint_call),
         Val_Status(&this->endpoint_call) {
-        curl_global_init(CURL_GLOBAL_ALL);
-
-        // initialised libcurl handle and header
-        std::string api_key = extract_key(path_to_config);
-        this->header = curl_slist_append(header, (std::string("X-RIOT-TOKEN: ") + api_key).c_str());
         
-        this->easy_handle = curl_easy_init();
+        std::string api_key = extract_key(path_to_config);
+        this->header = cpr::Header{{"X-RIOT-TOKEN", api_key}};
     }
 
     RiotApiClient::~RiotApiClient() {
-        curl_slist_free_all(this->header);
-        curl_easy_cleanup(this->easy_handle);
-        curl_global_cleanup();
-    }
-
-    static size_t WriteCallBack(void* contents, size_t size, size_t nmemb, void* buffer) {
-        
-        size_t real_size = size * nmemb;
-        char *new_chars = (char *)contents;
-        
-        std::vector<char> *new_buffer = static_cast<std::vector<char>*>(buffer);
-        new_buffer->insert(new_buffer->end(), &new_chars[0], &new_chars[nmemb]);
-
-        return real_size;
-    }
-
-    static size_t WriteCallBack_header(char* buffer, size_t size, size_t nitems, void* user_data) { 
-        std::size_t real_size = nitems * size;
-
-        if (*buffer == 'H') {
-            return real_size;
-        }
-
-        query::RiotHeader* new_header = static_cast<query::RiotHeader*>(user_data);
-        char* write_field;
-
-        switch (buffer[0]) {
-            case 'D':
-                write_field = &new_header->date[0]; break;
-            case 'X':
-                switch (buffer[2]) {
-                    case 'A':
-                        write_field = buffer[17] == 'C' ? &new_header->app_limit_count[0] : &new_header->app_limit[0]; break;
-                    case 'M':
-                        write_field = buffer[20] == 'C' ? &new_header->method_limit_count[0] : &new_header->method_limit[0]; break;
-                    default:
-                        return real_size;
-                } break;
-            case 'R':
-                write_field = &new_header->retry_after[0]; break;
-            default: // can't be bother parsing headers we dont need/use
-                return real_size;
-        }
-
-        char* colon = std::find(buffer, buffer + nitems, ':');
-        if (colon == buffer + nitems) {
-            return real_size;
-        }
-
-        strncpy(write_field, colon+2, nitems - (std::size_t)(colon - buffer) - 4);
-        write_field[nitems - (std::size_t)(colon - buffer) - 4] = 0;
-        
-        return real_size;
     }
 
     bool RiotApiClient::get(std::shared_ptr<query::query> request) {
 
         request->response_content->clear();
 
-        curl_easy_setopt(this->easy_handle, CURLOPT_URL, request->url.get());
-        curl_easy_setopt(this->easy_handle, CURLOPT_HTTPGET, 1);
-        curl_easy_setopt(this->easy_handle, CURLOPT_HTTPHEADER, this->header);
+        cpr::Response r = cpr::Get(cpr::Url{request->url.get()}, this->header);
 
-        curl_easy_setopt(this->easy_handle, CURLOPT_WRITEFUNCTION, WriteCallBack);
-        curl_easy_setopt(this->easy_handle, CURLOPT_WRITEDATA, &(*request->response_content));
+        request->response_content->assign(r.text.begin(), r.text.end());
+        request->last_response = r.status_code;
 
-        curl_easy_setopt(this->easy_handle, CURLOPT_HEADERFUNCTION, WriteCallBack_header);
-        curl_easy_setopt(this->easy_handle, CURLOPT_HEADERDATA, &request->response_header);
-     
-        CURLcode res_ = curl_easy_perform(this->easy_handle);
-
-        if (res_ != CURLE_OK) {
-            this->logger << logging::LEVEL::CRITICAL << "CURL failed to send request" << 0;
-            request->last_response = -1; // CURL ERRORS
+        if (r.error) {
+            this->logger << logging::LEVEL::CRITICAL << "cpr failed to send request: " << r.error.message << 0;
+            request->last_response = -1; // CPR ERRORS
             return false;
         }
+
         // null terminant buffer for json parsing
         request->response_content->push_back(0);
 
+        // Extract headers
+        for (auto const& [key, val] : r.header) {
+            if (key == "Date") {
+                strncpy(request->response_header.date, val.c_str(), sizeof(request->response_header.date) - 1);
+            } else if (key == "X-App-Rate-Limit") {
+                strncpy(request->response_header.app_limit, val.c_str(), sizeof(request->response_header.app_limit) - 1);
+            } else if (key == "X-App-Rate-Limit-Count") {
+                strncpy(request->response_header.app_limit_count, val.c_str(), sizeof(request->response_header.app_limit_count) - 1);
+            } else if (key == "X-Method-Rate-Limit") {
+                strncpy(request->response_header.method_limit, val.c_str(), sizeof(request->response_header.method_limit) - 1);
+            } else if (key == "X-Method-Rate-Limit-Count") {
+                strncpy(request->response_header.method_limit_count, val.c_str(), sizeof(request->response_header.method_limit_count) - 1);
+            } else if (key == "Retry-After") {
+                strncpy(request->response_header.retry_after, val.c_str(), sizeof(request->response_header.retry_after) - 1);
+            }
+        }
+
+
         this->logger << logging::LEVEL::DEBUG << request->response_header << 0;
 
-        curl_easy_getinfo(this->easy_handle, CURLINFO_RESPONSE_CODE, &(request->last_response));
-        
         if (request->last_response == 200) { // only parse content to json if request was successful
             this->logger << logging::LEVEL::DEBUG << "Query Successful" << 0;
         }

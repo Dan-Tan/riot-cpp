@@ -18,13 +18,24 @@ IF (URL_TESTS)
     target_link_libraries(url_tests Catch2::Catch2WithMain)
 ENDIF(URL_TESTS)
 
+find_package(CURL)
+
+include(FetchContent)
+set(FETCHCONTENT_QUIET FALSE)
+FetchContent_Declare(
+    cpr
+    GIT_REPOSITORY https://github.com/libcpr/cpr.git
+    GIT_TAG 1.10.5
+)
+FetchContent_MakeAvailable(cpr)
+
 add_subdirectory(src/riot-cpp)
 
 target_compile_options(riot-cpp PRIVATE -fsanitize=address -static-libasan)
 target_link_options(riot-cpp PRIVATE -fsanitize=address -static-libasan)
 
 add_executable(client_tests test/client_tests.cpp)
-target_link_libraries(client_tests riot-cpp)
+target_link_libraries(client_tests riot-cpp cpr::cpr)
 target_link_libraries(client_tests Catch2::Catch2)
 
 target_compile_options(client_tests PRIVATE -fsanitize=address -static-libasan)
