@@ -9,7 +9,7 @@ Simple Api client for the Riot Games Resful API implemented in C++ 20.
 
 This library implements rate limiting to prevent api key blacklisting from exceeding Riot's rate limits. The library handles server response error's and will retry when a successful request is possible (429, 500, 503 errors). The client contains a logging class to help with debugging dependent code as well as providing information of the running of the client. Riot-cpp will adapt to the specific api key's rate limits after the first request and try to recover from errors.
 
-Riot-cpp uses [libcurl](https://curl.se/libcurl/) to send https get requests. The Json parser [simdjson](https://github.com/simdjson/simdjson) is used as a dependency for testing but NOT in the library. Parsing is done by the user.
+Riot-cpp uses [cpr](https://github.com/libcpr/cpr) (C++ Requests, which is built on top of libcurl) to send https get requests. The Json parser [simdjson](https://github.com/simdjson/simdjson) is used as a dependency for testing but NOT in the library. Parsing is done by the user.
 
 Documentation is located at following page.
 
@@ -60,13 +60,13 @@ git submodule add git+https://github.com/Dan-Tan/riot-cpp.git
 ```
 ### Option 1: CMake
 
-Linking to executable or library
+The recommended way to use riot-cpp in your project is by adding it as a submodule. This ensures that cpr and other dependencies are handled automatically via CMake's FetchContent.
 
 ```cmake
 add_subdirectory(<path/to/riot-cpp/src>)
-target_include_directories(<your library or executable> <PRIVATE/PUBLIC> <path/to/riot-cpp/src/riot-cpp>)
-target_link_libraries(<your library or executable> <PRIVATE/PUBLIC> riot-cpp)
+target_link_libraries(<your library or executable> PRIVATE riot-cpp)
 ```
+You don't need to explicitly link cpr as it is handled internally by riot-cpp's CMake configuration.
 
 ### Option 2: Manually with libriot-cpp.
 
