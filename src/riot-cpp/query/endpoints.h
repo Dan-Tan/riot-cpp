@@ -16,28 +16,27 @@
 #include "../types/args.h"
 #include "url.h"
 
-namespace riotcpp {
-namespace query {
+namespace riotcpp::query {
     
-    typedef struct RiotHeader { // default to extremely slow rate limit successful requests will overwrite these
-        char date[32];          // users with invalid api keys will only be able to send a request every 2 minutes
-        char app_limit[64]          = "1:120";
-        char app_limit_count[64]    = "1:120";
-        char method_limit[64]       = "1:120";
-        char method_limit_count[64] = "1:120";
-        char retry_after[4];
-    } RiotHeader;
+    struct RiotHeader { // default to extremely slow rate limit successful requests will overwrite these
+        std::string date;          // users with invalid api keys will only be able to send a request every 2 minutes
+        std::string app_limit          = "1:120";
+        std::string app_limit_count    = "1:120";
+        std::string method_limit       = "1:120";
+        std::string method_limit_count = "1:120";
+        std::string retry_after;
+    };
 
-    typedef struct query {
+    struct query {
         std::string method_key;
         args::routing route;
-        std::unique_ptr<char[]> url;
+        std::unique_ptr<char*> url;
         std::time_t send_time = 0;
         std::unique_ptr<std::vector<char>> response_content;
         RiotHeader response_header;
         int last_response = -2;
         int server_error_count;
-    } query;
+    };
 
     using json_text = std::vector<char>;
     using query_fp = std::function<std::unique_ptr<json_text>(std::shared_ptr<query>)>*;
@@ -66,7 +65,7 @@ namespace query {
 
             bool validate_keywords(const std::pair<std::string, std::string>& opt_args...);
 
-            std::unique_ptr<json_text> send_(const std::string& routing, std::unique_ptr<char[]> url) const;
+            [[nodiscard]] std::unique_ptr<json_text> send_(const std::string& routing, std::unique_ptr<char*> url) const;
 
         public:
             EndpointMethod(
@@ -94,18 +93,18 @@ namespace query {
     };
 
     template<url::OptArg T, typename...Args>
-    std::unique_ptr<json_text> EndpointMethod<T, Args...>::send_(const std::string& routing, std::unique_ptr<char[]> url) const {
+    std::unique_ptr<json_text> EndpointMethod<T, Args...>::send_(const std::string& routing, std::unique_ptr<char*> url) const {
         std::shared_ptr<query> new_request = std::make_shared<query>(this->method_key_,args::str_to_routing(routing), std::move(url)); 
         new_request->response_content = std::make_unique<json_text>();
         return (*this->get_)(new_request);
     }
 
-    typedef struct Endpoint {
+    struct Endpoint {
         const std::string url_base_;
-    } Endpoint;
+    };
 
-    typedef struct Account_v1 : public Endpoint {
-        Account_v1(query_fp get) 
+    struct Account_v1 : public Endpoint {
+        explicit Account_v1(query_fp get) 
             : Endpoint("/riot/account/v1"), 
               by_puuid        (get, url_base_, "Account-v1-by-puuid", {"/accounts/by-puuid/"}),
               by_riot_id      (get, url_base_, "Acccount-v1-by-riot-id", {"/accounts/by-riot-id/", "/"}),
@@ -114,10 +113,10 @@ namespace query {
         const EndpointMethod<url::no_opt, std::string> by_puuid;
         const EndpointMethod<url::no_opt, std::string, std::string> by_riot_id;
         const EndpointMethod<url::no_opt, std::string, std::string> by_game_by_puuid;
-    } Account_v1;
+    };
 
-    typedef struct Champion_Mastery_v4 : public Endpoint {
-        Champion_Mastery_v4(query_fp get)
+    struct Champion_Mastery_v4 : public Endpoint {
+        explicit Champion_Mastery_v4(query_fp get)
             : Endpoint("/lol/champion-mastery/v4"), 
               by_puuid            (get, url_base_, "Champion-Mastery-v4-by-puuid",             {"/champion-masteries/by-puuid/"}), 
               by_puuid_by_champion(get, url_base_, "Champion-Mastery-v4-by-puuid-by-champion", {"/champion-masteries/by-puuid/", "/by-champion/"}),
@@ -128,18 +127,18 @@ namespace query {
         const EndpointMethod<url::no_opt, std::string, int> by_puuid_by_champion;
         const EndpointMethod<url::opt_count, std::string> by_puuid_top;
         const EndpointMethod<url::no_opt, std::string> scores_by_puuid;
-    } Champion_Mastery_v4;
+    };
 
-    typedef struct Champion_v3 : public Endpoint {
-        Champion_v3(query_fp get)
+    struct Champion_v3 : public Endpoint {
+        explicit Champion_v3(query_fp get)
             : Endpoint("/lol/platform/v3"),
               champion_rotations(get, url_base_, "Champion-v3=champion-rotations", {}, "/champion-rotations") {};
 
         const EndpointMethod<url::no_opt> champion_rotations;
-    } Champion_v3;
+    };
 
-    typedef struct Clash_v1 : public Endpoint{
-        Clash_v1(query_fp get)
+    struct Clash_v1 : public Endpoint{
+        explicit Clash_v1(query_fp get)
             : Endpoint("/lol/clash/v1"),
               by_summoner_id     (get, url_base_, "Clash-v1-by-summoner-id",   {"/players/by-summoner/"}),
               teams              (get, url_base_, "Clash-v1-teams",            {"/teams/"}),
@@ -152,18 +151,18 @@ namespace query {
         const EndpointMethod<url::no_opt> tournaments;
         const EndpointMethod<url::no_opt, std::string> tournaments_by_team;
         const EndpointMethod<url::no_opt, int> tournaments_by_id;
-    } Clash_v1;
+    };
 
-    typedef struct League_exp_v4 : public Endpoint {
-        League_exp_v4(query_fp get)
+    struct League_exp_v4 : public Endpoint {
+        explicit League_exp_v4(query_fp get)
             : Endpoint("/lol/league-exp/v4"),
               entries(get, url_base_, "League-exp-v4-entries", {"/entries/", "/", "/"}) {};
 
         const EndpointMethod<url::opt_page, std::string, std::string, std::string> entries;
-    } League_exp_v4;
+    };
 
-    typedef struct League_v4 : public Endpoint {
-        League_v4(query_fp get)
+    struct League_v4 : public Endpoint {
+        explicit League_v4(query_fp get)
             : Endpoint("/lol/league/v4"),
               challenger    (get, url_base_, "League-v4-challenger", {"/challengerleagues/by-queue/"}),
               by_puuid(get, url_base_, "League-v4-by-puuid", {"/entries/by-puuid/"}),
@@ -178,10 +177,10 @@ namespace query {
         const EndpointMethod<url::no_opt, std::string> grandmaster;
         const EndpointMethod<url::no_opt, std::string> by_league_id;
         const EndpointMethod<url::no_opt, std::string> master;       
-    } League_v4;
+    };
 
-    typedef struct Lol_Challenges_v1 : public Endpoint {
-        Lol_Challenges_v1(query_fp get)
+    struct Lol_Challenges_v1 : public Endpoint {
+        explicit Lol_Challenges_v1(query_fp get)
             : Endpoint("/lol/challenges/v1"),
               config                     (get, url_base_, "Lol-Challenges-config",                      {}, "/challenges/config"),
               percentiles                (get, url_base_, "Lol-Challenges-percentilejs",                {}, "/challenges/percentiles"),
@@ -196,44 +195,44 @@ namespace query {
         const EndpointMethod<url::opt_limit, std::string, std::size_t> leaderboards_by_id_by_level;
         const EndpointMethod<url::no_opt, std::size_t> percentiles_by_id;
         const EndpointMethod<url::no_opt, std::string> player_data_by_puuid;      
-    } Lol_Challenges_v1;
+    };
 
-    typedef struct Lol_Status_v4 : public Endpoint {
-        Lol_Status_v4(query_fp get)
+    struct Lol_Status_v4 : public Endpoint {
+        explicit Lol_Status_v4(query_fp get)
             : Endpoint("/lol/status/v4"),
               status(get, url_base_, "Lol-Status-v4-status", {}, "/platform-data") {};
 
         const EndpointMethod<url::no_opt> status;
-    } Lol_Status_v4;
+    };
 
-    typedef struct Lor_Match_v1 : public Endpoint {
-        Lor_Match_v1(query_fp get)
+    struct Lor_Match_v1 : public Endpoint {
+        explicit Lor_Match_v1(query_fp get)
             : Endpoint("/lor/match/v1"),
               by_puuid   (get, url_base_, "Lor-Match-v1-by-puuid",    {"/matches/by-puuid/"}, "/ids"),
               by_match_id(get, url_base_, "Lor-Match-v1-by-match-id", {"/matches/"}) {};
 
         const EndpointMethod<url::no_opt, std::string> by_puuid;
         const EndpointMethod<url::no_opt, std::string> by_match_id;
-    } Lor_Match_v1;
+    };
 
-    typedef struct Lor_Ranked_v1 : public Endpoint {
-        Lor_Ranked_v1(query_fp get)
+    struct Lor_Ranked_v1 : public Endpoint {
+        explicit Lor_Ranked_v1(query_fp get)
             : Endpoint("/lor/ranked/v1"),
               leaderboards(get, url_base_, "Lor-Ranked-v1-leaderboards", {}, "/leaderboards") {};
 
         const EndpointMethod<url::no_opt> leaderboards;
-    } Lor_Ranked_v1;
+    };
 
-    typedef struct Lor_Status_v1 : public Endpoint {
-        Lor_Status_v1(query_fp get)
+    struct Lor_Status_v1 : public Endpoint {
+        explicit Lor_Status_v1(query_fp get)
             : Endpoint("/lor/status/v1"),
               status(get, url_base_, "Lor-Status-v1", {}, "/platform-data"){};
 
         const EndpointMethod<url::no_opt> status;
-    } Lor_Status_v1;
+    };
 
-    typedef struct Match_v5 : public Endpoint {
-        Match_v5(query_fp get)
+    struct Match_v5 : public Endpoint {
+        explicit Match_v5(query_fp get)
             : Endpoint("/lol/match/v5"),
               by_puuid            (get, url_base_, "Match-v5-by-puuid",             {"/matches/by-puuid/"}, "/ids"),
               by_match_id         (get, url_base_, "Match-v5-by-match-id",          {"/matches/"}),
@@ -242,36 +241,36 @@ namespace query {
         const EndpointMethod<url::opt_match_history, std::string> by_puuid;
         const EndpointMethod<url::no_opt, std::string> by_match_id;
         const EndpointMethod<url::no_opt, std::string> timeline_by_match_id;
-    } Match_v5;
+    };
 
-    typedef struct Spectator_Tft_v5 : public Endpoint {
-        Spectator_Tft_v5(query_fp get)
+    struct Spectator_Tft_v5 : public Endpoint {
+        explicit Spectator_Tft_v5(query_fp get)
             : Endpoint("/lol/spectator/tft/v5"),
               by_puuid(get, url_base_, "Spectator-Tft-v5-by-puuid", {"/active-games/by-puuid/"}),
               featured(get, url_base_, "Spectator-Tft-v5=featured", {}, "/featured-games") {};
 
         const EndpointMethod<url::no_opt, std::string> by_puuid;
         const EndpointMethod<url::no_opt> featured;
-    } Spectator_Tft_v5;
+    };
 
-    typedef struct Spectator_v5 : public Endpoint {
-        Spectator_v5(query_fp get)
+    struct Spectator_v5 : public Endpoint {
+        explicit Spectator_v5(query_fp get)
             : Endpoint("/lol/spectator/v5"),
               by_summoner(get, url_base_, "Spectator-v5-by-summoner-id", {"/active-games/by-summoner/"}) {};
 
         const EndpointMethod<url::no_opt, std::string> by_summoner;
-    } Spectator_v5;
+    };
 
-    typedef struct Summoner_v4 : public Endpoint {
-        Summoner_v4(query_fp get)
+    struct Summoner_v4 : public Endpoint {
+        explicit Summoner_v4(query_fp get)
             : Endpoint("/lol/summoner/v4"),
               by_puuid (get, url_base_, "Summoner-v4-by-puuid", {"/summoners/by-puuid/"}) {};
 
         const EndpointMethod<url::no_opt, std::string> by_puuid;
-    } Summoner_v4;
+    };
 
-    typedef struct Tft_League_v1 : public Endpoint {
-        Tft_League_v1(query_fp get)
+    struct Tft_League_v1 : public Endpoint {
+        explicit Tft_League_v1(query_fp get)
             : Endpoint("/tft/league/v1"),
               challenger  (get, url_base_, "Tft-League-v1-challenger",   {}, "/challenger"),
               by_puuid    (get, url_base_, "Tft-League-v1-by-puuid",     {"/by-puuid/"}),
@@ -288,44 +287,44 @@ namespace query {
         const EndpointMethod<url::no_opt, std::string> by_league_id;
         const EndpointMethod<url::opt_queue> master;
         const EndpointMethod<url::no_opt, std::string> top_by_queue;
-    } Tft_League_v1;
+    };
 
-    typedef struct Tft_Match_v1 : public Endpoint {
-        Tft_Match_v1(query_fp get)
+    struct Tft_Match_v1 : public Endpoint {
+        explicit Tft_Match_v1(query_fp get)
             : Endpoint("/tft/match/v1"),
               by_puuid(   get, url_base_, "Tft-Match-v1-by-puuid",    {"/matches/by-puuid/"}, "/ids"),
               by_match_id(get, url_base_, "Tft-Match-v1-by-match-id", {"/matches/"}) {};
 
         const EndpointMethod<url::opt_tft_match_history, std::string> by_puuid;
         const EndpointMethod<url::no_opt, std::string> by_match_id;
-    } Tft_Match_v1;
+    };
 
-    typedef struct Tft_Status_v1 : public Endpoint {
-        Tft_Status_v1(query_fp get)
+    struct Tft_Status_v1 : public Endpoint {
+        explicit Tft_Status_v1(query_fp get)
             : Endpoint("/tft/status/v1"),
               status(get, url_base_, "Tft-Status-v1-status", {}, "/platform-data") {};
 
         const EndpointMethod<url::no_opt> status;
-    } Tft_Status_v1;
+    };
 
-    typedef struct Tft_Summoner_v1 : public Endpoint {
-        Tft_Summoner_v1(query_fp get)
+    struct Tft_Summoner_v1 : public Endpoint {
+        explicit Tft_Summoner_v1(query_fp get)
             : Endpoint("/tft/summoner/v1"),
               by_puuid      (get, url_base_, "Tft-Summoner-v1-by-puuid",       {"/summoners/by-puuid/"}) {};
 
         const EndpointMethod<url::no_opt, std::string> by_puuid;
-    } Tft_Summoner_v1;
+    };
 
-    typedef struct Val_Content_v1 : public Endpoint {
-        Val_Content_v1(query_fp get)
+    struct Val_Content_v1 : public Endpoint {
+        explicit Val_Content_v1(query_fp get)
             : Endpoint("/val/content/v1"),
               contents(get, url_base_, "Val-Content-v1-contents", {}, "/contents") {};
 
         const EndpointMethod<url::opt_locale> contents; 
-    } Val_Content_v1;
+    };
 
-    typedef struct Val_Match_v1 : public Endpoint {
-        Val_Match_v1(query_fp get)
+    struct Val_Match_v1 : public Endpoint {
+        explicit Val_Match_v1(query_fp get)
             : Endpoint("/val/match/v1"),
               by_match_id    (get, url_base_, "Val-Match-v1-by-match-id",     {"/matches/"}), 
               by_puuid       (get, url_base_, "Val-Match-v1-by-puuid",        {"/matches/by-puuid/"}),
@@ -334,22 +333,21 @@ namespace query {
         const EndpointMethod<url::no_opt, std::string> by_match_id;
         const EndpointMethod<url::no_opt, std::string> by_puuid;
         const EndpointMethod<url::no_opt, std::string> recent_by_queue;
-    } Val_Match_v1;
+    };
 
-    typedef struct Val_Ranked_v1 : public Endpoint {
-        Val_Ranked_v1(query_fp get)
+    struct Val_Ranked_v1 : public Endpoint {
+        explicit Val_Ranked_v1(query_fp get)
             : Endpoint("/val/ranked/v1"),
               leaderboards_by_act(get, url_base_, "Val-Ranked-v1-leaderbords-by-act", {"/leaderboards/by-act/"}) {};
 
         const EndpointMethod<url::opt_start_size, std::string> leaderboards_by_act; 
-    } Val_Ranked_v1;
+    };
 
-    typedef struct Val_Status_v1 : public Endpoint {
-        Val_Status_v1(query_fp get)
+    struct Val_Status_v1 : public Endpoint {
+        explicit Val_Status_v1(query_fp get)
             : Endpoint("/val/status/v1"),
               status(get, url_base_, "Val-Status-v1-status", {}, "/platform-data") {};
 
         const EndpointMethod<url::no_opt> status;
-    } Val_Status_v1;
-}
-}
+    };
+} // namespace riotcpp::query

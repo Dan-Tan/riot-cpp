@@ -96,17 +96,17 @@ namespace riotcpp::client {
         // Extract headers
         for (auto const& [key, val] : resp.header) {
             if (key == "Date") {
-                strncpy(request->response_header.date, val.c_str(), sizeof(request->response_header.date) - 1);
+                request->response_header.date = val;
             } else if (key == "X-App-Rate-Limit") {
-                strncpy(request->response_header.app_limit, val.c_str(), sizeof(request->response_header.app_limit) - 1);
+                request->response_header.app_limit = val;
             } else if (key == "X-App-Rate-Limit-Count") {
-                strncpy(request->response_header.app_limit_count, val.c_str(), sizeof(request->response_header.app_limit_count) - 1);
+                request->response_header.app_limit_count = val;
             } else if (key == "X-Method-Rate-Limit") {
-                strncpy(request->response_header.method_limit, val.c_str(), sizeof(request->response_header.method_limit) - 1);
+                request->response_header.method_limit = val;
             } else if (key == "X-Method-Rate-Limit-Count") {
-                strncpy(request->response_header.method_limit_count, val.c_str(), sizeof(request->response_header.method_limit_count) - 1);
+                request->response_header.method_limit_count = val;
             } else if (key == "Retry-After") {
-                strncpy(request->response_header.retry_after, val.c_str(), sizeof(request->response_header.retry_after) - 1);
+                request->response_header.retry_after = val;
             }
         }
 

@@ -4,42 +4,42 @@
 
 namespace riotcpp::rate {
 
-    // STRING PARSING HELPERS
-
-    static inline int chars_to_int(const char nums[10], int num_digits) {
-        int to_return = 0;
-        for (int i = 0; i < num_digits; i++) {
-            to_return += ((int) (nums[i] - '0')) * (10^(num_digits - i - 1));  
-        }
-        return to_return;
-    }
-
-    static std::pair<std::vector<int>, std::vector<int>> extract_duration_limits_counts(const std::string& description) {
-        // this function assumes valid format of descriptor "20:1, 100:120"...
-        int num_digits = 0;
-        char nums[10];
-        bool limit_add = true;
-        std::vector<int> limit;
+    static std::pair<std::vector<int>, std::vector<int>> extract_duration_limits(const std::string& description) {
         std::vector<int> duration;
+        std::vector<int> limit;
 
-        for (const char& pos_digit : description) {
-            if (std::isdigit(pos_digit) != 0) {
-                nums[num_digits] = pos_digit;
-            } else {
-                if (limit_add) {
-                    limit.push_back(chars_to_int(nums, num_digits));
-                } else {
-                    duration.push_back(chars_to_int(nums, num_digits));
-                }
-                limit_add = !limit_add;
-                num_digits = 0;
+        std::string::size_type current_pos = 0;
+
+        while (current_pos < description.length()) {
+            const std::string::size_type col_pos = description.find(':', current_pos);
+            if (col_pos == std::string::npos) {
+                break;
             }
+
+            const std::string::size_type com_pos = description.find(',', current_pos);
+
+            const std::string limit_str = description.substr(current_pos, col_pos - current_pos);
+
+            const std::string duration_str = (com_pos == std::string::npos) ?
+                description.substr(col_pos + 1) :
+                description.substr(col_pos + 1, com_pos - (col_pos + 1));
+
+            if (!limit_str.empty()) {
+                limit.push_back(std::stoi(limit_str));
+            }
+            if (!duration_str.empty()) {
+                limit.push_back(std::stoi(limit_str));
+            }
+
+            if (com_pos == std::string::npos) {
+                break;
+            }
+
+            current_pos = com_pos + 1;
         }
 
         return {duration, limit};
     }
-
-    // CLASS DEFINITION
 
     bool RateHandler::initialise_counts(const query::RiotHeader& response_header) {
         std::pair<std::vector<int>, std::vector<int>> duration_limits = extract_duration_limits_counts(response_header.app_limit);
