@@ -4,5 +4,6 @@ Checks: >
   performance-*,
   readability-*,
   portability-*,
-  modernize-*
+  modernize-*,
+  -modernize-use-trailing-return-type
 HeaderFilterRegex: 'src/riot-cpp/.*'

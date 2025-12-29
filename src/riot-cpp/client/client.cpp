@@ -2,7 +2,6 @@
 #include <memory>
 #include <thread>
 #include <ctime>
-#include <algorithm>
 #include <stdexcept>
 #include <functional>
 #include <iostream>
@@ -10,7 +9,6 @@
 
 #include <fstream>
 #include <cstdio>
-#include <queue>
 #include <regex>
 #include <cstring>
 #include "client.h"
@@ -81,13 +79,13 @@ namespace riotcpp::client {
 
         request->response_content->clear();
 
-        cpr::Response r = cpr::Get(cpr::Url{request->url.get()}, this->header);
+        cpr::Response resp = cpr::Get(cpr::Url{request->url.get()}, this->header);
 
-        request->response_content->assign(r.text.begin(), r.text.end());
-        request->last_response = r.status_code;
+        request->response_content->assign(resp.text.begin(), resp.text.end());
+        request->last_response = resp.status_code;
 
-        if (r.error) {
-            this->logger << logging::LEVEL::CRITICAL << "cpr failed to send request: " << r.error.message << 0;
+        if (resp.error) {
+            this->logger << logging::LEVEL::CRITICAL << "cpr failed to send request: " << resp.error.message << 0;
             request->last_response = -1; // CPR ERRORS
             return false;
         }
@@ -96,7 +94,7 @@ namespace riotcpp::client {
         request->response_content->push_back(0);
 
         // Extract headers
-        for (auto const& [key, val] : r.header) {
+        for (auto const& [key, val] : resp.header) {
             if (key == "Date") {
                 strncpy(request->response_header.date, val.c_str(), sizeof(request->response_header.date) - 1);
             } else if (key == "X-App-Rate-Limit") {
@@ -150,5 +148,5 @@ namespace riotcpp::client {
         this->logger << logging::LEVEL::ERRORS << "Failed request" << request->method_key << request->last_response << 0;
         return std::move(request->response_content);
     }
-}
+} // namespace riotcpp::client
 

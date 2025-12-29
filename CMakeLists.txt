@@ -23,10 +23,16 @@ set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(
     cpr
     GIT_REPOSITORY https://github.com/libcpr/cpr.git
-    GIT_TAG 1.10.5
+    GIT_TAG 1.14.1
 )
 FetchContent_MakeAvailable(cpr)
 
+FetchContent_Declare(
+    spdlog
+    GIT_REPOSITORY https://github.com/gabime/spdlog
+    GIT_TAG v1.16.0
+)
+FetchContent_MakeAvailable(spdlog)
 add_subdirectory(src/riot-cpp)
 
 target_compile_options(riot-cpp PRIVATE -fsanitize=address -static-libasan)
