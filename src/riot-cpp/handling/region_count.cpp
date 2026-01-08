@@ -1,4 +1,5 @@
 #include "region_count.h"
+#include "../logging/logger.h"
 
 namespace riotcpp::rate {
 
@@ -15,19 +16,22 @@ namespace riotcpp::rate {
         return std::max(app_wait_time, method_wait_time);
     }
 
-    void RegionCount::insert_request(unsigned server_time, const std::string& method_key, const std::string& method_limits) {
+    void RegionCount::insert_request(long query_id, unsigned server_time, const std::string& method_key, const std::string& method_limits) {
         this->app_limits_.insert_request(server_time);
         
         // if exists insert else construct and insert
         auto method_hierachy = this->method_limits_.find(method_key);
         if (method_hierachy != this->method_limits_.end()) {
+            logging::get()->debug("[Query {}] Incrementing request count for app limit and method '{}'", query_id, method_key);
             method_hierachy->second.insert_request(server_time);
             return;
         } 
-
+        
+        logging::get()->debug("[Query {}] Discovered new method limit for '{}': {}", query_id, method_key, method_limits);
+        logging::get()->debug("[Query {}] Incrementing request count for app limit and method '{}'", query_id, method_key);
         RateHierachy new_hierachy = RateHierachy(method_limits);
         new_hierachy.insert_request(server_time);
-        this->method_limits_.insert_or_assign(method_key, RateHierachy(method_limits));
+        this->method_limits_.insert_or_assign(method_key, new_hierachy);
     }
 
     std::string RegionCount::to_string() const {

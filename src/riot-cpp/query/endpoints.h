@@ -15,6 +15,7 @@
 #include <set>
 #include <stdexcept>
 #include <utility>
+#include <atomic>
 
 #include "../types/args.h"
 #include "url.h"
@@ -30,17 +31,20 @@ namespace riotcpp::query {
         std::string retry_after;
     };
 
+    static std::atomic<long> next_query_id{0};
+
     struct query {
         std::string method_key;
         args::routing route;
         std::string url;
+        long query_id;
         std::time_t send_time = 0;
         std::unique_ptr<std::vector<char>> response_content;
         RiotHeader response_header;
         int last_response = -2;
         int server_error_count;
 
-        explicit query(args::routing r) : route(std::move(r)) {}
+        explicit query(args::routing r) : route(std::move(r)), query_id(next_query_id++) {}
     };
 
     using json_text = std::vector<char>;

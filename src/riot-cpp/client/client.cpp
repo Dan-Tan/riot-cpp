@@ -80,13 +80,13 @@ namespace riotcpp::client {
         request->response_content->clear();
 
         cpr::Response resp = cpr::Get(cpr::Url(request->url), this->header);
-        riotcpp::logging::log_headers("Response Headers", resp.header);
+        riotcpp::logging::log_headers(request->query_id, "Response Headers", resp.header);
 
         request->response_content->assign(resp.text.begin(), resp.text.end());
         request->last_response = resp.status_code;
 
         if (resp.error) {
-            riotcpp::logging::get()->critical("cpr failed to send request: {}", resp.error.message);
+            riotcpp::logging::get()->critical("[Query {}] cpr failed to send request: {}", request->query_id, resp.error.message);
             request->last_response = -1; // CPR ERRORS
             return false;
         }
@@ -112,7 +112,7 @@ namespace riotcpp::client {
         }
 
         if (request->last_response == 200) { // only parse content to json if request was successful
-            riotcpp::logging::get()->debug("Query Successful");
+            riotcpp::logging::get()->info("[Query {}] Request for method '{}' successful (200 OK)", request->query_id, request->method_key);
         }
 
         return true;
@@ -128,22 +128,22 @@ namespace riotcpp::client {
 
     std::unique_ptr<json_text> RiotApiClient::query(const std::shared_ptr<query::query>& request) {
 
-        riotcpp::logging::get()->debug("--Query Call-- {}", request->url);
+        riotcpp::logging::get()->info("[Query {}] Sending GET request for method '{}' to '{}'", request->query_id, request->method_key, request->url);
 
         while (this->request_handler.review_request(request)) {
             if (request->last_response == 200) {
                 return std::move(request->response_content);
             }
             if (!this->request_handler.validate_request(request)) {
-                riotcpp::logging::get()->warn("Request sent was invalid or the server is unavailable");
+                riotcpp::logging::get()->warn("[Query {}] Request sent was invalid or the server is unavailable", request->query_id);
                 throw std::runtime_error("Request sent was invalid or the server is unavailable");
             }
-            riotcpp::logging::get()->debug("Request Validated");
+            riotcpp::logging::get()->debug("[Query {}] Request Validated", request->query_id);
             wait_until(request->send_time);
             this->get(request);
         }
 
-        riotcpp::logging::get()->error("Failed request. Method: {}. Response code: {}", request->method_key, request->last_response);
+        riotcpp::logging::get()->error("[Query {}] Failed request. Method: {}. Response code: {}", request->query_id, request->method_key, request->last_response);
         return std::move(request->response_content);
     }
 } // namespace riotcpp::client

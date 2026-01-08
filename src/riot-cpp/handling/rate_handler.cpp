@@ -1,5 +1,5 @@
 #include <utility>
-
+#include "../logging/logger.h"
 #include "rate_handler.h"
 
 namespace riotcpp::rate {
@@ -73,13 +73,17 @@ namespace riotcpp::rate {
             case VAL_PLATFORM_INDICATOR:
                 wait_time = this->val_plaform_counts[static_cast<int>(request->route.routng.vpltform)].get_wait_time(request->method_key); break;
             default:
-                rcp_assert(false, "Invalid routing indicator given: " << request->route.indicator << ", should be 0, 1, 2");
+                // rcp_assert is not defined, using spdlog and exception instead
+                logging::get()->critical("Invalid routing indicator given: {}, should be 0, 1, 2", request->route.indicator);
+                throw std::invalid_argument("Invalid routing indicator");
         }
         if (wait_time == 0) {
+            logging::get()->debug("[Query {}] Rate limit check passed.", request->query_id);
             return true; // OK to send
         }
 
         // update time to send and return false;
+        logging::get()->info("[Query {}] Rate limit requires waiting. Delay: {}s.", request->query_id, wait_time);
         request->send_time = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() + wait_time;
         return false; 
     }

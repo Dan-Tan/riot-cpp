@@ -38,10 +38,11 @@ namespace logging {
     /**
      * @brief Logs the key-value pairs of a cpr::Header object, filtering sensitive information.
      * 
+     * @param query_id The unique ID of the query associated with these headers.
      * @param title A title for the log entry (e.g., "Response Headers").
      * @param headers The cpr::Header object to log.
      */
-    void log_headers(const std::string& title, const cpr::Header& headers);
+    void log_headers(long query_id, const std::string& title, const cpr::Header& headers);
 
 }
 }

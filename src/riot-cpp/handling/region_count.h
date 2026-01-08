@@ -26,7 +26,8 @@ namespace riotcpp::rate {
              */
             void init_limits(const std::string& description);
             int get_wait_time(const std::string& method_key);
-            void insert_request(unsigned server_time, 
+            void insert_request(long query_id,
+                                unsigned server_time, 
                                 const std::string& method_key, 
                                 const std::string& method_limits);
 

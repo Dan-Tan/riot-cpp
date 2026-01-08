@@ -47,12 +47,12 @@ namespace logging {
         return logger_instance;
     }
 
-    void log_headers(const std::string& title, const cpr::Header& headers) {
+    void log_headers(long query_id, const std::string& title, const cpr::Header& headers) {
         // A static set of lower-case header keys to filter out from logs for security.
         static const std::set<std::string> sensitive_keys = {"x-riot-token", "authorization"};
 
         std::stringstream ss;
-        ss << title << ":";
+        ss << "[Query " << query_id << "] " << title << ":";
         for (const auto& [key, val] : headers) {
             std::string lower_key = key;
             std::transform(lower_key.begin(), lower_key.end(), lower_key.begin(),
