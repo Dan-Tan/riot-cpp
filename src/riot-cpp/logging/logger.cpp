@@ -60,6 +60,8 @@ namespace logging {
 
             if (sensitive_keys.find(lower_key) == sensitive_keys.end()) {
                 ss << "\n\t" << key << ": " << val;
+            } else {
+                ss << "\n\t" << key << ": [REDACTED]";
             }
         }
         get()->debug(ss.str());

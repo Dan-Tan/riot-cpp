@@ -79,6 +79,7 @@ namespace riotcpp::client {
 
         request->response_content->clear();
 
+        riotcpp::logging::log_headers(request->query_id, "Request Headers", this->header);
         cpr::Response resp = cpr::Get(cpr::Url(request->url), this->header);
         riotcpp::logging::log_headers(request->query_id, "Response Headers", resp.header);
 
