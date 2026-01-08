@@ -39,6 +39,8 @@ namespace riotcpp::query {
         RiotHeader response_header;
         int last_response = -2;
         int server_error_count;
+
+        explicit query(args::routing r) : route(std::move(r)) {}
     };
 
     using json_text = std::vector<char>;
@@ -84,8 +86,8 @@ namespace riotcpp::query {
 
             std::unique_ptr<json_text> operator()(
                 const std::string& routing,
-                const std::vector<std::pair<std::string, std::string>>& opts,
-                const Args&... args
+                const Args&... args,
+                const std::vector<std::pair<std::string, std::string>>& opts = {}
             ) const {
                 std::string path = url::construct_url_path(routing, this->url_base_, this->additional_frag_, this->url_fragments_, args...);
 
@@ -106,20 +108,12 @@ namespace riotcpp::query {
                 
                 return this->send_(routing, path + query_ss.str());
             }
-
-            std::unique_ptr<json_text> operator()(
-                const std::string& routing,
-                const Args&... args
-            ) const {
-                return this->operator()(routing, {}, args...);
-            }
     };
 
     template<typename...Args>
     std::unique_ptr<json_text> EndpointMethod<Args...>::send_(const std::string& routing, std::string url) const {
-        auto new_request = std::make_shared<query>();
+        auto new_request = std::make_shared<query>(args::str_to_routing(routing));
         new_request->method_key = this->method_key_;
-        new_request->route = args::str_to_routing(routing);
         new_request->url = std::move(url);
         new_request->response_content = std::make_unique<json_text>();
         return (*this->get_)(new_request);
