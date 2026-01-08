@@ -128,22 +128,49 @@ namespace riotcpp::client {
 
     std::unique_ptr<json_text> RiotApiClient::query(const std::shared_ptr<query::query>& request) {
 
-        riotcpp::logging::get()->info("[Query {}] Sending GET request for method '{}' to '{}'", request->query_id, request->method_key, request->url);
+        riotcpp::logging::get()->info("[Query {}] Preparing request for method '{}' to '{}'", request->query_id, request->method_key, request->url);
 
-        while (this->request_handler.review_request(request)) {
+        // Special handling for the very first request to initialize the rate limiter
+        if (!this->request_handler.is_initialized()) {
+            logging::get()->debug("[Query {}] Rate limiter not initialized. Sending initial request.", request->query_id);
+            this->get(request); // Send the request
+            if (request->last_response != -1) { // -1 is a CPR error
+                this->request_handler.validate_request(request); // This will initialize the handler
+            }
             if (request->last_response == 200) {
                 return std::move(request->response_content);
             }
-            if (!this->request_handler.validate_request(request)) {
-                riotcpp::logging::get()->warn("[Query {}] Request sent was invalid or the server is unavailable", request->query_id);
-                throw std::runtime_error("Request sent was invalid or the server is unavailable");
-            }
-            riotcpp::logging::get()->debug("[Query {}] Request Validated", request->query_id);
-            wait_until(request->send_time);
-            this->get(request);
+            // If the first request fails, it will fall through to the main loop's error handling.
         }
 
-        riotcpp::logging::get()->error("[Query {}] Failed request. Method: {}. Response code: {}", request->query_id, request->method_key, request->last_response);
-        return std::move(request->response_content);
+        // Main request loop for all subsequent (or failed first) requests
+        while (true) {
+            // 1. CHECK & WAIT
+            this->request_handler.check_rate_limits(request);
+            wait_until(request->send_time);
+
+            // 2. SEND
+            this->get(request);
+
+            // 3. UPDATE rate limit state from response
+            if (request->last_response != -1) {
+                this->request_handler.validate_request(request);
+            }
+            
+            // 4. REVIEW response and decide action
+            if (request->last_response == 200) {
+                return std::move(request->response_content); // Success
+            }
+
+            // If not 200, check if it's a retryable server error
+            if (this->request_handler.review_request(request)) {
+                riotcpp::logging::get()->warn("[Query {}] Server returned a retryable error (Code: {}). Retrying...", request->query_id, request->last_response);
+                // Loop will continue and retry the request
+            } else {
+                // Not a retryable error, so we fail permanently.
+                riotcpp::logging::get()->error("[Query {}] Unrecoverable error for method '{}'. Response Code: {}", request->query_id, request->method_key, request->last_response);
+                return std::move(request->response_content);
+            }
+        }
     }
 } // namespace riotcpp::client

@@ -92,5 +92,26 @@ namespace riotcpp::rate {
         if (!this->initialised) {
             this->initialised = this->initialise_counts(request->response_header);
         }
+
+        // Now, always insert the request into the appropriate RegionCount
+        unsigned server_time = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        switch (request->route.indicator) {
+            case REGIONAL_INDICATOR:
+                this->region_counts[static_cast<int>(request->route.routng.reg)].insert_request(
+                    request->query_id, server_time, request->method_key, request->response_header.method_limit);
+                break;
+            case PLATFORM_INDICATOR:
+                this->platform_counts[static_cast<int>(request->route.routng.pltform)].insert_request(
+                    request->query_id, server_time, request->method_key, request->response_header.method_limit);
+                break;
+            case VAL_PLATFORM_INDICATOR:
+                this->val_plaform_counts[static_cast<int>(request->route.routng.vpltform)].insert_request(
+                    request->query_id, server_time, request->method_key, request->response_header.method_limit);
+                break;
+            default:
+                // This case should ideally not be reached if validation elsewhere is robust
+                logging::get()->critical("[Query {}] Invalid routing indicator encountered during request insertion: {}", request->query_id, request->route.indicator);
+                throw std::invalid_argument("Invalid routing indicator");
+        }
     }
 } // namespace riotcpp::rate

@@ -27,6 +27,8 @@ namespace riotcpp::rate {
             RateHandler() = default;
             ~RateHandler() = default;
             
+            bool is_initialized() const { return this->initialised; }
+
             /**
              * @param (out) request if a wait is required the send_time field will be update the earliest time the request can be sent
              * @return true if request can be sent immediately, false the client should wait at least until send_time to send

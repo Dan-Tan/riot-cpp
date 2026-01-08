@@ -30,10 +30,18 @@ namespace riotcpp::rate {
             explicit RequestHandler() = default;
             ~RequestHandler() = default;
 
+            bool is_initialized() const {
+                return this->rate_handler.is_initialized();
+            }
+
+            void check_rate_limits(const std::shared_ptr<query::query>& request) {
+                this->rate_handler.check_rate_limits(request);
+            }
+
             bool review_request(const std::shared_ptr<query::query>& request) {
-                this->rate_handler.check_rate_limits(request); // insert_request only 200
                 return this->response_handler.review_request(request);
             };
+            
             bool validate_request(const std::shared_ptr<query::query>& request) {
                 this->rate_handler.insert_request(request);
                 return true;
