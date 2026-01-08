@@ -8,14 +8,13 @@
 namespace riotcpp::rate {
 
     struct ResponseHandler {
-        explicit ResponseHandler(logging::Logger *logger) {this->_logger = logger;};
+        explicit ResponseHandler() = default;
         bool review_request(const std::shared_ptr<query::query>& request);
         static bool validate_request(const std::shared_ptr<query::query>& request) {return true;};
 
         std::array<std::array<int, 2>, NUM_PLATFORMS>     platform_errors;
         std::array<std::array<int, 2>, NUM_REGIONS>       region_errors;
         std::array<std::array<int, 2>, NUM_VAL_PLATFORMS> val_platform_errors;
-        logging::Logger *_logger;
 
         int MAX_INTERNAL_DENIALS = 2; // 500
         int MAX_SERVICE_UNAVAILABLE = 2; // 503
@@ -28,7 +27,7 @@ namespace riotcpp::rate {
 
     class RequestHandler {
         public:
-            explicit RequestHandler(logging::Logger *logger) : response_handler(logger) {};
+            explicit RequestHandler() = default;
             ~RequestHandler() = default;
 
             bool review_request(const std::shared_ptr<query::query>& request) {

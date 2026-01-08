@@ -178,7 +178,7 @@ TEST_CASE( "MATCH QUERIES" ) {
     json doc;
 
     std::string endpoint = "MATCH-V5";
-    result = test_client.Match.by_puuid(region, PUUID, {.type = "ranked"});
+    result = test_client.Match.by_puuid(region, PUUID, {{"type", "ranked"}});
     doc = json::parse(result->data());
     match_id = doc.at(0);
     result = test_client.Match.by_match_id(region, match_id);
@@ -399,7 +399,7 @@ TEST_CASE("TFT-LEAGUE-V1") {
     INFO("ASSERTING JSON RESPONSE IS ARRAY");
     REQUIRE(doc.is_array());
 
-    result = test_client.Tft_League.entries(ROUTING, "DIAMOND", "II", {.queue = "RANKED_TFT", .page = 2});
+    result = test_client.Tft_League.entries(ROUTING, "DIAMOND", "II", {{"queue", "RANKED_TFT"}, {"page", "2"}});
     doc = json::parse(result->data());
     auto jsonref = doc.at(0);
     INFO("JSON KEY EXISTENCE: \"tier\"");
@@ -424,7 +424,7 @@ TEST_CASE("TFT-MATCH-V1") {
     std::string puuid;
     puuid = doc["puuid"];
     
-    result = test_client.Tft_Match.by_puuid("SEA", puuid, {.startTime = 0, .start = 5, .count = 20});
+    result = test_client.Tft_Match.by_puuid("SEA", puuid, {{"startTime", "0"}, {"start", "5"}, {"count", "20"}});
     doc = json::parse(result->data());
     REQUIRE(doc.is_array());
     REQUIRE(doc.size() == 20);

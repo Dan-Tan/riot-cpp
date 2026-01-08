@@ -12,6 +12,7 @@
 #include <regex>
 #include <cstring>
 #include "client.h"
+#include "../logging/logger.h"
 
 namespace riotcpp::client {
 
@@ -41,9 +42,7 @@ namespace riotcpp::client {
         throw std::runtime_error("Configuration file does not exist or has unexpected format");
     }
 
-    RiotApiClient::RiotApiClient(const std::string& path_to_config, std::string&& path_to_log, logging::LEVEL report_level, bool verbose_logging) :
-        logger(std::move(path_to_log), report_level, verbose_logging),
-        request_handler(&(this->logger)),
+    RiotApiClient::RiotApiClient(const std::string& path_to_config, std::string&& path_to_log, spdlog::level::level_enum report_level, bool verbose_logging) :
         endpoint_call(std::bind_front(&RiotApiClient::query, this)),
         Account(&this->endpoint_call),
         Champion_Mastery(&this->endpoint_call),
@@ -69,6 +68,7 @@ namespace riotcpp::client {
         Val_Ranked(&this->endpoint_call),
         Val_Status(&this->endpoint_call) {
 
+        riotcpp::logging::initialize(path_to_log, report_level);
         std::string api_key = extract_key(path_to_config);
         this->header = cpr::Header{{"X-RIOT-TOKEN", api_key}};
     }
@@ -79,13 +79,14 @@ namespace riotcpp::client {
 
         request->response_content->clear();
 
-        cpr::Response resp = cpr::Get(cpr::Url(request->url.get()), this->header);
+        cpr::Response resp = cpr::Get(cpr::Url(request->url), this->header);
+        riotcpp::logging::log_headers("Response Headers", resp.header);
 
         request->response_content->assign(resp.text.begin(), resp.text.end());
         request->last_response = resp.status_code;
 
         if (resp.error) {
-            this->logger << logging::LEVEL::CRITICAL << "cpr failed to send request: " << resp.error.message << 0;
+            riotcpp::logging::get()->critical("cpr failed to send request: {}", resp.error.message);
             request->last_response = -1; // CPR ERRORS
             return false;
         }
@@ -110,11 +111,8 @@ namespace riotcpp::client {
             }
         }
 
-
-        this->logger << logging::LEVEL::DEBUG << request->response_header << 0;
-
         if (request->last_response == 200) { // only parse content to json if request was successful
-            this->logger << logging::LEVEL::DEBUG << "Query Successful" << 0;
+            riotcpp::logging::get()->debug("Query Successful");
         }
 
         return true;
@@ -130,23 +128,22 @@ namespace riotcpp::client {
 
     std::unique_ptr<json_text> RiotApiClient::query(const std::shared_ptr<query::query>& request) {
 
-        this->logger << logging::LEVEL::DEBUG << "--Query Call--" << std::string(request->url.get()) << 0;
+        riotcpp::logging::get()->debug("--Query Call-- {}", request->url);
 
         while (this->request_handler.review_request(request)) {
             if (request->last_response == 200) {
                 return std::move(request->response_content);
             }
             if (!this->request_handler.validate_request(request)) {
-                this->logger << logging::LEVEL::WARNING << "Request sent was invalid or the server is unavailable" << 0;
+                riotcpp::logging::get()->warn("Request sent was invalid or the server is unavailable");
                 throw std::runtime_error("Request sent was invalid or the server is unavailable");
             }
-            this->logger << logging::LEVEL::DEBUG << "Request Validated" << 0;
+            riotcpp::logging::get()->debug("Request Validated");
             wait_until(request->send_time);
             this->get(request);
         }
 
-        this->logger << logging::LEVEL::ERRORS << "Failed request" << request->method_key << request->last_response << 0;
+        riotcpp::logging::get()->error("Failed request. Method: {}. Response code: {}", request->method_key, request->last_response);
         return std::move(request->response_content);
     }
 } // namespace riotcpp::client
-

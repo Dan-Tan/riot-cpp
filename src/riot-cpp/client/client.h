@@ -16,7 +16,7 @@ namespace riotcpp::client {
 
     class RiotApiClient {
         public:
-            RiotApiClient(const std::string& path_to_config, std::string&& path_to_log, logging::LEVEL report_level = logging::LEVEL::INFO, bool verbose_logging = false);
+            RiotApiClient(const std::string& path_to_config, std::string&& path_to_log, spdlog::level::level_enum report_level = spdlog::level::info, bool verbose_logging = false);
             ~RiotApiClient();
             
             const query::Account_v1 Account;
@@ -47,7 +47,6 @@ namespace riotcpp::client {
         protected:
 
             rate::RequestHandler request_handler;
-            logging::Logger logger;
 
         private:
             std::unique_ptr<json_text> query(const std::shared_ptr<query::query>& request);
