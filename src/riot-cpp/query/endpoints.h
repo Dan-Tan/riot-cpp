@@ -98,6 +98,7 @@ namespace riotcpp::query {
                 std::stringstream query_ss;
                 if (!opts.empty()) {
                     for (const auto& pair : opts) {
+                        if (pair.first.empty()) continue;
                         if (valid_opt_keys_.find(pair.first) == valid_opt_keys_.end()) {
                             throw std::invalid_argument("Optional parameter '" + pair.first + "' is not valid for this endpoint.");
                         }
@@ -105,6 +106,7 @@ namespace riotcpp::query {
                     
                     char sep = '?';
                     for (const auto& pair : opts) {
+                        if (pair.first.empty()) continue;
                         query_ss << sep << cpr::util::urlEncode(pair.first) << '=' << cpr::util::urlEncode(pair.second);
                         sep = '&';
                     }
