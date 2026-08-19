@@ -2,12 +2,14 @@
 
 #include <string>
 #include <chrono>
+#include <iostream>
 
 #ifdef DEBUG_MODE
 #define rcp_assert(x, msg) if (!x) {std::cerr << "ASSERTION FAILED: " << msg << std::endl;}
 #else 
 #define rcp_assert(x, msg)
 #endif
+
 
 namespace riotcpp::rate {
     
