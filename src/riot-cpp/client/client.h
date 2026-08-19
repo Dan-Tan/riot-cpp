@@ -17,7 +17,10 @@ namespace riotcpp::client {
     class RiotApiClient {
         public:
             RiotApiClient(const std::string& path_to_config, std::string&& path_to_log, spdlog::level::level_enum report_level = spdlog::level::info, bool verbose_logging = false);
+            RiotApiClient(std::string api_key, std::string path_to_log, spdlog::level::level_enum report_level, bool verbose_logging, bool is_direct_key);
             ~RiotApiClient();
+
+            void update_api_key(const std::string& new_key);
             
             const query::Account_v1 Account;
             const query::Champion_Mastery_v4 Champion_Mastery;

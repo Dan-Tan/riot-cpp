@@ -73,6 +73,40 @@ namespace riotcpp::client {
         this->header = cpr::Header{{"X-RIOT-TOKEN", api_key}};
     }
 
+    RiotApiClient::RiotApiClient(std::string api_key, std::string path_to_log, spdlog::level::level_enum report_level, bool verbose_logging, bool is_direct_key) :
+        endpoint_call(std::bind_front(&RiotApiClient::query, this)),
+        Account(&this->endpoint_call),
+        Champion_Mastery(&this->endpoint_call),
+        Champion(&this->endpoint_call),
+        Clash(&this->endpoint_call),
+        League_exp(&this->endpoint_call),
+        League(&this->endpoint_call),
+        Lol_Challenges(&this->endpoint_call),
+        Lol_Status(&this->endpoint_call),
+        Lor_Match(&this->endpoint_call),
+        Lor_Ranked(&this->endpoint_call),
+        Lor_Status(&this->endpoint_call),
+        Match(&this->endpoint_call),
+        Spectator_Tft(&this->endpoint_call),
+        Spectator(&this->endpoint_call),
+        Summoner(&this->endpoint_call),
+        Tft_League(&this->endpoint_call),
+        Tft_Match(&this->endpoint_call),
+        Tft_Status(&this->endpoint_call),
+        Tft_Summoner(&this->endpoint_call),
+        Val_Content(&this->endpoint_call),
+        Val_Match(&this->endpoint_call),
+        Val_Ranked(&this->endpoint_call),
+        Val_Status(&this->endpoint_call) {
+
+        riotcpp::logging::initialize(path_to_log, report_level);
+        this->header = cpr::Header{{"X-RIOT-TOKEN", api_key}};
+    }
+
+    void RiotApiClient::update_api_key(const std::string& new_key) {
+        this->header = cpr::Header{{"X-RIOT-TOKEN", new_key}};
+    }
+
     RiotApiClient::~RiotApiClient() = default;
 
     bool RiotApiClient::get(const std::shared_ptr<query::query>& request) {

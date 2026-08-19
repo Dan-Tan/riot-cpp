@@ -1,9 +1,12 @@
 #include "logger.h"
 #include "spdlog/sinks/basic_file_sink.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
 #include <stdexcept>
 #include <set>
 #include <sstream>
 #include <algorithm>
+#include <filesystem>
+#include <iostream>
 
 namespace riotcpp {
 namespace logging {
@@ -14,28 +17,25 @@ namespace logging {
     void initialize(const std::string& log_path, spdlog::level::level_enum level, const std::string& logger_name) {
         // Only initialize once.
         if (!logger_instance) {
+            std::string effective_log_path = log_path.empty() ? "logs.log" : log_path;
             try {
-                // Create a thread-safe, file-based logger.
-                // The 'true' argument truncates the file on open.
-                auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_path, false);
-                
-                // Create the logger.
+                std::filesystem::path p(effective_log_path);
+                if (p.has_parent_path()) {
+                    std::filesystem::create_directories(p.parent_path());
+                }
+
+                auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(effective_log_path, false);
                 logger_instance = std::make_shared<spdlog::logger>(logger_name, file_sink);
-                
-                // Set the logging levels.
-                logger_instance->set_level(level);
-                logger_instance->flush_on(level); // Auto-flush on messages of this level and higher.
-                
-                // Set the default logger for the spdlog registry.
-                spdlog::set_default_logger(logger_instance);
-
-                // Define a formatting pattern for the log messages.
-                spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%l%$] [thread %t] %v");
-
-            } catch (const spdlog::spdlog_ex& ex) {
-                // If spdlog fails to initialize (e.g., file permissions), throw an exception.
-                throw std::runtime_error("Log initialization failed: " + std::string(ex.what()));
+            } catch (const std::exception& ex) {
+                // Fallback to console sink if file cannot be opened (e.g. sandbox or permission constraints)
+                auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+                logger_instance = std::make_shared<spdlog::logger>(logger_name, console_sink);
             }
+
+            logger_instance->set_level(level);
+            logger_instance->flush_on(level);
+            spdlog::set_default_logger(logger_instance);
+            spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%l%$] [thread %t] %v");
         }
     }
     

@@ -280,9 +280,11 @@ namespace riotcpp::query {
     struct Spectator_v5 : public Endpoint {
         explicit Spectator_v5(query_fp get)
             : Endpoint("/lol/spectator/v5"),
-              by_summoner(get, url_base_, "Spectator-v5-by-summoner-id", {"/active-games/by-summoner/"}, "") {};
+              by_summoner(get, url_base_, "Spectator-v5-by-summoner-id", {"/active-games/by-summoner/"}, ""),
+              featured   (get, url_base_, "Spectator-v5-featured", {}, "/featured-games") {};
 
         const EndpointMethod<std::string> by_summoner;
+        const EndpointMethod<> featured;
     };
 
     struct Summoner_v4 : public Endpoint {

@@ -21,5 +21,5 @@ add_library(riot-cpp STATIC client/client.cpp
                             logging/logger.cpp
                             types/region_enums.cpp)
 
-target_link_libraries(riot-cpp PRIVATE cpr::cpr)
+target_link_libraries(riot-cpp PUBLIC cpr::cpr)
 target_link_libraries(riot-cpp PUBLIC spdlog::spdlog)
