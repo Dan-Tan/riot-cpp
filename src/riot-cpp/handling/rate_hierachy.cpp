@@ -26,11 +26,11 @@ namespace riotcpp::rate {
                 description.substr(col_pos + 1) :
                 description.substr(col_pos + 1, com_pos - (col_pos + 1));
 
-            if (!limit_str.empty()) {
-                limit.push_back(std::stoi(limit_str));
-            }
-            if (!duration_str.empty()) {
-                limit.push_back(std::stoi(limit_str));
+            if (!limit_str.empty() && !duration_str.empty()) {
+                try {
+                    limit.push_back(std::stoi(limit_str));
+                    duration.push_back(std::stoi(duration_str));
+                } catch (...) {}
             }
 
             if (com_pos == std::string::npos) {
@@ -47,7 +47,7 @@ namespace riotcpp::rate {
         rcp_assert(durations.size() == limits.size(), "Mismatched Duration and Limit sized given");
         rcp_assert(counts.size() == limits.size(), "Mismatched Count and Limit sized given");
         this->hierachy_.reserve(durations.size());
-        for (int i = 0; i < durations.size(); i++) {
+        for (std::size_t i = 0; i < durations.size(); i++) {
             this->hierachy_.emplace_back(durations[i], limits[i], counts[i]);
         }
     }
@@ -56,16 +56,15 @@ namespace riotcpp::rate {
 
         std::pair<std::vector<int>, std::vector<int>> description_limit = extract_duration_limits(description);
 
-        int size = description_limit.first.size();
+        std::size_t size = description_limit.first.size();
         this->hierachy_.reserve(size);
 
-        for (int i = 0; i < size; i++) {
+        for (std::size_t i = 0; i < size; i++) {
             this->hierachy_.emplace_back(description_limit.first[i], description_limit.second[i], 0);
         }
     }
 
     int RateHierachy::get_wait_time() {
-        rcp_assert(this->hierachy_.size() > 0, "Empty scope hierachy, check if initialised properly");
         const auto find_longest = [](int current_max, ScopeCount& next_scope){
             int next_wait = next_scope.get_wait_time();
             return (next_wait * (next_wait > current_max)) + (current_max * (next_wait <= current_max));
@@ -76,6 +75,40 @@ namespace riotcpp::rate {
     void RateHierachy::insert_request(unsigned server_time) {
         for (ScopeCount& scope_count : this->hierachy_) {
             scope_count.insert_request(server_time);
+        }
+    }
+
+    void RateHierachy::sync_from_headers(const std::string& limit_header, const std::string& count_header, unsigned server_time, int retry_after_sec) {
+        auto [durations, limits] = extract_duration_limits(limit_header);
+        auto [count_durations, counts] = extract_duration_limits(count_header);
+
+        if (durations.empty()) {
+            this->insert_request(server_time);
+            if (retry_after_sec > 0 && !this->hierachy_.empty()) {
+                this->hierachy_.back().apply_retry_after(retry_after_sec, server_time);
+            }
+            return;
+        }
+
+        if (this->hierachy_.size() != durations.size() ||
+            (this->hierachy_.size() == 1 && this->hierachy_[0].duration() == 0)) {
+            this->hierachy_.clear();
+            this->hierachy_.reserve(durations.size());
+            for (std::size_t i = 0; i < durations.size(); ++i) {
+                int c = (i < counts.size()) ? counts[i] : 1;
+                this->hierachy_.emplace_back(durations[i], limits[i], c);
+            }
+        }
+
+        for (std::size_t i = 0; i < durations.size(); ++i) {
+            int c = (i < counts.size()) ? counts[i] : 1;
+            this->hierachy_[i].sync_from_server(c, limits[i], durations[i], server_time);
+            if (retry_after_sec > 0 && c >= limits[i]) {
+                this->hierachy_[i].apply_retry_after(retry_after_sec, server_time);
+            }
+        }
+        if (retry_after_sec > 0 && this->get_wait_time() < retry_after_sec && !this->hierachy_.empty()) {
+            this->hierachy_.back().apply_retry_after(retry_after_sec, server_time);
         }
     }
 

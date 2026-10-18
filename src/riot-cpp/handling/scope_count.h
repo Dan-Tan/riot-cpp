@@ -35,9 +35,21 @@ namespace riotcpp::rate {
             ~ScopeCount() = default;
 
             inline void correct_count(int server_counter, int server_limit, int server_duration);
+            inline void sync_from_server(int server_count, int server_limit, int server_duration, unsigned server_time);
+            inline void apply_retry_after(int retry_seconds, unsigned server_time);
             inline void insert_request(unsigned server_time);
             inline int  get_wait_time();
             inline int  n_available();
+
+            inline int  duration() const { return this->duration_; }
+            inline int  limit() const { return this->limit_; }
+            inline int  count() { this->update_count(); return this->count_; }
+            inline int  seconds_until_reset() {
+                unsigned current_time = this->update_count();
+                return (this->count_ > 0 && current_time < this->next_reset_)
+                    ? static_cast<int>(this->next_reset_ - current_time)
+                    : 0;
+            }
 
             [[nodiscard]] std::string to_string() const;
 
@@ -49,18 +61,19 @@ namespace riotcpp::rate {
      * @return current time to avoid multiple time requests
      */
     inline unsigned ScopeCount::update_count(bool update_reset) {
-        unsigned current_time = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::utc_clock::now().time_since_epoch()).count();
+        unsigned current_time = std::chrono::duration_cast<std::chrono::seconds>(
+            std::chrono::system_clock::now().time_since_epoch()).count();
 
         // if we have not passed the next reset there is nothing to reset
-        if (current_time <= this->next_reset_) {
+        if (current_time < this->next_reset_) {
             return current_time;
         }
     
         this->count_ = 0;
 
-        // If we have made a request and want to upate the count we must also update the new reset time
-        if (update_reset) {
-            this->next_reset_ = current_time + this->duration_;
+        // If we have made a request and want to update the count we must also update the new reset time
+        if (update_reset && this->duration_ > 0) {
+            this->next_reset_ = current_time + static_cast<unsigned>(this->duration_);
         }
         return current_time;
     }
@@ -75,8 +88,28 @@ namespace riotcpp::rate {
     }
 
     inline void ScopeCount::insert_request(unsigned server_time) {
-        this->update_count(server_time >= this->next_reset_);  // conservative approach update if equals
+        this->update_count(server_time >= this->next_reset_);
         this->count_++;
+    }
+
+    inline void ScopeCount::sync_from_server(int server_count, int server_limit, int server_duration, unsigned server_time) {
+        this->duration_ = server_duration;
+        this->limit_    = server_limit;
+        bool expired    = (server_time >= this->next_reset_);
+        if (expired || server_count <= 1 || this->next_reset_ == 0) {
+            this->next_reset_ = server_time + static_cast<unsigned>(std::max(1, this->duration_));
+        }
+        this->count_ = server_count;
+    }
+
+    inline void ScopeCount::apply_retry_after(int retry_seconds, unsigned server_time) {
+        if (retry_seconds > 0) {
+            this->count_ = std::max(this->count_, this->limit_);
+            unsigned retry_until = server_time + static_cast<unsigned>(retry_seconds);
+            if (retry_until > this->next_reset_) {
+                this->next_reset_ = retry_until;
+            }
+        }
     }
 
     inline int ScopeCount::n_available() {

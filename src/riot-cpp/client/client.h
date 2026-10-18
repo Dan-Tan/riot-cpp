@@ -21,6 +21,10 @@ namespace riotcpp::client {
             ~RiotApiClient();
 
             void update_api_key(const std::string& new_key);
+
+            rate::WaitTimeBreakdown get_wait_time_breakdown(const std::string& routing_str, const std::string& method_key);
+            std::vector<rate::RegionRateSnapshot> get_rate_limit_snapshot();
+            int current_wait_seconds() const { return this->current_wait_seconds_.load(); }
             
             const query::Account_v1 Account;
             const query::Champion_Mastery_v4 Champion_Mastery;
@@ -55,8 +59,9 @@ namespace riotcpp::client {
             std::unique_ptr<json_text> query(const std::shared_ptr<query::query>& request);
             std::function<std::unique_ptr<json_text>(std::shared_ptr<query::query>)> endpoint_call;
             bool get(const std::shared_ptr<query::query>& request);
+            void wait_until(std::time_t send_time);
 
-
+            std::atomic<int> current_wait_seconds_{0};
             cpr::Header header;
     }; 
 } // namespace riotcpp::client

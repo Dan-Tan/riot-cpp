@@ -46,6 +46,14 @@ namespace riotcpp::rate {
                 this->rate_handler.insert_request(request);
                 return true;
             };
+
+            WaitTimeBreakdown get_wait_time_breakdown(const args::routing& route, const std::string& method_key) {
+                return this->rate_handler.get_wait_time_breakdown(route, method_key);
+            }
+
+            std::vector<RegionRateSnapshot> get_snapshot() {
+                return this->rate_handler.get_snapshot();
+            }
         private:
             RateHandler rate_handler;
             ResponseHandler response_handler;

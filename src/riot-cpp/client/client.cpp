@@ -129,19 +129,30 @@ namespace riotcpp::client {
         // null terminant buffer for json parsing
         request->response_content->push_back(0);
 
-        // Extract headers
+        // Extract headers (case-insensitive for HTTP/2 compatibility)
+        auto iequals = [](const std::string& a, const char* b) {
+            std::size_t len = std::strlen(b);
+            if (a.size() != len) return false;
+            for (std::size_t i = 0; i < len; ++i) {
+                char ca = (a[i] >= 'A' && a[i] <= 'Z') ? static_cast<char>(a[i] - 'A' + 'a') : a[i];
+                char cb = (b[i] >= 'A' && b[i] <= 'Z') ? static_cast<char>(b[i] - 'A' + 'a') : b[i];
+                if (ca != cb) return false;
+            }
+            return true;
+        };
+
         for (auto const& [key, val] : resp.header) {
-            if (key == "Date") {
+            if (iequals(key, "date")) {
                 request->response_header.date = val;
-            } else if (key == "X-App-Rate-Limit") {
+            } else if (iequals(key, "x-app-rate-limit")) {
                 request->response_header.app_limit = val;
-            } else if (key == "X-App-Rate-Limit-Count") {
+            } else if (iequals(key, "x-app-rate-limit-count")) {
                 request->response_header.app_limit_count = val;
-            } else if (key == "X-Method-Rate-Limit") {
+            } else if (iequals(key, "x-method-rate-limit")) {
                 request->response_header.method_limit = val;
-            } else if (key == "X-Method-Rate-Limit-Count") {
+            } else if (iequals(key, "x-method-rate-limit-count")) {
                 request->response_header.method_limit_count = val;
-            } else if (key == "Retry-After") {
+            } else if (iequals(key, "retry-after")) {
                 request->response_header.retry_after = val;
             }
         }
@@ -152,13 +163,35 @@ namespace riotcpp::client {
 
         return true;
     }
-    static inline void wait_until(std::time_t send_time) {
-        const std::time_t c_time = std::time(nullptr);
-        std::time_t current_time = std::mktime(std::gmtime(&c_time));
-        if (current_time >= send_time) {
+
+    void RiotApiClient::wait_until(std::time_t send_time) {
+        if (send_time <= 0) {
+            this->current_wait_seconds_.store(0);
             return;
         }
-        std::this_thread::sleep_for(std::chrono::seconds(send_time - current_time));
+        while (true) {
+            std::time_t current_time = std::chrono::duration_cast<std::chrono::seconds>(
+                std::chrono::system_clock::now().time_since_epoch()).count();
+            if (current_time >= send_time) {
+                this->current_wait_seconds_.store(0);
+                return;
+            }
+            this->current_wait_seconds_.store(static_cast<int>(send_time - current_time));
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        }
+    }
+
+    rate::WaitTimeBreakdown RiotApiClient::get_wait_time_breakdown(const std::string& routing_str, const std::string& method_key) {
+        try {
+            args::routing route = args::str_to_routing(routing_str);
+            return this->request_handler.get_wait_time_breakdown(route, method_key);
+        } catch (...) {
+            return {};
+        }
+    }
+
+    std::vector<rate::RegionRateSnapshot> RiotApiClient::get_rate_limit_snapshot() {
+        return this->request_handler.get_snapshot();
     }
 
     std::unique_ptr<json_text> RiotApiClient::query(const std::shared_ptr<query::query>& request) {
@@ -182,7 +215,7 @@ namespace riotcpp::client {
         while (true) {
             // 1. CHECK & WAIT
             this->request_handler.check_rate_limits(request);
-            wait_until(request->send_time);
+            this->wait_until(request->send_time);
 
             // 2. SEND
             this->get(request);

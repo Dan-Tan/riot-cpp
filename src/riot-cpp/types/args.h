@@ -13,7 +13,7 @@
 #define NUM_CHAMPIONS 166
 
 #define NUM_PLATFORMS     16
-#define NUM_VAL_PLATFORMS 5
+#define NUM_VAL_PLATFORMS 7
 #define NUM_REGIONS       4
 
 #define REGIONAL_INDICATOR     0

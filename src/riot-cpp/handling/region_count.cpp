@@ -3,20 +3,26 @@
 
 namespace riotcpp::rate {
 
-    int RegionCount::get_wait_time(const std::string& method_key) {
-        int app_wait_time = this->app_limits_.get_wait_time();
+    int RegionCount::get_app_wait_time() {
+        return this->app_limits_.get_wait_time();
+    }
 
+    int RegionCount::get_method_wait_time(const std::string& method_key) {
         auto method_hierachy = this->method_limits_.find(method_key);
-
         if (method_hierachy == this->method_limits_.end()) {
-            return app_wait_time;
+            return 0;
         }
+        return method_hierachy->second.get_wait_time();
+    }
 
-        int method_wait_time = method_hierachy->second.get_wait_time();
+    int RegionCount::get_wait_time(const std::string& method_key) {
+        int app_wait_time = this->get_app_wait_time();
+        int method_wait_time = this->get_method_wait_time(method_key);
         return std::max(app_wait_time, method_wait_time);
     }
 
     void RegionCount::insert_request(long query_id, unsigned server_time, const std::string& method_key, const std::string& method_limits) {
+        this->active_ = true;
         this->app_limits_.insert_request(server_time);
         
         // if exists insert else construct and insert
@@ -32,6 +38,27 @@ namespace riotcpp::rate {
         RateHierachy new_hierachy = RateHierachy(method_limits);
         new_hierachy.insert_request(server_time);
         this->method_limits_.insert_or_assign(method_key, new_hierachy);
+    }
+
+    void RegionCount::insert_request_with_headers(long query_id,
+                                                  unsigned server_time,
+                                                  const std::string& method_key,
+                                                  const std::string& app_limits,
+                                                  const std::string& app_counts,
+                                                  const std::string& method_limits,
+                                                  const std::string& method_counts,
+                                                  int retry_after_sec) {
+        this->active_ = true;
+        this->app_limits_.sync_from_headers(app_limits, app_counts, server_time, retry_after_sec);
+
+        auto method_hierachy = this->method_limits_.find(method_key);
+        if (method_hierachy == this->method_limits_.end()) {
+            RateHierachy new_hierachy = RateHierachy(method_limits);
+            new_hierachy.sync_from_headers(method_limits, method_counts, server_time, retry_after_sec);
+            this->method_limits_.insert_or_assign(method_key, std::move(new_hierachy));
+        } else {
+            method_hierachy->second.sync_from_headers(method_limits, method_counts, server_time, retry_after_sec);
+        }
     }
 
     std::string RegionCount::to_string() const {
