@@ -60,6 +60,19 @@ namespace riotcpp::query {
     }
 
 
+    inline int infer_routing_indicator(const std::string& url_base) noexcept {
+        if (url_base.rfind("/riot/", 0) == 0 ||
+            url_base.rfind("/lor/", 0) == 0 ||
+            url_base == "/lol/match/v5" ||
+            url_base == "/tft/match/v1") {
+            return REGIONAL_INDICATOR;
+        }
+        if (url_base.rfind("/val/", 0) == 0) {
+            return VAL_PLATFORM_INDICATOR;
+        }
+        return PLATFORM_INDICATOR;
+    }
+
     template<typename...Args>
     class EndpointMethod {
         private:
@@ -70,8 +83,9 @@ namespace riotcpp::query {
 
             const std::string method_key_;
             const query_fp get_;
+            const int routing_indicator_;
 
-            [[nodiscard]] std::unique_ptr<json_text> send_(const std::string& routing, std::string url) const;
+            [[nodiscard]] std::unique_ptr<json_text> send_(args::routing parsed_route, std::string url) const;
 
         public:
             EndpointMethod(
@@ -80,20 +94,26 @@ namespace riotcpp::query {
                 std::string method_key,
                 const std::array<std::string, sizeof...(Args)>& url_fragments,
                 std::string additional_frag,
-                const std::set<std::string>& valid_keys = {}
+                const std::set<std::string>& valid_keys = {},
+                int routing_indicator = -1
             ) : get_(get),
                 url_base_(url_base),
                 method_key_(std::move(method_key)),
                 url_fragments_(url_fragments),
                 additional_frag_(std::move(additional_frag)),
-                valid_opt_keys_(valid_keys) {};
+                valid_opt_keys_(valid_keys),
+                routing_indicator_(routing_indicator >= 0 ? routing_indicator : infer_routing_indicator(url_base)) {};
+
+            int routing_indicator() const noexcept { return routing_indicator_; }
 
             std::unique_ptr<json_text> operator()(
                 const std::string& routing,
                 const Args&... args,
                 const std::vector<std::pair<std::string, std::string>>& opts = {}
             ) const {
-                std::string path = url::construct_url_path(routing, this->url_base_, this->additional_frag_, this->url_fragments_, args...);
+                args::routing parsed_route = args::str_to_routing_for_indicator(routing, routing_indicator_);
+                std::string host_route = args::routing_to_host_str(parsed_route);
+                std::string path = url::construct_url_path(host_route, this->url_base_, this->additional_frag_, this->url_fragments_, args...);
 
                 std::stringstream query_ss;
                 if (!opts.empty()) {
@@ -112,13 +132,13 @@ namespace riotcpp::query {
                     }
                 }
                 
-                return this->send_(routing, path + query_ss.str());
+                return this->send_(parsed_route, path + query_ss.str());
             }
     };
 
     template<typename...Args>
-    std::unique_ptr<json_text> EndpointMethod<Args...>::send_(const std::string& routing, std::string url) const {
-        auto new_request = std::make_shared<query>(args::str_to_routing(routing));
+    std::unique_ptr<json_text> EndpointMethod<Args...>::send_(args::routing parsed_route, std::string url) const {
+        auto new_request = std::make_shared<query>(std::move(parsed_route));
         new_request->method_key = this->method_key_;
         new_request->url = std::move(url);
         new_request->response_content = std::make_unique<json_text>();

@@ -40,19 +40,35 @@ namespace args {
      * sTrING == STRING true
      */
     static bool str_equals_upper(const std::string& str1, const char* str2) noexcept {
-        const int len = str1.length();
-        for (int i = 0; i < len; i++) {
+        if (!str2) return false;
+        std::size_t start = 0;
+        std::size_t end = str1.length();
+        while (start < end && (str1[start] == ' ' || str1[start] == '\t' || str1[start] == '\r' || str1[start] == '\n')) {
+            ++start;
+        }
+        while (end > start && (str1[end - 1] == ' ' || str1[end - 1] == '\t' || str1[end - 1] == '\r' || str1[end - 1] == '\n')) {
+            --end;
+        }
+        const std::size_t trimmed_len = end - start;
+        if (trimmed_len == 0) return false;
+
+        for (std::size_t i = 0; i < trimmed_len; ++i) {
             if (str2[i] == '\0') {
                 return false;
             }
-            if (str1[i] == str2[i]) {
-                continue;
+            char c1 = str1[start + i];
+            char c2 = str2[i];
+            if (c1 >= 'a' && c1 <= 'z') {
+                c1 = static_cast<char>(c1 - ('a' - 'A'));
             }
-            if (str1[i] != str2[i] && !(str1[i] >= 97 && str2[i] <= 122 && str1[i] - 32 == str2[i])) {
+            if (c2 >= 'a' && c2 <= 'z') {
+                c2 = static_cast<char>(c2 - ('a' - 'A'));
+            }
+            if (c1 != c2) {
                 return false;
             }
         }
-        return true;
+        return str2[trimmed_len] == '\0';
     }
 
     std::string platform_to_str(platform platfrm) noexcept {
@@ -102,6 +118,15 @@ namespace args {
                 return std::optional<platform>{static_cast<platform>(platform_index)};
             }
             platform_index++;
+        }
+        if (str_equals_upper(platfrm, "KR1")) {
+            return platform::KR;
+        }
+        if (str_equals_upper(platfrm, "RU1")) {
+            return platform::RU;
+        }
+        if (str_equals_upper(platfrm, "OCE")) {
+            return platform::OC1;
         }
         return std::nullopt;
     }
@@ -273,7 +298,7 @@ namespace args {
      * @return true if valid tier string false otherwise
      */
     bool valid_tier(const std::string& tir) noexcept {
-        std::optional<division> ti = str_to_division(tir);
+        std::optional<tier> ti = str_to_tier(tir);
         return ti.has_value();
     }
 
@@ -335,6 +360,93 @@ namespace args {
         }
         // Sending get requests to an unexpected routing address is dangerous.
         throw std::invalid_argument("Invalid routing value given: " + route);
+    }
+
+    routing str_to_routing_for_indicator(const std::string& route, int expected_indicator) {
+        if (expected_indicator == REGIONAL_INDICATOR) {
+            std::optional<regional> region = str_to_regional(route);
+            if (region.has_value()) {
+                return routing(region.value());
+            }
+            std::optional<platform> pform = str_to_platform(route);
+            if (pform.has_value()) {
+                regional mapped = platform_to_regional(pform.value());
+                throw std::invalid_argument(
+                    "Invalid routing '" + route + "' for regional endpoint: '" +
+                    platform_to_str(pform.value()) + "' is a platform shard (use regional cluster '" +
+                    regional_to_str(mapped) + "' instead)");
+            }
+            std::optional<val_platform> vform = str_to_val_platform(route);
+            if (vform.has_value()) {
+                throw std::invalid_argument(
+                    "Invalid routing '" + route + "' for regional endpoint: '" +
+                    val_platform_to_str(vform.value()) + "' is a Valorant shard (expected AMERICAS, ASIA, EUROPE, or SEA)");
+            }
+            throw std::invalid_argument(
+                "Invalid regional routing value '" + route + "' (expected AMERICAS, ASIA, EUROPE, or SEA)");
+        } else if (expected_indicator == PLATFORM_INDICATOR) {
+            std::optional<platform> pform = str_to_platform(route);
+            if (pform.has_value()) {
+                return routing(pform.value());
+            }
+            std::optional<regional> region = str_to_regional(route);
+            if (region.has_value()) {
+                throw std::invalid_argument(
+                    "Invalid routing '" + route + "' for platform endpoint: '" +
+                    regional_to_str(region.value()) + "' is a regional cluster (expected a platform shard such as OC1, KR, NA1, EUW1)");
+            }
+            std::optional<val_platform> vform = str_to_val_platform(route);
+            if (vform.has_value()) {
+                throw std::invalid_argument(
+                    "Invalid routing '" + route + "' for LoL/TFT platform endpoint: '" +
+                    val_platform_to_str(vform.value()) + "' is a Valorant shard (expected a platform shard such as OC1, KR, NA1, EUW1)");
+            }
+            throw std::invalid_argument(
+                "Invalid platform routing value '" + route + "' (expected a platform shard such as OC1, KR, NA1, EUW1)");
+        } else if (expected_indicator == VAL_PLATFORM_INDICATOR) {
+            std::optional<val_platform> vform = str_to_val_platform(route);
+            if (vform.has_value()) {
+                return routing(vform.value());
+            }
+            std::optional<regional> region = str_to_regional(route);
+            if (region.has_value()) {
+                throw std::invalid_argument(
+                    "Invalid routing '" + route + "' for Valorant endpoint: '" +
+                    regional_to_str(region.value()) + "' is a regional cluster (expected AP, BR, EU, KR, LATAM, NA, or ESPORTS)");
+            }
+            std::optional<platform> pform = str_to_platform(route);
+            if (pform.has_value()) {
+                throw std::invalid_argument(
+                    "Invalid routing '" + route + "' for Valorant endpoint: '" +
+                    platform_to_str(pform.value()) + "' is a LoL/TFT platform shard (expected AP, BR, EU, KR, LATAM, NA, or ESPORTS)");
+            }
+            throw std::invalid_argument(
+                "Invalid Valorant routing value '" + route + "' (expected AP, BR, EU, KR, LATAM, NA, or ESPORTS)");
+        }
+        return str_to_routing(route);
+    }
+
+    std::string routing_to_host_str(const routing& route) noexcept {
+        std::string s;
+        switch (route.indicator) {
+            case REGIONAL_INDICATOR:
+                s = regional_to_str(route.routng.reg);
+                break;
+            case PLATFORM_INDICATOR:
+                s = platform_to_str(route.routng.pltform);
+                break;
+            case VAL_PLATFORM_INDICATOR:
+                s = val_platform_to_str(route.routng.vpltform);
+                break;
+            default:
+                return "";
+        }
+        for (char& c : s) {
+            if (c >= 'A' && c <= 'Z') {
+                c = static_cast<char>(c + ('a' - 'A'));
+            }
+        }
+        return s;
     }
 } 
 }

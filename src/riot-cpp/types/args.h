@@ -85,6 +85,8 @@ namespace args {
     } routing;
 
     routing str_to_routing(const std::string&);
+    routing str_to_routing_for_indicator(const std::string& route, int expected_indicator);
+    std::string routing_to_host_str(const routing& route) noexcept;
 
     regional platform_to_regional(platform) noexcept;
 
